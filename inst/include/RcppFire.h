@@ -9,7 +9,6 @@
 #include <Rcpp.h>
 #include <RcppFireWrap.h>
 #include <RcppFireAs.h>
-#include <RcppFireSugar.h>
 
 #endif
 
