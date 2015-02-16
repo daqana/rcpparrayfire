@@ -1,205 +1,85 @@
-
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
-/* :tabSize=4:indentSize=4:noTabs=false:folding=explicit:collapseFolds=1: */
-//
-// RcppArmadilloAs.h: Rcpp/Armadillo glue, support for as
-//
-// Copyright (C)  2013 - 2014  Dirk Eddelbuettel and Romain Francois
-//
-// This file is part of RcppArmadillo.
-//
-// RcppArmadillo is free software: you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 2 of the License, or
-// (at your option) any later version.
-//
-// RcppArmadillo is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with RcppArmadillo.  If not, see <http://www.gnu.org/licenses/>.
-
 #ifndef RcppFire__RcppFireAs__h
 #define RcppFire__RcppFireAs__h
 
+#include <type_traits>
+
+namespace RcppFire{
+	template<af::dtype AF_DTYPE> struct af_dtype2cpp{};
+	template<> struct af_dtype2cpp<af::f32>{ typedef float type ; };
+	template<> struct af_dtype2cpp<af::c32>{ typedef af::cfloat type ; };
+	template<> struct af_dtype2cpp<af::f64>{ typedef double type ; };
+	template<> struct af_dtype2cpp<af::c64>{ typedef af::cdouble type ; };
+	template<> struct af_dtype2cpp<af::b8>{ typedef bool type ; };
+	template<> struct af_dtype2cpp<af::s32>{ typedef int type ; };
+	template<> struct af_dtype2cpp<af::u32>{ typedef unsigned int type ; };
+
+
+	template<af::dtype AF_DTYPE> 
+	class array_decorator{ //FIXME : wired to call this decorator?
+	public:
+		array_decorator(){}
+		array_decorator(af::array &src_data) : data(src_data) ;
+		operator af::array(){
+			return data;
+		}
+
+		begin();
+		end();
+
+	private:
+		af::array data;
+	};
+}
+
 namespace Rcpp{
 namespace traits {
+	template<typename T> 
+	typename T af_complex_caster( Rcomplex from ){
+		T af_complex;
+		af_complex.x = from.r;
+		af_complex.y = from.i;
+		return af_complex;
+	}
 
-    template <typename T> 
-    class Exporter< arma::Col<T> > : public IndexingExporter< arma::Col<T>, T > {
-    public: 
-        Exporter(SEXP x) : IndexingExporter< arma::Col<T>, T >(x){} //TODO : need to search what the Indexingexporter
+	template <>
+	inline af::cdouble caster<Rcomplex, af::cdouble>( Rcomplex from ){
+		return af_complex_caster<af::cdouble>( from ) ;
+	}
+
+	template<>
+	inline af::cfloat  caster<Rcomplex, af::cfloat>( Rcomplex from ){
+		return af_complex_caster<af::cfloat>( from ) ;
+	}
+
+
+	template<af::dtype AF_DTYPE> 
+	class Exporter<RcppFire::array_decorator<AF_DTYPE>>{
+	private:
+		SEXP object ;
+
+	public:
+		Exporter( SEXP x ) : object(x){}
+		~Exporter(){}
+
+		RcppFire::array_decorator<AF_DTYPE> get() {
+			Shield<SEXP> dims( ::Rf_getAttrib( object, R_DimSymbol ) ) ;
+			af::array result;
+			if( Rf_isNull(dims) ){
+				result = af::array( ::Rf_length(object), AF_DTYPE ) ; 
+			}
+			else{
+				af::dim4 dims_( ::Rf_length(dims), INTEGER(dims) ) ; //FIXME : the second argument should be unsigned int*
+				result = af::array( dims_, AF_DTYPE ) ; 
+			}
+			::Rcpp::internal::export_indexing<
+				std::add_pointer<RcppFire::af_dtype2cpp<AF_DTYPE>::type>::type,
+				af_dtype2cpp<AF_DTYPE>::type
+				>( object, result.device<RcppFire::af_dtype2cpp<AF_DTYPE>::type>() ) ;
+			result.unlock() ;
+
+			return RcppFire::array_decorator<AF_DTYPE>(result);
+		}
     }; 
-    template <typename T> 
-    class Exporter< arma::Mat<T> > : public MatrixExporter< arma::Mat<T>, T > {
-    public:
-		Exporter(SEXP x) : MatrixExporter< arma::Mat<T>, T >(x){} //TODO : needto search whta the MatrixExporter
-    }; 
-
-    template <typename T> 
-    class Exporter< const arma::Mat<T>& > {
-    public:  
-        typedef typename Rcpp::Matrix< Rcpp::traits::r_sexptype_traits<T>::rtype > MATRIX ;
-                
-        Exporter(SEXP x) : mat(x) {}
-                
-        inline arma::Mat<T>* get(){
-            return new arma::Mat<T>( mat.begin(), mat.nrow(), mat.ncol(), false ) ;
-        }
-                
-    private:
-        MATRIX mat ;
-    };
-         
-    template <typename T>
-    class Exporter< arma::SpMat<T> > {
-    public:
-        Exporter( SEXP x ) : mat(x){}
-                
-        arma::SpMat<T> get(){
-            const int  RTYPE = Rcpp::traits::r_sexptype_traits<T>::rtype;
-        
-            IntegerVector dims = mat.slot("Dim");
-            IntegerVector i = mat.slot("i") ;
-            IntegerVector p = mat.slot("p") ;     
-            Vector<RTYPE> x = mat.slot("x") ;
-                        
-            arma::SpMat<T> res(dims[0], dims[1]);
-                        
-            // create space for values, copy and set sentinel
-            arma::access::rw(res.values) = arma::memory::acquire_chunked<T>(x.size() + 1);
-            arma::arrayops::copy(arma::access::rwp(res.values), x.begin(), x.size());
-            arma::access::rw(res.values[x.size()]) = T(0.0); 			// sets sentinel
-
-            // create space for row_indices, copy and set sentinel
-            arma::access::rw(res.row_indices) = arma::memory::acquire_chunked<arma::uword>(i.size() + 1);
-            std::copy(i.begin(), i.end(), arma::access::rwp(res.row_indices)); 
-            arma::access::rw(res.values[i.size()]) = arma::uword(0); 		// sets sentinel
-
-            // the space for col_ptrs is already initialized when we call the
-            // constructor a few lines above so we only need to fill the appropriate
-            // values, and the sentinel is already set to uword_max as well.
-            std::copy(p.begin(), p.end(), arma::access::rwp(res.col_ptrs));
-                        
-            // set the number of non-zero elements
-            arma::access::rw(res.n_nonzero) = x.size();
-                        
-            return res;
-        }
-                
-    private:
-        S4 mat ;
-    } ;
-}       
-        
-    /* Begin Armadillo vector as support classes */
-    
-    template <typename T, typename MAT, typename REF, 
-      typename NEEDS_CAST = typename Rcpp::traits::r_sexptype_needscast<T>::type 
-    >
-    class ArmaMat_InputParameter;
-    
-    template <typename T, typename MAT, typename REF>
-    class ArmaMat_InputParameter<T, MAT, REF, Rcpp::traits::false_type> {
-    public:
-        ArmaMat_InputParameter(SEXP x_) : m(x_), mat(reinterpret_cast<T*>(m.begin()), m.nrow(), m.ncol(), false) {} 
-                        
-        inline operator REF(){
-            return mat ;        
-        }
-                        
-    private:
-        Rcpp::Matrix< Rcpp::traits::r_sexptype_traits<T>::rtype > m ;
-        MAT mat ;
-    } ;
-    
-    template <typename T, typename MAT, typename REF>
-    class ArmaMat_InputParameter<T, MAT, REF, Rcpp::traits::true_type> {
-    public:
-        ArmaMat_InputParameter( SEXP x_ ): m(x_), mat( as<MAT>(m) ) {}
-                        
-        inline operator REF(){
-            return mat ;        
-        }
-                        
-    private:
-        Rcpp::Matrix< Rcpp::traits::r_sexptype_traits<T>::rtype > m ;
-        MAT mat ;
-    } ;
-
-    /* End Armadillo vector as support classes */
-
-
-    /* Begin Armadillo vector as support classes */
-    
-    template <typename T, typename VEC, typename REF, 
-      typename NEEDS_CAST = typename Rcpp::traits::r_sexptype_needscast<T>::type 
-    >
-    class ArmaVec_InputParameter;
-    
-    template <typename T, typename VEC, typename REF>
-    class ArmaVec_InputParameter<T, VEC, REF, Rcpp::traits::false_type> {
-    public:
-        ArmaVec_InputParameter( SEXP x_ ) : v(x_), vec( reinterpret_cast<T*>( v.begin() ), v.size(), false ){}
-                        
-        inline operator REF(){
-            return vec ;        
-        }
-                        
-    private:
-        Rcpp::Vector< Rcpp::traits::r_sexptype_traits<T>::rtype > v ;
-        VEC vec ;
-    } ;
-    
-    template <typename T, typename VEC, typename REF>
-    class ArmaVec_InputParameter<T, VEC, REF, Rcpp::traits::true_type> {
-    public:
-        ArmaVec_InputParameter( SEXP x_ ): v(x_), vec( as<VEC>(v) ) {}
-                        
-        inline operator REF(){
-            return vec ;        
-        }
-                        
-    private:
-        Rcpp::Vector< Rcpp::traits::r_sexptype_traits<T>::rtype > v ;
-        VEC vec ;
-    } ;
-
-    /* End Armadillo vector as support classes */
-    
-#define MAKE_INPUT_PARAMETER(INPUT_TYPE,TYPE,REF)                       \
-    template <typename T>                                               \
-    class INPUT_TYPE<TYPE> : public ArmaVec_InputParameter<T, TYPE, REF >{ \
-    public:                                                             \
-    INPUT_TYPE( SEXP x) : ArmaVec_InputParameter<T, TYPE, REF >(x){} \
-    } ;                                                                                                                  
-    
-    MAKE_INPUT_PARAMETER(ConstReferenceInputParameter, arma::Col<T>, const arma::Col<T>& )
-    MAKE_INPUT_PARAMETER(ReferenceInputParameter     , arma::Col<T>, arma::Col<T>&       )
-    MAKE_INPUT_PARAMETER(ConstInputParameter         , arma::Col<T>, const arma::Col<T>  )
-    
-    MAKE_INPUT_PARAMETER(ConstReferenceInputParameter, arma::Row<T>, const arma::Row<T>& )
-    MAKE_INPUT_PARAMETER(ReferenceInputParameter     , arma::Row<T>, arma::Row<T>&       )
-    MAKE_INPUT_PARAMETER(ConstInputParameter         , arma::Row<T>, const arma::Row<T>  )
-    
-#undef MAKE_INPUT_PARAMETER
-
-    
-#define MAKE_INPUT_PARAMETER(INPUT_TYPE,TYPE,REF)                       \
-    template <typename T>                                               \
-    class INPUT_TYPE<TYPE> : public ArmaMat_InputParameter<T, TYPE, REF >{ \
-    public:                                                             \
-    INPUT_TYPE( SEXP x) : ArmaMat_InputParameter<T, TYPE, REF >(x){} \
-    } ;
- 
-    MAKE_INPUT_PARAMETER(ConstReferenceInputParameter, arma::Mat<T>, const arma::Mat<T>& )
-    MAKE_INPUT_PARAMETER(ReferenceInputParameter     , arma::Mat<T>, arma::Mat<T>&       )
-    MAKE_INPUT_PARAMETER(ConstInputParameter         , arma::Mat<T>, const arma::Mat<T>  )
-
-#undef MAKE_INPUT_PARAMETER
-    
 }
 
 #endif
