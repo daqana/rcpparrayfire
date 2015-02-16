@@ -31,7 +31,7 @@
 
 /* forward declarations */
 namespace RcppFire{
-	template<af::dtype AF_DTYPE> class array_decorator;
+	template<af::dtype AF_DTYPE> class typed_array;
 }
 
 namespace Rcpp {
@@ -40,7 +40,7 @@ namespace Rcpp {
     
     namespace traits {
 	/* support for as */
-	template<af::dtype AF_DTYPE> class Exporter<RcppFire::array_decorator<AF_DTYPE>>;
+	template<af::dtype AF_DTYPE> class Exporter<RcppFire::typed_array<AF_DTYPE>>;
     } // namespace traits 
 }
 

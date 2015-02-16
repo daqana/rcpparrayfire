@@ -1,30 +1,26 @@
 #ifndef RcppFire__RcppFireAs__h
 #define RcppFire__RcppFireAs__h
 
+#include <algorithm>
+#include <iterator>
 #include <type_traits>
 
 namespace RcppFire{
-	template<af::dtype AF_DTYPE> struct af_dtype2cpp{};
-	template<> struct af_dtype2cpp<af::f32>{ typedef float type ; };
-	template<> struct af_dtype2cpp<af::c32>{ typedef af::cfloat type ; };
-	template<> struct af_dtype2cpp<af::f64>{ typedef double type ; };
-	template<> struct af_dtype2cpp<af::c64>{ typedef af::cdouble type ; };
-	template<> struct af_dtype2cpp<af::b8>{ typedef bool type ; };
-	template<> struct af_dtype2cpp<af::s32>{ typedef int type ; };
-	template<> struct af_dtype2cpp<af::u32>{ typedef unsigned int type ; };
+	template<af::dtype AF_DTYPE> struct dtype2cpp{};
+	template<> struct dtype2cpp<af::f32>{ typedef float type ; };
+	template<> struct dtype2cpp<af::c32>{ typedef af::cfloat type ; };
+	template<> struct dtype2cpp<af::f64>{ typedef double type ; };
+	template<> struct dtype2cpp<af::c64>{ typedef af::cdouble type ; };
+	template<> struct dtype2cpp<af::b8>{ typedef bool type ; };
+	template<> struct dtype2cpp<af::s32>{ typedef int type ; };
+	template<> struct dtype2cpp<af::u32>{ typedef unsigned int type ; };
 
 
 	template<af::dtype AF_DTYPE> 
-	class array_decorator{ //FIXME : wired to call this decorator?
+	class typed_array : public af::array{ 
 	public:
-		array_decorator(){}
-		array_decorator(af::array &src_data) : data(src_data) ;
-		operator af::array&(){
-			return data;
-		}
-
-	private:
-		af::array data;
+		typed_array() : af::array() {}
+		typed_array(const af::array &src_data) : af::array(src_data) {};
 	};
 }
 
@@ -50,7 +46,7 @@ namespace traits {
 
 
 	template<af::dtype AF_DTYPE> 
-	class Exporter<RcppFire::array_decorator<AF_DTYPE>>{
+	class Exporter<RcppFire::typed_array<AF_DTYPE>>{
 	private:
 		SEXP object ;
 
@@ -58,25 +54,29 @@ namespace traits {
 		Exporter( SEXP x ) : object(x){}
 		~Exporter(){}
 
-		RcppFire::array_decorator<AF_DTYPE> get() {
+		RcppFire::typed_array<AF_DTYPE> get() {
 			Shield<SEXP> dims( ::Rf_getAttrib( object, R_DimSymbol ) ) ;
 			af::array result;
 			if( Rf_isNull(dims) ){
 				result = af::array( ::Rf_length(object), AF_DTYPE ) ; 
 			}
 			else{
-				af::dim4 dims_( ::Rf_length(dims), INTEGER(dims) ) ; //FIXME : the second argument should be unsigned int*
+				int* idims = INTEGER(dims) ;
+				unsigned int udims[4] ;
+				std::copy( std::begin(idims), std::end(idims), std::begin(udims) ) ;
+				af::dim4 dims_( ::Rf_length(dims), udims ) ; 
 				result = af::array( dims_, AF_DTYPE ) ; 
 			}
 			::Rcpp::internal::export_indexing<
-				std::add_pointer<RcppFire::af_dtype2cpp<AF_DTYPE>::type>::type,
-				af_dtype2cpp<AF_DTYPE>::type
-				>( object, result.device<RcppFire::af_dtype2cpp<AF_DTYPE>::type>() ) ;
+				std::add_pointer<RcppFire::dtype2cpp<AF_DTYPE>::type>::type,
+				dtype2cpp<AF_DTYPE>::type
+				>( object, result.device<RcppFire::dtype2cpp<AF_DTYPE>::type>() ) ;
 			result.unlock() ;
 
-			return RcppFire::array_decorator<AF_DTYPE>( result );
+			return RcppFire::typed_array<AF_DTYPE>( result );
 		}
     }; 
+
 }
 
 #endif
