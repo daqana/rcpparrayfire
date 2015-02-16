@@ -27,38 +27,21 @@
 #include <Rconfig.h>
 #include <RcppFireConfig.h>
 
-#define AF_EXTRA_MAT_PROTO RcppFire/Mat_proto.h
-#define AF_EXTRA_MAT_MEAT  RcppFire/Mat_meat.h
-#define AF_EXTRA_COL_PROTO RcppFire/Col_proto.h
-#define AF_EXTRA_COL_MEAT  RcppFire/Col_meat.h
-#define AF_EXTRA_ROW_PROTO RcppFire/Row_proto.h
-#define AF_EXTRA_ROW_MEAT  RcppFire/Row_meat.h
-
-// using this define makes the R RNG have precedent over both the
-// C++11-based RNG provided by Armadillo, as well as the C++98-based
-// fallback.
-//
-// One can use the C++11-based on by commenting out the following
-// #define and also selecting C++11 (eg via src/Makevars* or the
-// DESCRIPTION file) and/or defining #define-ing ARMA_USE_CXX11_RNG
-#define AF_RNG_ALT         RcppFire/Alt_R_RNG.h
-
 #include <arrayfire.h>
 
 /* forward declarations */
+namespace RcppFire{
+	template<af::dtype AF_DTYPE> class array_decorator;
+}
+
 namespace Rcpp {
     /* support for wrap */
     SEXP wrap ( const af::array& ) ;
     
     namespace traits {
 	/* support for as */
-	class Exporter< af::array > ;
+	template<af::dtype AF_DTYPE> class Exporter<RcppFire::array_decorator<AF_DTYPE>>;
     } // namespace traits 
-
-    class ConstReferenceInputParameter;
-    class ReferenceInputParameter;
-    class ConstInputParameter;
-
 }
 
 #endif
