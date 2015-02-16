@@ -23,9 +23,6 @@ namespace RcppFire{
 			return data;
 		}
 
-		begin();
-		end();
-
 	private:
 		af::array data;
 	};
@@ -77,7 +74,7 @@ namespace traits {
 				>( object, result.device<RcppFire::af_dtype2cpp<AF_DTYPE>::type>() ) ;
 			result.unlock() ;
 
-			return RcppFire::array_decorator<AF_DTYPE>(result);
+			return RcppFire::array_decorator<AF_DTYPE>( result );
 		}
     }; 
 }
