@@ -19,7 +19,7 @@ namespace RcppFire{
 	public:
 		array_decorator(){}
 		array_decorator(af::array &src_data) : data(src_data) ;
-		operator af::array(){
+		operator af::array&(){
 			return data;
 		}
 
