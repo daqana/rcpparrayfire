@@ -7,13 +7,13 @@
 
 namespace RcppFire{
 	template<af::dtype AF_DTYPE> struct dtype2cpp{};
-	template<> struct dtype2cpp<af::f32>{ typedef float type ; };
-	template<> struct dtype2cpp<af::c32>{ typedef af::cfloat type ; };
-	template<> struct dtype2cpp<af::f64>{ typedef double type ; };
-	template<> struct dtype2cpp<af::c64>{ typedef af::cdouble type ; };
-	template<> struct dtype2cpp<af::b8>{ typedef bool type ; };
-	template<> struct dtype2cpp<af::s32>{ typedef int type ; };
-	template<> struct dtype2cpp<af::u32>{ typedef unsigned int type ; };
+	template<> struct dtype2cpp<f32>{ typedef float type ; };
+	template<> struct dtype2cpp<c32>{ typedef af::cfloat type ; };
+	template<> struct dtype2cpp<f64>{ typedef double type ; };
+	template<> struct dtype2cpp<c64>{ typedef af::cdouble type ; };
+	template<> struct dtype2cpp<b8>{ typedef bool type ; };
+	template<> struct dtype2cpp<s32>{ typedef int type ; };
+	template<> struct dtype2cpp<u32>{ typedef unsigned int type ; };
 
 
 	template<af::dtype AF_DTYPE> 

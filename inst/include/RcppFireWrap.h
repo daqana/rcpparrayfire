@@ -8,26 +8,26 @@ namespace Rcpp{
 		::Rcpp::RObject x;
 
 		switch(object.type()){
-			case af::f64:
+			case f64:
 				x = ::Rcpp::wrap( object.device<double>() , object.device<double>() + object.elements() ) ;
 				break;
-			case af::c64:
+			case c64:
 				x = ::Rcpp::wrap( 
 						reinterpret_cast<std::complex<double>>(object.device<af::cdouble>()),
 						reinterpret_cast<std::complex<double>>(object.device<af::cdouble>()) + object.elements() ) ;
 				break;
-			case af::f32:
+			case f32:
 				x = ::Rcpp::wrap( object.device<float>() , object.device<float>() + object.elements() ) ;
 				break;
-			case af::c32:
+			case c32:
 				x = ::Rcpp::wrap( 
 						reinterpret_cast<std::complex<float>>(object.device<af::cfloat>()),
 						reinterpret_cast<std::complex<float>>(object.device<af::cfloat>()) + object.elements() ) ;
 				break;
-			case af::s32:
+			case s32:
 				x = ::Rcpp::wrap( object.device<int>() , object.device<int>() + object.elements() ) ;
 				break;
-			case af::f32:
+			case f32:
 				x = ::Rcpp::wrap( object.device<unsigned int>() , object.device<unsigned int>() + object.elements() ) ;
 				break;
 				
