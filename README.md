@@ -4,6 +4,7 @@ R and Arrayfire via Rcpp
 
 ### Prerequisites
 
+- gcc (>= 4.8)
 - Arrayfire (with BUILD_CUDA=ON option)
 
 ### Instllation
