@@ -2,4 +2,7 @@ useDynLib(RcppFire)
 import(Rcpp)
 
 export(RcppFire.package.skeleton)
-export(arrayfire_device_prop,arrayfire_set_device,arrayfire_get_device,arrayfire_count_device,arrayfire_set_setseed_random)
+export(arrayfire_device_prop)
+export(arrayfire_set_device)
+export(arrayfire_get_device)
+export(arrayfire_count_device)
