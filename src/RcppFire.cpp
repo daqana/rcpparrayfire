@@ -31,7 +31,19 @@ Rcpp::List arrayfire_device_prop() {
 //' @seealso   
 // [[Rcpp::export]]
 void arrayfire_set_device( const int index ) {
-	af::deviceset( index );
+	try{
+		af::deviceset( index - 1 );
+	}
+	catch( af::exception &ex ){
+		Rcpp::Rcerr << "arrayfire exception" << std::endl;
+		Rcpp::Rcerr << ex << std::endl;
+	}
+	catch( std::exception &ex ){
+		forward_exception_to_r( ex ) ;
+	}
+	catch( ... ){
+		::Rf_error("c++ exception (unknown reason)");
+	}
 }
 
 //' Return the index of current device 
@@ -42,7 +54,8 @@ void arrayfire_set_device( const int index ) {
 //' @seealso   
 // [[Rcpp::export]]
 int arrayfire_get_device() {
-	return af::deviceget() ;
+	// increment by 1 since the index of device start from 0
+	return af::deviceget() + 1 ;
 }
 
 //' Return the number of available device 
@@ -56,7 +69,7 @@ int arrayfire_count_device() {
 	return af::devicecount() ;
 }
 
-// [[Rcpp::export]]
-void arrayfire_set_setseed_random( const unsigned int seed ) {
-	af::af_rand_setseed( seed ) ;
-}
+// af_rand_setseed is unavailable in the current version of arrayfire
+//void arrayfire_set_setseed_random( const unsigned int seed ) {
+//	af_rand_setseed( seed ) ;
+//}
