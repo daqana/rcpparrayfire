@@ -25,28 +25,31 @@ namespace RcppFire{
 }
 
 namespace Rcpp{
-namespace traits {
+namespace internal{
 	template<typename T> 
-	typename T af_complex_caster( Rcomplex from ){
+	T af_complex_caster( Rcomplex from ){
 		T af_complex;
 		af_complex.x = from.r;
 		af_complex.y = from.i;
 		return af_complex;
 	}
 
-	template <>
-	inline af::cdouble caster<Rcomplex, af::cdouble>( Rcomplex from ){
-		return af_complex_caster<af::cdouble>( from ) ;
-	}
+	//template <>
+	//inline af::cdouble caster<Rcomplex, af::cdouble>( Rcomplex from ){
+	//	return af_complex_caster<af::cdouble>( from ) ;
+	//}
 
-	template<>
-	inline af::cfloat  caster<Rcomplex, af::cfloat>( Rcomplex from ){
-		return af_complex_caster<af::cfloat>( from ) ;
-	}
+	//template<>
+	//inline af::cfloat  caster<Rcomplex, af::cfloat>( Rcomplex from ){
+	//	return af_complex_caster<af::cfloat>( from ) ;
+	//}
+}
+
+namespace traits {
 
 
 	template<af::dtype AF_DTYPE> 
-	class Exporter<RcppFire::typed_array<AF_DTYPE>>{
+	class Exporter<::RcppFire::typed_array<AF_DTYPE>>{
 	private:
 		SEXP object ;
 
@@ -54,29 +57,33 @@ namespace traits {
 		Exporter( SEXP x ) : object(x){}
 		~Exporter(){}
 
-		RcppFire::typed_array<AF_DTYPE> get() {
+		::RcppFire::typed_array<AF_DTYPE> get() {
+			typedef typename ::RcppFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
+			std::vector<cpp_type> buff( Rf_length( object ) );
+
+			::Rcpp::internal::export_indexing<
+				std::vector<cpp_type>,
+				cpp_type
+				>( object, buff ) ;
+
 			Shield<SEXP> dims( ::Rf_getAttrib( object, R_DimSymbol ) ) ;
 			af::array result;
 			if( Rf_isNull(dims) ){
-				result = af::array( ::Rf_length(object), AF_DTYPE ) ; 
+				result = af::array( ::Rf_length(object), buff.data() ) ; 
 			}
 			else{
 				int* idims = INTEGER(dims) ;
 				unsigned int udims[4] ;
-				std::copy( std::begin(idims), std::end(idims), std::begin(udims) ) ;
+				std::copy( idims, idims + ::Rf_length(dims), std::begin(udims) ) ;
 				af::dim4 dims_( ::Rf_length(dims), udims ) ; 
-				result = af::array( dims_, AF_DTYPE ) ; 
+				result = af::array( dims_, buff.data() ) ; 
 			}
-			::Rcpp::internal::export_indexing<
-				std::add_pointer<RcppFire::dtype2cpp<AF_DTYPE>::type>::type,
-				dtype2cpp<AF_DTYPE>::type
-				>( object, result.device<RcppFire::dtype2cpp<AF_DTYPE>::type>() ) ;
-			result.unlock() ;
 
-			return RcppFire::typed_array<AF_DTYPE>( result );
+			return ::RcppFire::typed_array<AF_DTYPE>( result );
 		}
     }; 
 
+}
 }
 
 #endif
