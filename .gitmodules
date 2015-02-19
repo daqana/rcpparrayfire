@@ -1,0 +1,3 @@
+[submodule "src/arrayfire"]
+	path = src/arrayfire
+	url = https://github.com/arrayfire/arrayfire.git
