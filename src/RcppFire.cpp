@@ -2,7 +2,7 @@
 
 
 //' Report the information about current device and platform
-//' 
+//' @export
 //' @details 
 //' @return  
 //' @note 
@@ -24,7 +24,7 @@ Rcpp::List arrayfire_device_prop() {
 }
 
 //' Switch to specified device 
-//' 
+//' @export 
 //' @details 
 //' @return  
 //' @note 
@@ -47,7 +47,7 @@ void arrayfire_set_device( const int index ) {
 }
 
 //' Return the index of current device 
-//' 
+//' @export 
 //' @details 
 //' @return  
 //' @note 
@@ -59,7 +59,7 @@ int arrayfire_get_device() {
 }
 
 //' Return the number of available device 
-//' 
+//' @export 
 //' @details 
 //' @return  
 //' @note 
