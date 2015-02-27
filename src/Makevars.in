@@ -1,3 +1,4 @@
 ## enviorment variables for building R package
 PKG_CXXFLAGS = -std=c++11 -I../inst/include @AF_INCLUDE@
-PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) @AF_LIBS@
+AF_LIBS = @AF_LIBS@ 
+PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) $(AF_LIBS)
