@@ -3321,11 +3321,11 @@ fi
 
 
 # check for arrayfire lib
-{ $as_echo "$as_me:$LINENO: checking for libafxxx.so" >&5
-$as_echo_n "checking for libafxxx.so... " >&6; }
 case "${with_build_type}" in
 	cpu|cuda|opencl)
-														LDFLAGS="${LDFLAGS} -laf${with_build_type}"
+        { $as_echo "$as_me:$LINENO: checking for libaf${with_build_type}.so" >&5
+$as_echo_n "checking for libaf${with_build_type}.so... " >&6; }
+		LDFLAGS="${LDFLAGS} -laf${with_build_type}"
 		cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF

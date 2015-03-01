@@ -100,15 +100,9 @@ AC_CHECK_HEADER([arrayfire.h],
 				])
 
 # check for arrayfire lib
-AC_MSG_CHECKING([for libafxxx.so])
 case "${with_build_type}" in
 	cpu|cuda|opencl)
-		dnl AC_SEARCH_LIBS([af::info], [af${with_build_type}],
-		dnl 			  [],
-		dnl 			  [
-		dnl 			   AC_MSG_ERROR([unable to find libaf${with_build_type}.so])
-		dnl 			   exit 1
-		dnl 			  ])
+        AC_MSG_CHECKING([for libaf${with_build_type}.so])
 		LDFLAGS="${LDFLAGS} -laf${with_build_type}"
 		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <arrayfire.h>
