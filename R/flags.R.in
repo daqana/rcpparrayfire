@@ -1,9 +1,11 @@
 RcppFireCxxFlags <- function(){
-	paste('-std=c++11 ', '-I"', system.file( "include", package = "RcppFire" ), '" ', '@AF_INCLUDE', sep = "" )
+	paste( '-std=c++11 ', '-I"', system.file( "include", package = "RcppFire" ), '" ', '@AF_INCLUDE@', sep = "" )
 }
 
 RcppFireLdFlags <- function(){
-	paste('@AF_LIBS@')
+    RcppFire.libs.dir <- system.file( "libs", package = "RcppFire")
+    flags <- paste( RcppFire.libs.dir, .Platform$file.sep, "RcppFire", .Platform$dynlib.ext , sep="" )
+	paste( '@AF_LIBS@ ', flags, ' -Wl,-rpath,', RcppFire.libs.dir, sep = "" )
 }
 
 CxxFlags <- function(){
