@@ -8,8 +8,8 @@ namespace RcppFire{
 	template<typename T> SEXP wrap_array( const af::array& object ){
 		T* host_ptr = object.host<T>() ;
 		::Rcpp::RObject x  = ::Rcpp::wrap( host_ptr, host_ptr + object.elements() ) ;
-		af::free(host_ptr) ;
-
+		delete[] host_ptr;
+		
 		return x ;
 	}
 
