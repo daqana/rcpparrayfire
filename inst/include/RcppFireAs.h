@@ -44,16 +44,16 @@ namespace RcppFire{
 				>( object, buff ) ;
 		}
 
-		STORAGE* data_dispatch(::Rcpp::traits::false_type){
+		const STORAGE* data_dispatch(::Rcpp::traits::false_type) const {
 			return start;
 		}
-		value_type* data_dispatch(::Rcpp::traits::true_type){
+		const value_type* data_dispatch(::Rcpp::traits::true_type) const {
 			return buff.data();
 		}
-		size_t size_dispatch(::Rcpp::traits::false_type){
+		size_t size_dispatch(::Rcpp::traits::false_type) const {
 			return ::Rf_length(this->t);
 		}
-		size_t size_dispatch(::Rcpp::traits::true_type){
+		size_t size_dispatch(::Rcpp::traits::true_type) const {
 			return buff.size();
 		}
 
@@ -75,7 +75,7 @@ namespace RcppFire{
 		}
 		~SEXP2CxxPtr(){}
 
-		value_type* data() const {
+		const value_type* data() const {
 			return data_dispatch(
 				typename ::Rcpp::traits::r_sexptype_needscast<value_type>()
 			);
