@@ -1,5 +1,5 @@
 RcppFireCxxFlags <- function(){
-	paste( '-std=c++11 ', '-I"', system.file( "include", package = "RcppFire" ), '" ', '@AF_INCLUDE@', sep = "" )
+	paste( '-I"', system.file( "include", package = "RcppFire" ), '" ', '@AF_INCLUDE@', sep = "" )
 }
 
 RcppFireLdFlags <- function(){

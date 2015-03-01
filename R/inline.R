@@ -6,5 +6,6 @@ inlineCxxPlugin <- function(...){
 		package = "RcppFire"
 	)
 	settings <- plugin()
+	settings$env$PKG_CXXFLAGS  <- RcppFireCxxFlags()
 	settings
 }
