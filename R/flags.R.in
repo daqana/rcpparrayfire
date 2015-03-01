@@ -1,0 +1,17 @@
+RcppFireCxxFlags <- function(){
+	paste( '-I"', system.file( "include", package = "RcppFire" ), '" ', '@AF_INCLUDE@', sep = "" )
+}
+
+RcppFireLdFlags <- function(){
+    RcppFire.libs.dir <- system.file( "libs", package = "RcppFire")
+    flags <- paste( RcppFire.libs.dir, .Platform$file.sep, "RcppFire", .Platform$dynlib.ext , sep="" )
+	paste( '@AF_LIBS@ ', flags, ' -Wl,-rpath,', RcppFire.libs.dir, sep = "" )
+}
+
+CxxFlags <- function(){
+	cat( RcppFireCxxFlags() )
+}
+
+LdFlags <- function(){
+	cat( RcppFireLdFlags() )
+}

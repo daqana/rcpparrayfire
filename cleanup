@@ -1,0 +1,7 @@
+#! /bin/sh
+
+rm -f config.log config.status \
+	src/*.o src/*.so \
+	R/flags.R src/Makevars
+
+rm -rf autom4te.cache/ 
