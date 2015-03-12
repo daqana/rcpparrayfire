@@ -44,10 +44,12 @@ RcppFire.package.skeleton <- function(name="anRpackage", list=character(),
     if (file.exists(DESCRIPTION)) {
         x <- cbind(read.dcf(DESCRIPTION), 
                    "Imports" = sprintf("Rcpp (>= %s)", packageDescription("Rcpp")[["Version"]]), 
-                   "LinkingTo" = "Rcpp, RcppFire")
+                   "LinkingTo" = "Rcpp, RcppFire",
+                   "SystemRequirements" = "C++11")
         write.dcf(x, file=DESCRIPTION)
         message(" >> added Imports: Rcpp")
         message(" >> added LinkingTo: Rcpp, RcppFire")
+        message(" >> added SystemRequirements: C++11")
     }
 	
     ## add a useDynLib to NAMESPACE, 
