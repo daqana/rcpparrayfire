@@ -9,7 +9,7 @@ R and Arrayfire via Rcpp
 - Arrayfire
 - gcc (>= 4.8)
 
-### Instllation
+### Installation
 ```R
 install.packages('devtools')
 library(devtools)
@@ -25,7 +25,7 @@ dev_mode(on = F)
 ```
 RcppFire, with its default configuration, uses 
 the CUDA version of Arrayfire. For using OpenCL or CPU version, 
-invoke `install_github` with _--with-buid-type_ argument.
+invoke `install_github` with _--with-build-type_ argument.
 ```R
 # using OpenCL version
 install_github(repo = 'kafku/RcppFire@develop',
