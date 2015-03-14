@@ -86,9 +86,9 @@ RcppFire.package.skeleton <- function(name="anRpackage", list=character(),
     }
 		
     if (example_code) {
-        file.copy(file.path(skeleton, "rcppaf_hello_world.cpp"), src)
+        file.copy(file.path(skeleton, "rcppfire_hello_world.cpp"), src)
         message(" >> added example src file using arrayfire classes")
-        file.copy(file.path(skeleton, "rcppaf_hello_world.Rd"), man)
+        file.copy(file.path(skeleton, "rcppfire_hello_world.Rd"), man)
         message(" >> added example Rd file for using arrayfire classes")
 
 	Rcpp::compileAttributes(root)
