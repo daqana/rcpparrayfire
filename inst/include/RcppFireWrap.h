@@ -54,7 +54,7 @@ namespace RcppFire{
 	}
 
 	template<typename T> SEXP wrap_array( const af::array& object ){
-		wrap_array_dispatch<T>(object, typename ::Rcpp::traits::r_sexptype_needscast<T>());
+		return wrap_array_dispatch<T>(object, typename ::Rcpp::traits::r_sexptype_needscast<T>());
 	}
 
 	SEXP af_wrap( const af::array& object ) ;
