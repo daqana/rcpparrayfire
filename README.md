@@ -1,15 +1,16 @@
-## RcppFire
+# RcppFire
+[![Stories in Ready](https://badge.waffle.io/kafku/RcppFire.svg?label=ready&title=Ready)](http://waffle.io/kafku/RcppFire)
 
 R and Arrayfire via Rcpp
 
-### Prerequisites
+## Prerequisites
 
 - R packages
  - Rcpp
 - Arrayfire
 - gcc (>= 4.8)
 
-### Installation
+## Installation
 ```R
 install.packages('devtools')
 library(devtools)
@@ -36,14 +37,14 @@ install_github(repo = 'kafku/RcppFire@develop',
                args = c("--configure-args='--with-build-type=cpu'"))
 ```
 
-### Status
+## Status
 
 Under development
 
-### Authors
+## Authors
 
 Kazuki Fukui
 
-### License
+## License
 
 GPL (>= 2)
