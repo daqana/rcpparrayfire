@@ -1,15 +1,18 @@
 Package: RcppArrayFire
 Type: Package
 Title: Rcpp integration for Arrayfire
-Version: 1.0
-Date: 2015-02-04
+Version: 0.0.0
+Date: 2017-11-10
 Author: Kazuki Fukui
-Maintainer: Kazuki Fukui <kazunoko93@gmail.com>
-Description: 
+Maintainer: Ralf Stubner <ralf.stubner@r-institute.com>
+Description: RcppArrayFire is not affiliated with or endorsed by
+ArrayFire. The ArrayFire literal mark is used under a limited license
+granted by ArrayFire the trademark holder in the United States and other
+countries.
 License: GPL (>= 2)
 Depends: R (>= 3.1.0)
 Imports: Rcpp (>= 0.11.4)
 LinkingTo: Rcpp
 SystemRequirements: C++11
-URL: https://github.com/kafku/RcppArrayFire
-BugReports: https://github.com/kafku/RcppArrayFire/issues
+URL: https://github.com/RInstitute/rcpparrayfire
+BugReports: https://github.com/RInstitute/rcpparrayfire/issues
