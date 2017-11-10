@@ -1,27 +1,27 @@
 // -*- mode: C++ -*-
 //
-// RcppFireWrap.cpp: Rcpp/ArrayFire glue, support for wrap
+// RcppArrayFireWrap.cpp: Rcpp/ArrayFire glue, support for wrap
 //
 // Copyright (C) 2015 Kazuki Fukui
 //
-// This file is part of RcppFire.
+// This file is part of RcppArrayFire.
 //
-// RcppFire is free software: you can redistribute it and/or modify it
+// RcppArrayFire is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 2 of the License, or
 // (at your option) any later version.
 //
-// RcppFire is distributed in the hope that it will be useful, but
+// RcppArrayFire is distributed in the hope that it will be useful, but
 // WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with RcppFire.  If not, see <http://www.gnu.org/licenses/>.
+// along with RcppArrayFire.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <RcppFireWrap.h>
+#include <RcppArrayFireWrap.h>
 
-namespace RcppFire{
+namespace RcppArrayFire{
 	SEXP af_wrap( const af::array& object ){
 		::Rcpp::RObject x;
 
@@ -73,13 +73,13 @@ namespace RcppFire{
 		//}
 		return x; 
 	}
-} /* namespace RcppFire */
+} /* namespace RcppArrayFire */
 
 namespace Rcpp{
     /* wrap */
 
     SEXP wrap ( const af::array& data ){
-		::Rcpp::RObject x = ::RcppFire::af_wrap( data ) ;
+		::Rcpp::RObject x = ::RcppArrayFire::af_wrap( data ) ;
 		switch(data.numdims())
 		{
 		case 3:

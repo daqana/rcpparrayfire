@@ -1,35 +1,35 @@
 // -*- mode: C++ -*-
 //
-// RcppFireForward.h: Rcpp/ArrayFire glue
+// RcppArrayFireForward.h: Rcpp/ArrayFire glue
 //
 // Copyright (C) 2015 Kazuki Fukui
 //
-// This file is part of RcppFire.
+// This file is part of RcppArrayFire.
 //
-// RcppFire is free software: you can redistribute it and/or modify it
+// RcppArrayFire is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 2 of the License, or
 // (at your option) any later version.
 //
-// RcppFire is distributed in the hope that it will be useful, but
+// RcppArrayFire is distributed in the hope that it will be useful, but
 // WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with RcppFire.  If not, see <http://www.gnu.org/licenses/>.
+// along with RcppArrayFire.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RcppFire__RcppFireForward__h
-#define RcppFire__RcppFireForward__h
+#ifndef RcppArrayFire__RcppArrayFireForward__h
+#define RcppArrayFire__RcppArrayFireForward__h
 
 #include <RcppCommon.h>
 #include <Rconfig.h>
-//#include <RcppFireConfig.h>
+//#include <RcppArrayFireConfig.h>
 
 #include <arrayfire.h>
 
 /* forward declarations */
-namespace RcppFire{
+namespace RcppArrayFire{
 	template<af::dtype AF_DTYPE> class typed_array;
 }
 
@@ -39,7 +39,7 @@ namespace Rcpp {
     
     namespace traits {
 	/* support for as */
-	template<af::dtype AF_DTYPE> class Exporter<RcppFire::typed_array<AF_DTYPE>>;
+	template<af::dtype AF_DTYPE> class Exporter<RcppArrayFire::typed_array<AF_DTYPE>>;
     }  
 }
 

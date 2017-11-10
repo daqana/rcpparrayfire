@@ -9,7 +9,7 @@
 #' @export
 #' @references \url{http://www.arrayfire.com/docs/group__device__mat.htm#gafae79277ec9ce681976c48392985baf0}  
 arrayfire_device_prop <- function() {
-    .Call('RcppFire_arrayfire_device_prop', PACKAGE = 'RcppFire')
+    .Call('RcppArrayFire_arrayfire_device_prop', PACKAGE = 'RcppArrayFire')
 }
 
 #' Switch to specified device 
@@ -19,7 +19,7 @@ arrayfire_device_prop <- function() {
 #' @export 
 #' @references \url{http://www.arrayfire.com/docs/group__device__mat.htm#ga6473f398cab654fc0bef97833a5bea5f}  
 arrayfire_set_device <- function(index) {
-    invisible(.Call('RcppFire_arrayfire_set_device', PACKAGE = 'RcppFire', index))
+    invisible(.Call('RcppArrayFire_arrayfire_set_device', PACKAGE = 'RcppArrayFire', index))
 }
 
 #' Return the index of current device 
@@ -29,7 +29,7 @@ arrayfire_set_device <- function(index) {
 #' @export 
 #' @references \url{http://www.arrayfire.com/docs/group__device__mat.htm#ga6d1964af8b32ca9c2f9525bf5ef8112a}
 arrayfire_get_device <- function() {
-    .Call('RcppFire_arrayfire_get_device', PACKAGE = 'RcppFire')
+    .Call('RcppArrayFire_arrayfire_get_device', PACKAGE = 'RcppArrayFire')
 }
 
 #' Return the number of available devices
@@ -38,6 +38,6 @@ arrayfire_get_device <- function() {
 #' @export 
 #' @references \url{http://www.arrayfire.com/docs/group__device__mat.htm#ga6d1964af8b32ca9c2f9525bf5ef8112a}
 arrayfire_count_device <- function() {
-    .Call('RcppFire_arrayfire_count_device', PACKAGE = 'RcppFire')
+    .Call('RcppArrayFire_arrayfire_count_device', PACKAGE = 'RcppArrayFire')
 }
 

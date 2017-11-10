@@ -1,4 +1,4 @@
-Package: RcppFire
+Package: RcppArrayFire
 Type: Package
 Title: Rcpp integration for Arrayfire
 Version: 1.0
@@ -11,5 +11,5 @@ Depends: R (>= 3.1.0)
 Imports: Rcpp (>= 0.11.4)
 LinkingTo: Rcpp
 SystemRequirements: C++11
-URL: https://github.com/kafku/RcppFire
-BugReports: https://github.com/kafku/RcppFire/issues
+URL: https://github.com/kafku/RcppArrayFire
+BugReports: https://github.com/kafku/RcppArrayFire/issues

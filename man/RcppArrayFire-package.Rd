@@ -1,6 +1,6 @@
-\name{RcppFire-package}
-\alias{RcppFire-package}
-\alias{RcppFire}
+\name{RcppArrayFire-package}
+\alias{RcppArrayFire-package}
+\alias{RcppArrayFire}
 \docType{package}
 \title{
 What the package does (short line)
@@ -11,7 +11,7 @@ More about what it does (maybe more than one line)
 }
 \details{
 \tabular{ll}{
-Package: \tab RcppFire\cr
+Package: \tab RcppArrayFire\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
 Date: \tab 2015-02-04\cr

@@ -1,32 +1,32 @@
 // -*- mode: C++ -*-
 //
-// RcppFireAs.h: Rcpp/ArrayFire glue, support for as
+// RcppArrayFireAs.h: Rcpp/ArrayFire glue, support for as
 //
 // Copyright (C) 2015 Kazuki Fukui
 //
-// This file is part of RcppFire.
+// This file is part of RcppArrayFire.
 //
-// RcppFire is free software: you can redistribute it and/or modify it
+// RcppArrayFire is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 2 of the License, or
 // (at your option) any later version.
 //
-// RcppFire is distributed in the hope that it will be useful, but
+// RcppArrayFire is distributed in the hope that it will be useful, but
 // WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with RcppFire.  If not, see <http://www.gnu.org/licenses/>.
+// along with RcppArrayFire.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RcppFire__RcppFireAs__h
-#define RcppFire__RcppFireAs__h
+#ifndef RcppArrayFire__RcppArrayFireAs__h
+#define RcppArrayFire__RcppArrayFireAs__h
 
 #include <algorithm>
 #include <iterator>
 #include <type_traits>
 
-namespace RcppFire{
+namespace RcppArrayFire{
 	template<af::dtype AF_DTYPE> struct dtype2cpp{};
 	template<> struct dtype2cpp<f32>{ typedef float type ; };
 	template<> struct dtype2cpp<c32>{ typedef af::cfloat type ; };
@@ -135,7 +135,7 @@ namespace internal{
 namespace traits {
 
 	template<af::dtype AF_DTYPE> 
-	class Exporter<::RcppFire::typed_array<AF_DTYPE>>{
+	class Exporter<::RcppArrayFire::typed_array<AF_DTYPE>>{
 	private:
 		SEXP object ;
 
@@ -143,8 +143,8 @@ namespace traits {
 		Exporter( SEXP x ) : object(x){}
 		~Exporter(){}
 
-		::RcppFire::typed_array<AF_DTYPE> get() {
-			typedef typename ::RcppFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
+		::RcppArrayFire::typed_array<AF_DTYPE> get() {
+			typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
 			//std::vector<cpp_type> buff( Rf_length( object ) );
 
 			// copying to buff is not efficient
@@ -152,7 +152,7 @@ namespace traits {
 			//	std::vector<cpp_type>,
 			//	cpp_type
 			//	>( object, buff ) ;
-			::RcppFire::SEXP2CxxPtr<cpp_type> buff( object ) ;
+			::RcppArrayFire::SEXP2CxxPtr<cpp_type> buff( object ) ;
 
 			Shield<SEXP> dims( ::Rf_getAttrib( object, R_DimSymbol ) ) ;
 			af::array result;
@@ -165,7 +165,7 @@ namespace traits {
 				result = af::array( dims_, buff.data() ) ; 
 			}
 
-			return ::RcppFire::typed_array<AF_DTYPE>( result );
+			return ::RcppArrayFire::typed_array<AF_DTYPE>( result );
 		}
     }; 
 

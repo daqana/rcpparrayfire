@@ -1,33 +1,33 @@
 // -*- mode: C++ -*-
 //
-// RcppFireWrap.h: Rcpp/ArrayFire glue, support for wrap
+// RcppArrayFireWrap.h: Rcpp/ArrayFire glue, support for wrap
 //
 // Copyright (C) 2015 Kazuki Fukui
 //
-// This file is part of RcppFire.
+// This file is part of RcppArrayFire.
 //
-// RcppFire is free software: you can redistribute it and/or modify it
+// RcppArrayFire is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 2 of the License, or
 // (at your option) any later version.
 //
-// RcppFire is distributed in the hope that it will be useful, but
+// RcppArrayFire is distributed in the hope that it will be useful, but
 // WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with RcppFire.  If not, see <http://www.gnu.org/licenses/>.
+// along with RcppArrayFire.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RcppFire__RcppFireWrap__h
-#define RcppFire__RcppFireWrap__h
+#ifndef RcppArrayFire__RcppArrayFireWrap__h
+#define RcppArrayFire__RcppArrayFireWrap__h
 
 #include <iostream>
 #include <memory>
 #include <Rcpp.h>
 #include <arrayfire.h>
 
-namespace RcppFire{
+namespace RcppArrayFire{
 	// see Rcpp/inst/include/internal/wrap.h for details
 	template<typename T> SEXP wrap_array_dispatch(const af::array& object, ::Rcpp::traits::true_type){
 		// NOTE: object.host<T>() might cause memory leak, when af_get_data_ptr throws an exception.
@@ -79,7 +79,7 @@ namespace RcppFire{
 	}
 
 	SEXP af_wrap( const af::array& object ) ;
-} /* namespace RcppFire */
+} /* namespace RcppArrayFire */
 
 namespace Rcpp{
     /* wrap */

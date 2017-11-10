@@ -1,21 +1,21 @@
 ## Copyright (C) 2015 Kazuki Fukui
 ##
-## This file is part of RcppFire.
+## This file is part of RcppArrayFire.
 ##
-## RcppFire is free software: you can redistribute it and/or modify it
+## RcppArrayFire is free software: you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
 ## the Free Software Foundation, either version 2 of the License, or
 ## (at your option) any later version.
 ##
-## RcppFire is distributed in the hope that it will be useful, but
+## RcppArrayFire is distributed in the hope that it will be useful, but
 ## WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ## GNU General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with RcppFire.  If not, see <http://www.gnu.org/licenses/>.
+## along with RcppArrayFire.  If not, see <http://www.gnu.org/licenses/>.
 
-RcppFire.package.skeleton <- function(name="anRpackage", list=character(),
+RcppArrayFire.package.skeleton <- function(name="anRpackage", list=character(),
                                            environment=.GlobalEnv,
                                            path=".", force=FALSE, 
                                            code_files=character(), 
@@ -51,7 +51,7 @@ RcppFire.package.skeleton <- function(name="anRpackage", list=character(),
                  stop(paste("error while calling `", skelFunUsed, "`", sep=""))
              })
 	
-    message("\nAdding RcppFire settings")
+    message("\nAdding RcppArrayFire settings")
 	
     ## now pick things up 
     root <- file.path(path, name)
@@ -61,10 +61,10 @@ RcppFire.package.skeleton <- function(name="anRpackage", list=character(),
     if (file.exists(DESCRIPTION)) {
         x <- cbind(read.dcf(DESCRIPTION), 
                    "Imports" = sprintf("Rcpp (>= %s)", packageDescription("Rcpp")[["Version"]]), 
-                   "LinkingTo" = "Rcpp, RcppFire")
+                   "LinkingTo" = "Rcpp, RcppArrayFire")
         write.dcf(x, file=DESCRIPTION)
         message(" >> added Imports: Rcpp")
-        message(" >> added LinkingTo: Rcpp, RcppFire")
+        message(" >> added LinkingTo: Rcpp, RcppArrayFire")
     }
 	
     ## add a useDynLib to NAMESPACE, 
@@ -87,7 +87,7 @@ RcppFire.package.skeleton <- function(name="anRpackage", list=character(),
     if (!file.exists(man)) {
         dir.create(man)
     }
-    skeleton <- system.file("skeleton", package="RcppFire")
+    skeleton <- system.file("skeleton", package="RcppArrayFire")
     Makevars <- file.path(src, "Makevars")
     if (!file.exists(Makevars)) {
         file.copy(file.path(skeleton, "Makevars"), Makevars)
@@ -97,7 +97,7 @@ RcppFire.package.skeleton <- function(name="anRpackage", list=character(),
     Makevars.win <- file.path(src, "Makevars.win")
     if (! file.exists( Makevars.win)) {
         file.copy(file.path(skeleton, "Makevars.win"), Makevars.win)
-        message(" >> added Makevars.win file with RcppFire settings")
+        message(" >> added Makevars.win file with RcppArrayFire settings")
     }
 		
     if (example_code) {
