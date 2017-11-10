@@ -3,7 +3,7 @@ Type: Package
 Title: Rcpp integration for Arrayfire
 Version: 0.0.0
 Date: 2017-11-10
-Author: Kazuki Fukui
+Author: Kazuki Fukui and Ralf Stubner
 Maintainer: Ralf Stubner <ralf.stubner@r-institute.com>
 Description: RcppArrayFire is not affiliated with or endorsed by
  ArrayFire. The ArrayFire literal mark is used under a limited license

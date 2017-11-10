@@ -1,5 +1,6 @@
 #                                               -*- Autoconf -*-
 # Copyright (C) 2015 Kazuki Fukui
+# Copyright (C) 2017 Ralf Stubner
 #
 # This file is part of RcppArrayFire.
 #
@@ -17,8 +18,8 @@
 # along with RcppArrayFire.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Process this file with autoconf to produce a configure script.
-AC_PREREQ([2.63])
-AC_INIT([rcppfire], [0.0.1])
+AC_PREREQ([2.69])
+AC_INIT([rcpparrayfire], [0.0.0])
 
 : ${R_HOME=`R RHOME`}
 if test -z "${R_HOME}" ; then
@@ -93,13 +94,6 @@ AC_ARG_WITH([arrayfire],
 			[],
 			[with_arrayfire="/usr/local"])
 
-# set build type
-AC_ARG_WITH([build-type], 
-			AC_HELP_STRING([--with-build-type], 
-						   [set one of cpu, cuda, or opencl (default=cuda)]),
-			[],
-			[with_build_type=cuda])
-
 if test -e ${with_arrayfire} ; then
 	CXXFLAGS="${CXXFLAGS} -I${with_arrayfire}/include"
 	LDFLAGS="${LDFLAGS} -L${with_arrayfire}/lib"
@@ -116,30 +110,20 @@ AC_CHECK_HEADER([arrayfire.h],
 				 exit 1
 				])
 
-# check for arrayfire lib
-case "${with_build_type}" in
-	cpu|cuda|opencl)
-        AC_MSG_CHECKING([for libaf${with_build_type}.so])
-		LDFLAGS="${LDFLAGS} -laf${with_build_type}"
+AC_MSG_CHECKING([for libaf.so])
+		LDFLAGS="${LDFLAGS} -laf$"
 		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <arrayfire.h>
 const int ndev = af::devicecount();]])],
-						   [AC_MSG_RESULT(yes)],
-						   [
-							AC_MSG_RESULT(no)
-						    AC_MSG_ERROR([unable to find libaf${with_build_type}.so])
-						    exit 1
-						   ])
-		;;
-	*)
-		AC_MSG_ERROR([build type must be one of cpu, cuda, or opencl])
-		exit 1
-		;;
-esac
-
+				[AC_MSG_RESULT(yes)],
+				[
+				 AC_MSG_RESULT(no)
+				 AC_MSG_ERROR([unable to find libaf.so])
+				 exit 1
+				])
 
 AC_SUBST([AF_INCLUDE], ["-I${with_arrayfire}/include"])
-AC_SUBST([AF_LIBS], ["-L${with_arrayfire}/lib -laf${with_build_type}"])
+AC_SUBST([AF_LIBS], ["-L${with_arrayfire}/lib -laf"])
 
 AC_CONFIG_FILES([src/Makevars R/flags.R])
 AC_OUTPUT

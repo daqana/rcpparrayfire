@@ -13,28 +13,17 @@ R and ArrayFire via Rcpp
 ```R
 install.packages('devtools')
 library(devtools)
-install_github(repo = 'RInstitute/RcppArrayFire@develop')
+install_github(repo = 'RInstitute/RcppArrayFire')
 ```
 If you want to try RcppArrayFire with keeping your
 local enviornment clean, then
 ```R
 dev_mode(on = T)
-install_github(repo = 'RInstitute/RcppArrayFire@develop')
+install_github(repo = 'RInstitute/RcppArrayFire')
 # do something with RcppArrayFire
 dev_mode(on = F)
 ```
-RcppArrayFire, with its default configuration, uses 
-the CUDA version of Arrayfire. For using OpenCL or CPU version, 
-invoke `install_github` with _--with-build-type_ argument.
-```R
-# using OpenCL version
-install_github(repo = 'RInstitute/RcppArrayFire@develop',
-               args = c("--configure-args='--with-build-type=opencl'"))
-
-# using CPU version
-install_github(repo = 'RInstitute/RcppArrayFire@develop',
-               args = c("--configure-args='--with-build-type=cpu'"))
-```
+RcppArrayFire uses the unified backend of ArrayFire.
 
 ## Trademark notice
 
@@ -49,6 +38,8 @@ Under development
 ## Authors
 
 Kazuki Fukui
+
+Ralf Stubner
 
 ## License
 
