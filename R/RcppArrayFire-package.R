@@ -1,4 +1,4 @@
-##' Rcpp integration for Arrayfire
+##' Rcpp integration for ArrayFire
 ##'
 ##' The RcppArrayFire package provides Rcpp integration for ArrayFire.
 ##'

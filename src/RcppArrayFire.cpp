@@ -24,10 +24,10 @@
 
 
 //' Report the information about current device and platform
-//' @details Return a list contains the informations about current device and platform.
-//' The list object include device name, palatform information, toolkit information, 
+//' @details Return a list containing the information about current device and platform.
+//' The list object includes device name, palatform information, toolkit information,
 //' and compute capability.
-//' @return List contains the information about device and platform.
+//' @return List containing the information about device and platform.
 //' @export
 //' @references \url{http://arrayfire.org/docs/group__device__func__prop.htm#gaa9eab56ddac21650581682912ea78293}
 // [[Rcpp::export]]
@@ -46,11 +46,11 @@ Rcpp::List arrayfire_device_info() {
 			Rcpp::Named("compute") = std::string(compute) ) ;
 }
 
-//' Switch to specified device 
+//' Switch to specified device
 //' @param index the index of a device switched to.
 //' @details Available indices
 //' can be obtained by calling \code{\link{arrayfire_count_device}}.
-//' @export 
+//' @export
 //' @references \url{http://arrayfire.org/docs/group__device__func__set.htm#gafbb906ca5b89ec43fdb0e3a14d1df1e7}
 // [[Rcpp::export]]
 void arrayfire_set_device( const int index ) {
@@ -69,11 +69,11 @@ void arrayfire_set_device( const int index ) {
 	}
 }
 
-//' Return the index of current device 
+//' Return the index of current device
 //' @details Get the index of current device which is lower or
 //' equal to a value returned by \code{\link{arrayfire_count_device}}.
 //' @return the index of current device.
-//' @export 
+//' @export
 //' @references \url{http://arrayfire.org/docs/group__device__func__get.htm#ga4dfe3f90475b735384f8b28cf2b19a11}
 // [[Rcpp::export]]
 int arrayfire_get_device() {
@@ -83,8 +83,8 @@ int arrayfire_get_device() {
 
 //' Return the number of available devices
 //' @details Return the number of available devices.
-//' @return the number of available devices. 
-//' @export 
+//' @return the number of available devices.
+//' @export
 //' @references \url{http://arrayfire.org/docs/group__device__func__count.htm#gac3c8750da69ee883fd14c0a8290e45f1}
 // [[Rcpp::export]]
 int arrayfire_count_device() {

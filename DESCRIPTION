@@ -1,6 +1,6 @@
 Package: RcppArrayFire
 Type: Package
-Title: Rcpp integration for Arrayfire
+Title: Rcpp integration for ArrayFire
 Version: 0.0.0
 Date: 2017-11-10
 Author: Kazuki Fukui and Ralf Stubner
