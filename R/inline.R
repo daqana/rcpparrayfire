@@ -16,13 +16,13 @@
 ## along with RcppArrayFire.  If not, see <http://www.gnu.org/licenses/>.
 
 inlineCxxPlugin <- function(...){
-	plugin <- Rcpp::Rcpp.plugin.maker(
-		include.before = "#include <RcppArrayFire.h>",
-		libs = sprintf("%s $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)", RcppArrayFireLdFlags()),
-		LinkingTo = c("Rcpp"),
-		package = "RcppArrayFire"
-	)
-	settings <- plugin()
-	settings$env$PKG_CXXFLAGS  <- RcppArrayFireCxxFlags()
-	settings
+    plugin <- Rcpp::Rcpp.plugin.maker(
+        include.before = "#include <RcppArrayFire.h>",
+        libs = sprintf("%s $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)", RcppArrayFireLdFlags()),
+        LinkingTo = c("Rcpp"),
+        package = "RcppArrayFire"
+    )
+    settings <- plugin()
+    settings$env$PKG_CXXFLAGS  <- RcppArrayFireCxxFlags()
+    settings
 }

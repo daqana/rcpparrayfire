@@ -30,17 +30,17 @@
 
 /* forward declarations */
 namespace RcppArrayFire{
-	template<af::dtype AF_DTYPE> class typed_array;
+    template<af::dtype AF_DTYPE> class typed_array;
 }
 
 namespace Rcpp {
     /* support for wrap */
     SEXP wrap ( const af::array& ) ;
-    
+
     namespace traits {
-	/* support for as */
-	template<af::dtype AF_DTYPE> class Exporter<RcppArrayFire::typed_array<AF_DTYPE>>;
-    }  
+    /* support for as */
+    template<af::dtype AF_DTYPE> class Exporter<RcppArrayFire::typed_array<AF_DTYPE>>;
+    }
 }
 
 #endif

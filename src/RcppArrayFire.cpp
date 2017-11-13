@@ -32,18 +32,18 @@
 //' @references \url{http://arrayfire.org/docs/group__device__func__prop.htm#gaa9eab56ddac21650581682912ea78293}
 // [[Rcpp::export]]
 Rcpp::List arrayfire_device_info() {
-	char name[64],
-		 platform[64],
-		 toolkit[64],
-		 compute[64];
+    char name[64],
+        platform[64],
+        toolkit[64],
+        compute[64];
 
-	af::deviceInfo( name, platform, toolkit, compute ) ;
+    af::deviceInfo( name, platform, toolkit, compute ) ;
 
-	return Rcpp::List::create(
-			Rcpp::Named("name") = std::string(name),
-			Rcpp::Named("platform") = std::string(platform),
-			Rcpp::Named("toolkit") = std::string(toolkit),
-			Rcpp::Named("compute") = std::string(compute) ) ;
+    return Rcpp::List::create(
+                              Rcpp::Named("name") = std::string(name),
+                              Rcpp::Named("platform") = std::string(platform),
+                              Rcpp::Named("toolkit") = std::string(toolkit),
+                              Rcpp::Named("compute") = std::string(compute) ) ;
 }
 
 //' Switch to specified device
@@ -54,19 +54,19 @@ Rcpp::List arrayfire_device_info() {
 //' @references \url{http://arrayfire.org/docs/group__device__func__set.htm#gafbb906ca5b89ec43fdb0e3a14d1df1e7}
 // [[Rcpp::export]]
 void arrayfire_set_device( const int index ) {
-	try{
-		af::setDevice( index - 1 );
-	}
-	catch( af::exception &ex ){
-		Rcpp::Rcerr << "arrayfire exception" << std::endl;
-		Rcpp::Rcerr << ex << std::endl;
-	}
-	catch( std::exception &ex ){
-		forward_exception_to_r( ex ) ;
-	}
-	catch( ... ){
-		::Rf_error("c++ exception (unknown reason)");
-	}
+    try{
+        af::setDevice( index - 1 );
+    }
+    catch( af::exception &ex ){
+        Rcpp::Rcerr << "arrayfire exception" << std::endl;
+        Rcpp::Rcerr << ex << std::endl;
+    }
+    catch( std::exception &ex ){
+        forward_exception_to_r( ex ) ;
+    }
+    catch( ... ){
+        ::Rf_error("c++ exception (unknown reason)");
+    }
 }
 
 //' Return the index of current device
@@ -77,8 +77,8 @@ void arrayfire_set_device( const int index ) {
 //' @references \url{http://arrayfire.org/docs/group__device__func__get.htm#ga4dfe3f90475b735384f8b28cf2b19a11}
 // [[Rcpp::export]]
 int arrayfire_get_device() {
-	// increment by 1 since the index of device start from 0
-	return af::getDevice() + 1 ;
+    // increment by 1 since the index of device start from 0
+    return af::getDevice() + 1 ;
 }
 
 //' Return the number of available devices
@@ -88,7 +88,7 @@ int arrayfire_get_device() {
 //' @references \url{http://arrayfire.org/docs/group__device__func__count.htm#gac3c8750da69ee883fd14c0a8290e45f1}
 // [[Rcpp::export]]
 int arrayfire_count_device() {
-	return af::getDeviceCount() ;
+    return af::getDeviceCount() ;
 }
 
 //' Display ArrayFire and device info
