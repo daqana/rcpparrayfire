@@ -41,3 +41,12 @@ arrayfire_count_device <- function() {
     .Call(`_RcppArrayFire_arrayfire_count_device`)
 }
 
+#' Display ArrayFire and device info
+#' @param verbose  Flag to return verbose info
+#' @details Display ArrayFire and device info.
+#' @export
+#' @references \url{http://arrayfire.org/docs/group__device__func__info.htm#ga1360e706b046b1c5b299bd6e689a0276} and \url{http://arrayfire.org/docs/group__device__func__info__string.htm#ga73ee21947f018445ea720036c1edfb69}
+arrayfire_info <- function(verbose = FALSE) {
+    invisible(.Call(`_RcppArrayFire_arrayfire_info`, verbose))
+}
+

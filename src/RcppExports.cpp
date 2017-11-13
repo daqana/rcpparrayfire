@@ -46,12 +46,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// arrayfire_info
+void arrayfire_info(const bool verbose);
+RcppExport SEXP _RcppArrayFire_arrayfire_info(SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
+    arrayfire_info(verbose);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_RcppArrayFire_arrayfire_device_info", (DL_FUNC) &_RcppArrayFire_arrayfire_device_info, 0},
     {"_RcppArrayFire_arrayfire_set_device", (DL_FUNC) &_RcppArrayFire_arrayfire_set_device, 1},
     {"_RcppArrayFire_arrayfire_get_device", (DL_FUNC) &_RcppArrayFire_arrayfire_get_device, 0},
     {"_RcppArrayFire_arrayfire_count_device", (DL_FUNC) &_RcppArrayFire_arrayfire_count_device, 0},
+    {"_RcppArrayFire_arrayfire_info", (DL_FUNC) &_RcppArrayFire_arrayfire_info, 1},
     {NULL, NULL, 0}
 };
 

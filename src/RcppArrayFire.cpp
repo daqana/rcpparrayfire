@@ -91,6 +91,16 @@ int arrayfire_count_device() {
 	return af::getDeviceCount() ;
 }
 
+//' Display ArrayFire and device info
+//' @param verbose  Flag to return verbose info
+//' @details Display ArrayFire and device info.
+//' @export
+//' @references \url{http://arrayfire.org/docs/group__device__func__info.htm#ga1360e706b046b1c5b299bd6e689a0276} and \url{http://arrayfire.org/docs/group__device__func__info__string.htm#ga73ee21947f018445ea720036c1edfb69}
+// [[Rcpp::export]]
+void arrayfire_info(const bool verbose = false) {
+    Rcpp::Rcout << af::infoString(verbose) << std::endl;
+}
+
 // af_rand_setseed is unavailable in the current version of arrayfire
 //void arrayfire_set_setseed_random( const unsigned int seed ) {
 //	af_rand_setseed( seed ) ;

@@ -3,6 +3,7 @@
 export(arrayfire_count_device)
 export(arrayfire_device_info)
 export(arrayfire_get_device)
+export(arrayfire_info)
 export(arrayfire_set_device)
 importFrom(Rcpp,evalCpp)
 useDynLib(RcppArrayFire, .registration = TRUE)
