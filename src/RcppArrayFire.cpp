@@ -3,6 +3,7 @@
 // RcppArrayFire.cpp: Rcpp/ArrayFire glue
 //
 // Copyright (C) 2015 Kazuki Fukui
+// Copyright (C) 2017 Ralf Stubner (R Institute GmbH)
 //
 // This file is part of RcppArrayFire.
 //
@@ -28,15 +29,15 @@
 //' and compute capability.
 //' @return List contains the information about device and platform.
 //' @export
-//' @references \url{http://www.arrayfire.com/docs/group__device__mat.htm#gafae79277ec9ce681976c48392985baf0}  
+//' @references \url{http://arrayfire.org/docs/group__device__func__prop.htm#gaa9eab56ddac21650581682912ea78293}
 // [[Rcpp::export]]
-Rcpp::List arrayfire_device_prop() {
+Rcpp::List arrayfire_device_info() {
 	char name[64],
 		 platform[64],
 		 toolkit[64],
 		 compute[64];
 
-	af::deviceprop( name, platform, toolkit, compute ) ;
+	af::deviceInfo( name, platform, toolkit, compute ) ;
 
 	return Rcpp::List::create(
 			Rcpp::Named("name") = std::string(name),
@@ -50,11 +51,11 @@ Rcpp::List arrayfire_device_prop() {
 //' @details Available indices
 //' can be obtained by calling \code{\link{arrayfire_count_device}}.
 //' @export 
-//' @references \url{http://www.arrayfire.com/docs/group__device__mat.htm#ga6473f398cab654fc0bef97833a5bea5f}  
+//' @references \url{http://arrayfire.org/docs/group__device__func__set.htm#gafbb906ca5b89ec43fdb0e3a14d1df1e7}
 // [[Rcpp::export]]
 void arrayfire_set_device( const int index ) {
 	try{
-		af::deviceset( index - 1 );
+		af::setDevice( index - 1 );
 	}
 	catch( af::exception &ex ){
 		Rcpp::Rcerr << "arrayfire exception" << std::endl;
@@ -73,21 +74,21 @@ void arrayfire_set_device( const int index ) {
 //' equal to a value returned by \code{\link{arrayfire_count_device}}.
 //' @return the index of current device.
 //' @export 
-//' @references \url{http://www.arrayfire.com/docs/group__device__mat.htm#ga6d1964af8b32ca9c2f9525bf5ef8112a}
+//' @references \url{http://arrayfire.org/docs/group__device__func__get.htm#ga4dfe3f90475b735384f8b28cf2b19a11}
 // [[Rcpp::export]]
 int arrayfire_get_device() {
 	// increment by 1 since the index of device start from 0
-	return af::deviceget() + 1 ;
+	return af::getDevice() + 1 ;
 }
 
 //' Return the number of available devices
 //' @details Return the number of available devices.
 //' @return the number of available devices. 
 //' @export 
-//' @references \url{http://www.arrayfire.com/docs/group__device__mat.htm#ga6d1964af8b32ca9c2f9525bf5ef8112a}
+//' @references \url{http://arrayfire.org/docs/group__device__func__count.htm#gac3c8750da69ee883fd14c0a8290e45f1}
 // [[Rcpp::export]]
 int arrayfire_count_device() {
-	return af::devicecount() ;
+	return af::getDeviceCount() ;
 }
 
 // af_rand_setseed is unavailable in the current version of arrayfire
