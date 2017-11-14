@@ -1,6 +1,6 @@
 #                                               -*- Autoconf -*-
 # Copyright (C) 2015 Kazuki Fukui
-# Copyright (C) 2017 Ralf Stubner
+# Copyright (C) 2017 Ralf Stubner (R Institute GmbH)
 #
 # This file is part of RcppArrayFire.
 #
@@ -23,107 +23,54 @@ AC_INIT([rcpparrayfire], [0.0.0])
 
 : ${R_HOME=`R RHOME`}
 if test -z "${R_HOME}" ; then
-	echo "could not determin R_HOME"
-	exit 1
+    echo "could not determin R_HOME"
+    exit 1
 fi
 
-AC_LANG([C++])
-
-CXX=`${R_HOME}/bin/R CMD config CXX`
-CXXFLAGS=`${R_HOME}/bin/R CMD config CXXFLAGS`
-LDFLAGS=`${R_HOME}/bin/R CMD config LDFLAGS`
-
-
-dnl  TODO : windows support
-dnl AC_CANONICAL_HOST
-
-
-# check complier version
-AC_CHECK_PROG(CXX_CHECK, [${CXX}], found, missing)
-if test "${CXX_CHECK}" = "missing" ; then
-	AC_MSG_ERROR([unable to find ${CXX}])
-	exit 1
-fi
-
-case "${CXX}" in
-	g++)
-		GCC_VERSION=`g++ -dumpversion \
-			| sed -e 's/\.\(@<:@0-9@:>@@<:@0-9@:>@\)/\1/g' -e 's/\.\(@<:@0-9@:>@\)/0\1/g' -e 's/^@<:@0-9@:>@\{3,4\}$/&00/'`
-		AC_MSG_CHECKING([for GCC version >= 4.8])
-		if test ${GCC_VERSION} -gt 40800 ; then
-			AC_MSG_RESULT(yes)
-		else
-			AC_MSG_RESULT(no)
-			AC_MSG_ERROR([GCC is too old])
-		fi
-		;;
-	clang++) 
-		dnl FIXME : `clang++ --verion` is bit different on OSX, clang++ & LLVM
-		CLANG_VERSION=`clang++ --version | grep version \
-			| awk '{print $3}' \
-			| sed -e 's/\.\(@<:@0-9@:>@@<:@0-9@:>@\)/\1/g' -e 's/\.\(@<:@0-9@:>@\)/0\1/g' -e 's/^@<:@0-9@:>@\{3,4\}$/&00/'`
-		AC_MSG_CHECKING([for CLANG version >= 3.3])
-		if test ${CLANG_VERSION} -gt 30300 ; then
-			AC_MSG_RESULT(yes)
-		else
-			AC_MSG_RESULT(no)
-			AC_MSG_ERROR([CLANG is too old])
-		fi
-		;;
-	icpc)
-		ICPC_VERSION=`icpc -v 2>&1 | awk '{print $3}' \
-			| sed -e 's/\.\(@<:@0-9@:>@@<:@0-9@:>@\)/\1/g' -e 's/\.\(@<:@0-9@:>@\)/0\1/g' -e 's/^@<:@0-9@:>@\{3,4\}$/&00/' `
-		AC_MSG_CHECKING([for Intel C++ Complier version >= 15.0])
-		if test ${ICPC_VERSION} -gt 150000 ; then
-			AC_MSG_RESULT(yes)
-		else
-			AC_MSG_RESULT(no)
-			AC_MSG_ERROR([Intel C++ compiler is too old])
-		fi
-		;;
-	*)
-		AC_MSG_ERROR([unsupported C++ complier])
-		exit 1
-		;;
-esac
+# use deprecated CXX1X* to support R versions 3.1.0 to 3.3.3
+CXX11=`"${R_HOME}/bin/R" CMD config CXX1X`
+CXX11STD=`"${R_HOME}/bin/R" CMD config CXX1XSTD`
+CXX="${CXX11} ${CXX11STD}"
+CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX1XFLAGS`
+AC_LANG(C++)
+AC_REQUIRE_CPP
+AC_PROG_CXX
 
 # set path to root of arrayfire
-AC_ARG_WITH([arrayfire], 
-			AC_HELP_STRING([--with-arrayfire=PREFIX], 
-						   [path to where arrayfire is installed (default=/usr/local)]),
-			[],
-			[with_arrayfire="/usr/local"])
+AC_ARG_WITH([arrayfire],
+            AC_HELP_STRING([--with-arrayfire=PREFIX],
+                           [path to where arrayfire is installed]),
+            [],
+            [])
 
-if test -e ${with_arrayfire} ; then
-	CXXFLAGS="${CXXFLAGS} -I${with_arrayfire}/include"
-	LDFLAGS="${LDFLAGS} -L${with_arrayfire}/lib"
-else
-	AC_MSG_ERROR([Unable to find ${with_arrayfire}])
-	exit 1
-fi
+AC_SUBST([AF_INCLUDE], "")
+AC_SUBST([AF_LIBS], "-laf")
+
+AS_IF([test -e "${with_arrayfire}"],
+            [
+             AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
+             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS}"
+            ])
+
+CXX_FLAGS="${CXX_FLAGS} ${AF_INCLUDE}"
+LDFLAGS="${LDFLAGS} ${AF_LIBS}"
 
 # check for arrayfire header
 AC_CHECK_HEADER([arrayfire.h],
-				[],
-				[
-				 AC_MSG_ERROR([unable to find arrayfire.h])
-				 exit 1
-				])
+    [],
+    [AC_MSG_ERROR([unable to find arrayfire.h])])
 
 AC_MSG_CHECKING([for libaf.so])
-		LDFLAGS="${LDFLAGS} -laf$"
-		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <arrayfire.h>
-const int ndev = af::devicecount();]])],
-				[AC_MSG_RESULT(yes)],
-				[
-				 AC_MSG_RESULT(no)
-				 AC_MSG_ERROR([unable to find libaf.so])
-				 exit 1
-				])
+#include <string>
+const std::string info = af::infoString();]])],
+                [AC_MSG_RESULT(yes)],
+                [
+                 AC_MSG_RESULT(no)
+                 AC_MSG_ERROR([unable to find libaf.so])
+                ])
 
-AC_SUBST([AF_INCLUDE], ["-I${with_arrayfire}/include"])
-AC_SUBST([AF_LIBS], ["-L${with_arrayfire}/lib -laf"])
 
 AC_CONFIG_FILES([src/Makevars R/flags.R])
 AC_OUTPUT
