@@ -1,0 +1,20 @@
+#!/bin/sh
+
+: ${R_HOME=`R RHOME`}
+if test -z "${R_HOME}" ; then
+    echo "could not determin R_HOME"
+    exit 1
+fi
+
+# use deprecated CXX1X* to support R versions 3.1.0 to 3.3.3
+CXX11=`"${R_HOME}/bin/R" CMD config CXX1X`
+CXX11STD=`"${R_HOME}/bin/R" CMD config CXX1XSTD`
+CXX="${CXX11} ${CXX11STD}"
+CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX1XFLAGS`
+
+AF_CXXFLAGS=`${R_HOME}/bin/Rscript -e "RcppArrayFire:::CxxFlags()"`
+AF_LIBS=`${R_HOME}/bin/Rscript -e "RcppArrayFire:::LdFlags()"`
+
+sed -e "s|@AF_LIBS@|${AF_LIBS}|" \
+    -e "s|@AF_CXXFLAGS@|${AF_CXXFLAGS}|" \
+    src/Makevars.in > src/Makevars

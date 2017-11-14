@@ -19,8 +19,8 @@
 //
 // [[Rcpp::export]]
 af::array rcpparrayfire_hello_world() {
-	af::array m1 = af::identity(3, f32);
-	af::array m2 = af::identity(3, f32);
+	af::array m1 = af::identity(3, 3, f32);
+	af::array m2 = af::randn(3, 3, f32);
 
     return m1 + 3 * (m1 + m2);
 }
@@ -31,21 +31,21 @@ af::array rcpparrayfire_hello_world() {
 //
 // [[Rcpp::export]]
 af::array rcpparrayfire_outerproduct(const RcppArrayFire::typed_array<f32>& x) { // NOTE: There is no type like colvec in ArrayFire.
-	return x * af::transpose(x);
+	return af::matmulNT(x, x);
 }
 
 // and the inner product returns a scalar
 //
 // [[Rcpp::export]]
 double rcpparrayfire_innerproduct(const RcppArrayFire::typed_array<f32>& x) { // NOTE: Here is too. We suppose the x to be a column vector.
-    return (af::transpose(x) * x).scalar<float>();
+    return (af::dot(x, x)).scalar<float>();
 }
 
 
 // and we can use Rcpp::List to return both at the same time
 //
 // [[Rcpp::export]]
-Rcpp::List rcppfire_bothproducts(const RcppArrayFire::typed_array<f32> & x) {
+Rcpp::List rcpparrayfire_bothproducts(const RcppArrayFire::typed_array<f32> & x) {
 	af::array op = rcpparrayfire_outerproduct(x);
     double    ip = rcpparrayfire_innerproduct(x);
     return Rcpp::List::create(Rcpp::Named("outer")=op,

@@ -91,16 +91,16 @@ RcppArrayFire.package.skeleton <- function(name="anRpackage", list=character(),
         dir.create(man)
     }
     skeleton <- system.file("skeleton", package="RcppArrayFire")
-    Makevars <- file.path(src, "Makevars")
-    if (!file.exists(Makevars)) {
-        file.copy(file.path(skeleton, "Makevars"), Makevars)
-        message(" >> added Makevars file with Rcpp settings")
+    Makevars.in <- file.path(src, "Makevars.in")
+    if (!file.exists(Makevars.in)) {
+        file.copy(file.path(skeleton, "Makevars.in"), Makevars.in)
+        message(" >> added Makevars.in file with Rcpp settings")
     }
 
-    Makevars.win <- file.path(src, "Makevars.win")
-    if (! file.exists( Makevars.win)) {
-        file.copy(file.path(skeleton, "Makevars.win"), Makevars.win)
-        message(" >> added Makevars.win file with RcppArrayFire settings")
+    configure <- file.path(root, "configure")
+    if (! file.exists(configure)) {
+        file.copy(file.path(skeleton, "configure"), configure)
+        message(" >> added configure file with RcppArrayFire settings")
     }
 
     if (example_code) {

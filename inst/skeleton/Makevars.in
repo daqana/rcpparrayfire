@@ -1,0 +1,7 @@
+AF_CXXFLAGS = @AF_CXXFLAGS@
+AF_LIBS   = @AF_LIBS@
+
+# combine with standard arguments for R
+CXX_STD = CXX11
+PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) $(AF_LIBS)
+PKG_CPPFLAGS = $(AF_CXXFLAGS) -I../inst/include
