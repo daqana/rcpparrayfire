@@ -104,6 +104,7 @@ void arrayfire_info(const bool verbose = false) {
 //' Set the seed for random number generation in ArrayFire.
 //' @details Sets the seed for the current default random engine in ArrayFire. Note that a (64bit) double is used as input, since R does not support 64bit integers.
 //' @param seed a (64bit) double whose bit representation is reinterpreted as a 64bit integer
+//' @export
 //' @references \url{http://arrayfire.org/docs/group__random__func__set__seed.htm}
 // [[Rcpp::export]]
 void arrayfire_set_seed( const double seed ) {
@@ -115,6 +116,7 @@ void arrayfire_set_seed( const double seed ) {
 //' Get the seed for random number generation in ArrayFire.
 //' @details Gets the seed for the current default random engine in ArrayFire. Note that a (64bit) double is used as output, since R does not support 64bit integers.
 //' @return a (64bit) double whose bit representation is reinterpreted from the 64bit integer seed
+//' @export
 //' @references \url{http://arrayfire.org/docs/group__random__func__get__seed.htm}
 // [[Rcpp::export]]
 double arrayfire_get_seed() {
