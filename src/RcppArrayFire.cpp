@@ -105,3 +105,59 @@ void arrayfire_info(const bool verbose = false) {
 //void arrayfire_set_setseed_random( const unsigned int seed ) {
 //	af_rand_setseed( seed ) ;
 //}
+
+//' Get string description for the active backend
+//' @details Get string description for the active backend.
+//' @return string description for the active backend
+//' @export
+//' @references \url{http://arrayfire.org/docs/group__unified__func__getactivebackend.htm#gac6a8e976a151d007e0cf5cf4f11da2a9}
+// [[Rcpp::export]]
+std::string arrayfire_get_active_backend() {
+    switch(af::getActiveBackend()) {
+    case AF_BACKEND_CPU:
+        return "CPU";
+    case AF_BACKEND_CUDA:
+        return "CUDA";
+    case AF_BACKEND_DEFAULT:
+        return "DEFAULT";
+    case AF_BACKEND_OPENCL:
+        return "OpenCL";
+    }
+}
+
+//' Get a vector of string descriptions for the available backends
+//' @details Get a vector of string descriptions for the available backends.
+//' @return vector of string descriptions for the available backends
+//' @export
+//' @references \url{http://arrayfire.org/docs/group__unified__func__getavailbackends.htm#ga32fc807a8d4680987a915362573c1a2c}
+// [[Rcpp::export]]
+Rcpp::CharacterVector arrayfire_get_available_backends() {
+    int backends = af::getAvailableBackends();
+    Rcpp::CharacterVector result;
+    if(backends & AF_BACKEND_CPU)
+        result.push_back("CPU");
+    if(backends & AF_BACKEND_CUDA)
+        result.push_back("CUDA");
+    if(backends & AF_BACKEND_OPENCL)
+        result.push_back("OpenCL");
+    return result;
+}
+
+//' Set the current backend
+//' @details Set the current backend.
+//' @param backend string description of backend (DEFAULT, CPU, OPENCL, CUDA)
+//' @export
+//' @references \url{http://arrayfire.org/docs/group__unified__func__setbackend.htm#ga7e0fad1f134b0421811ee3a4ce47e987}
+// [[Rcpp::export]]
+void arrayfire_set_backend(std::string backend = "DEFAULT") {
+    for (auto & c: backend)
+        c = std::toupper(c);
+    if (backend == "CPU")
+        return af::setBackend(AF_BACKEND_CPU);
+    if (backend == "CUDA")
+        return af::setBackend(AF_BACKEND_CUDA);
+    if (backend == "DEFAULT")
+        return af::setBackend(AF_BACKEND_DEFAULT);
+    if (backend == "OPENCL")
+        return af::setBackend(AF_BACKEND_OPENCL);
+}

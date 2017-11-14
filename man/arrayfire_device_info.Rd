@@ -7,14 +7,14 @@
 arrayfire_device_info()
 }
 \value{
-List contains the information about device and platform.
+List containing the information about device and platform.
 }
 \description{
 Report the information about current device and platform
 }
 \details{
-Return a list contains the informations about current device and platform.
-The list object include device name, palatform information, toolkit information, 
+Return a list containing the information about current device and platform.
+The list object includes device name, palatform information, toolkit information,
 and compute capability.
 }
 \references{

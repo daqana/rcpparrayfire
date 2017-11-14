@@ -56,6 +56,36 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// arrayfire_get_active_backend
+std::string arrayfire_get_active_backend();
+RcppExport SEXP _RcppArrayFire_arrayfire_get_active_backend() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(arrayfire_get_active_backend());
+    return rcpp_result_gen;
+END_RCPP
+}
+// arrayfire_get_available_backends
+Rcpp::CharacterVector arrayfire_get_available_backends();
+RcppExport SEXP _RcppArrayFire_arrayfire_get_available_backends() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(arrayfire_get_available_backends());
+    return rcpp_result_gen;
+END_RCPP
+}
+// arrayfire_set_backend
+void arrayfire_set_backend(std::string backend);
+RcppExport SEXP _RcppArrayFire_arrayfire_set_backend(SEXP backendSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type backend(backendSEXP);
+    arrayfire_set_backend(backend);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_RcppArrayFire_arrayfire_device_info", (DL_FUNC) &_RcppArrayFire_arrayfire_device_info, 0},
@@ -63,6 +93,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RcppArrayFire_arrayfire_get_device", (DL_FUNC) &_RcppArrayFire_arrayfire_get_device, 0},
     {"_RcppArrayFire_arrayfire_count_device", (DL_FUNC) &_RcppArrayFire_arrayfire_count_device, 0},
     {"_RcppArrayFire_arrayfire_info", (DL_FUNC) &_RcppArrayFire_arrayfire_info, 1},
+    {"_RcppArrayFire_arrayfire_get_active_backend", (DL_FUNC) &_RcppArrayFire_arrayfire_get_active_backend, 0},
+    {"_RcppArrayFire_arrayfire_get_available_backends", (DL_FUNC) &_RcppArrayFire_arrayfire_get_available_backends, 0},
+    {"_RcppArrayFire_arrayfire_set_backend", (DL_FUNC) &_RcppArrayFire_arrayfire_set_backend, 1},
     {NULL, NULL, 0}
 };
 

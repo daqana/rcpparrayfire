@@ -2,31 +2,31 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' Report the information about current device and platform
-#' @details Return a list contains the informations about current device and platform.
-#' The list object include device name, palatform information, toolkit information, 
+#' @details Return a list containing the information about current device and platform.
+#' The list object includes device name, palatform information, toolkit information,
 #' and compute capability.
-#' @return List contains the information about device and platform.
+#' @return List containing the information about device and platform.
 #' @export
 #' @references \url{http://arrayfire.org/docs/group__device__func__prop.htm#gaa9eab56ddac21650581682912ea78293}
 arrayfire_device_info <- function() {
     .Call(`_RcppArrayFire_arrayfire_device_info`)
 }
 
-#' Switch to specified device 
+#' Switch to specified device
 #' @param index the index of a device switched to.
 #' @details Available indices
 #' can be obtained by calling \code{\link{arrayfire_count_device}}.
-#' @export 
+#' @export
 #' @references \url{http://arrayfire.org/docs/group__device__func__set.htm#gafbb906ca5b89ec43fdb0e3a14d1df1e7}
 arrayfire_set_device <- function(index) {
     invisible(.Call(`_RcppArrayFire_arrayfire_set_device`, index))
 }
 
-#' Return the index of current device 
+#' Return the index of current device
 #' @details Get the index of current device which is lower or
 #' equal to a value returned by \code{\link{arrayfire_count_device}}.
 #' @return the index of current device.
-#' @export 
+#' @export
 #' @references \url{http://arrayfire.org/docs/group__device__func__get.htm#ga4dfe3f90475b735384f8b28cf2b19a11}
 arrayfire_get_device <- function() {
     .Call(`_RcppArrayFire_arrayfire_get_device`)
@@ -34,8 +34,8 @@ arrayfire_get_device <- function() {
 
 #' Return the number of available devices
 #' @details Return the number of available devices.
-#' @return the number of available devices. 
-#' @export 
+#' @return the number of available devices.
+#' @export
 #' @references \url{http://arrayfire.org/docs/group__device__func__count.htm#gac3c8750da69ee883fd14c0a8290e45f1}
 arrayfire_count_device <- function() {
     .Call(`_RcppArrayFire_arrayfire_count_device`)
@@ -48,5 +48,32 @@ arrayfire_count_device <- function() {
 #' @references \url{http://arrayfire.org/docs/group__device__func__info.htm#ga1360e706b046b1c5b299bd6e689a0276} and \url{http://arrayfire.org/docs/group__device__func__info__string.htm#ga73ee21947f018445ea720036c1edfb69}
 arrayfire_info <- function(verbose = FALSE) {
     invisible(.Call(`_RcppArrayFire_arrayfire_info`, verbose))
+}
+
+#' Get string description for the active backend
+#' @details Get string description for the active backend.
+#' @return string description for the active backend
+#' @export
+#' @references \url{http://arrayfire.org/docs/group__unified__func__getactivebackend.htm#gac6a8e976a151d007e0cf5cf4f11da2a9}
+arrayfire_get_active_backend <- function() {
+    .Call(`_RcppArrayFire_arrayfire_get_active_backend`)
+}
+
+#' Get a vector of string descriptions for the available backends
+#' @details Get a vector of string descriptions for the available backends.
+#' @return vector of string descriptions for the available backends
+#' @export
+#' @references \url{http://arrayfire.org/docs/group__unified__func__getavailbackends.htm#ga32fc807a8d4680987a915362573c1a2c}
+arrayfire_get_available_backends <- function() {
+    .Call(`_RcppArrayFire_arrayfire_get_available_backends`)
+}
+
+#' Set the current backend
+#' @details Set the current backend.
+#' @param backend string description of backend (DEFAULT, CPU, OPENCL, CUDA)
+#' @export
+#' @references \url{http://arrayfire.org/docs/group__unified__func__setbackend.htm#ga7e0fad1f134b0421811ee3a4ce47e987}
+arrayfire_set_backend <- function(backend = "DEFAULT") {
+    invisible(.Call(`_RcppArrayFire_arrayfire_set_backend`, backend))
 }
 

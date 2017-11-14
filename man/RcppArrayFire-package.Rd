@@ -4,7 +4,7 @@
 \name{RcppArrayFire-package}
 \alias{RcppArrayFire}
 \alias{RcppArrayFire-package}
-\title{Rcpp integration for Arrayfire}
+\title{Rcpp integration for ArrayFire}
 \description{
 The RcppArrayFire package provides Rcpp integration for ArrayFire.
 }
