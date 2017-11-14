@@ -15,6 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with RcppArrayFire.  If not, see <http://www.gnu.org/licenses/>.
 
+#' @export
 RcppArrayFire.package.skeleton <- function(name="anRpackage", list=character(),
                                            environment=.GlobalEnv,
                                            path=".", force=FALSE,
@@ -61,10 +62,12 @@ RcppArrayFire.package.skeleton <- function(name="anRpackage", list=character(),
     if (file.exists(DESCRIPTION)) {
         x <- cbind(read.dcf(DESCRIPTION),
                    "Imports" = sprintf("Rcpp (>= %s)", packageDescription("Rcpp")[["Version"]]),
-                   "LinkingTo" = "Rcpp, RcppArrayFire")
+                   "LinkingTo" = "Rcpp, RcppArrayFire",
+                   "SystemRequirements" = "C++11")
         write.dcf(x, file=DESCRIPTION)
         message(" >> added Imports: Rcpp")
         message(" >> added LinkingTo: Rcpp, RcppArrayFire")
+        message(" >> added SystemRequirements: C++11")
     }
 
     ## add a useDynLib to NAMESPACE,
@@ -101,9 +104,9 @@ RcppArrayFire.package.skeleton <- function(name="anRpackage", list=character(),
     }
 
     if (example_code) {
-        file.copy(file.path(skeleton, "rcppaf_hello_world.cpp"), src)
+        file.copy(file.path(skeleton, "rcppfire_hello_world.cpp"), src)
         message(" >> added example src file using arrayfire classes")
-        file.copy(file.path(skeleton, "rcppaf_hello_world.Rd"), man)
+        file.copy(file.path(skeleton, "rcppfire_hello_world.Rd"), man)
         message(" >> added example Rd file for using arrayfire classes")
 
     Rcpp::compileAttributes(root)
