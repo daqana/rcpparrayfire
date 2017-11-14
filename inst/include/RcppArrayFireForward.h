@@ -37,6 +37,9 @@ namespace Rcpp {
     /* support for wrap */
     SEXP wrap ( const af::array& ) ;
 
+    /* support for as */
+    template <> af::dim4 as (SEXP);
+
     namespace traits {
     /* support for as */
     template<af::dtype AF_DTYPE> class Exporter<RcppArrayFire::typed_array<AF_DTYPE>>;

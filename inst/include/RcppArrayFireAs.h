@@ -160,9 +160,7 @@ namespace traits {
                 result = af::array( buff.size(), buff.data() ) ;
             }
             else{
-                int* idims = INTEGER(dims) ;
-                af::dim4 dims_( ::Rf_length(dims), idims ) ;
-                result = af::array( dims_, buff.data() ) ;
+                result = af::array(::Rcpp::as<af::dim4>(dims), buff.data());
             }
 
             return ::RcppArrayFire::typed_array<AF_DTYPE>( result );
