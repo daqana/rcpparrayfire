@@ -106,6 +106,34 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// fastRunif
+af::array fastRunif(const int32_t n, const double min, const double max, const bool useDouble);
+RcppExport SEXP _RcppArrayFire_fastRunif(SEXP nSEXP, SEXP minSEXP, SEXP maxSEXP, SEXP useDoubleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const int32_t >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const double >::type min(minSEXP);
+    Rcpp::traits::input_parameter< const double >::type max(maxSEXP);
+    Rcpp::traits::input_parameter< const bool >::type useDouble(useDoubleSEXP);
+    rcpp_result_gen = Rcpp::wrap(fastRunif(n, min, max, useDouble));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fastRnorm
+af::array fastRnorm(const int32_t n, const double mean, const double sd, const bool useDouble);
+RcppExport SEXP _RcppArrayFire_fastRnorm(SEXP nSEXP, SEXP meanSEXP, SEXP sdSEXP, SEXP useDoubleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const int32_t >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const double >::type mean(meanSEXP);
+    Rcpp::traits::input_parameter< const double >::type sd(sdSEXP);
+    Rcpp::traits::input_parameter< const bool >::type useDouble(useDoubleSEXP);
+    rcpp_result_gen = Rcpp::wrap(fastRnorm(n, mean, sd, useDouble));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_RcppArrayFire_arrayfire_device_info", (DL_FUNC) &_RcppArrayFire_arrayfire_device_info, 0},
@@ -118,6 +146,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RcppArrayFire_arrayfire_get_active_backend", (DL_FUNC) &_RcppArrayFire_arrayfire_get_active_backend, 0},
     {"_RcppArrayFire_arrayfire_get_available_backends", (DL_FUNC) &_RcppArrayFire_arrayfire_get_available_backends, 0},
     {"_RcppArrayFire_arrayfire_set_backend", (DL_FUNC) &_RcppArrayFire_arrayfire_set_backend, 1},
+    {"_RcppArrayFire_fastRunif", (DL_FUNC) &_RcppArrayFire_fastRunif, 4},
+    {"_RcppArrayFire_fastRnorm", (DL_FUNC) &_RcppArrayFire_fastRnorm, 4},
     {NULL, NULL, 0}
 };
 

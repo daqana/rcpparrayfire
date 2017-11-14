@@ -95,3 +95,31 @@ arrayfire_set_backend <- function(backend = "DEFAULT") {
     invisible(.Call(`_RcppArrayFire_arrayfire_set_backend`, backend))
 }
 
+#' Fast runif alternative
+#' @details Fast generation of uniformly distributed random values. The default is to use single precision,
+#'  since not all devices support calculations using double precision.
+#' @param n  number of observations
+#' @param min  lower limit of the distribution
+#' @param max  upper limit of the distribution
+#' @param useDouble  use float or double internally
+#' @return A numeric vector of random values
+#' @seealso \code{\link{runif}} and \url{http://arrayfire.org/docs/group__random__func__randu.htm}
+#' @export
+fastRunif <- function(n, min = 0, max = 1, useDouble = FALSE) {
+    .Call(`_RcppArrayFire_fastRunif`, n, min, max, useDouble)
+}
+
+#' Fast rnorm alternative
+#' @details Fast generation of normaly distributed random values. The default is to use single precision,
+#'  since not all devices support calculations using double precision.
+#' @param n  number of observations
+#' @param mean  mean value of the distribution
+#' @param sd  standard deviation of the distribution
+#' @param useDouble  use float or double internally
+#' @return A numeric vector of random values
+#' @seealso \code{\link{rnorm}} and \url{http://arrayfire.org/docs/group__random__func__randn.htm}
+#' @export
+fastRnorm <- function(n, mean = 0, sd = 1, useDouble = FALSE) {
+    .Call(`_RcppArrayFire_fastRnorm`, n, mean, sd, useDouble)
+}
+
