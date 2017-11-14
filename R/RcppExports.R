@@ -50,6 +50,22 @@ arrayfire_info <- function(verbose = FALSE) {
     invisible(.Call(`_RcppArrayFire_arrayfire_info`, verbose))
 }
 
+#' Set the seed for random number generation in ArrayFire.
+#' @details Sets the seed for the current default random engine in ArrayFire. Note that a (64bit) double is used as input, since R does not support 64bit integers.
+#' @param seed a (64bit) double whose bit representation is reinterpreted as a 64bit integer
+#' @references \url{http://arrayfire.org/docs/group__random__func__set__seed.htm}
+arrayfire_set_seed <- function(seed) {
+    invisible(.Call(`_RcppArrayFire_arrayfire_set_seed`, seed))
+}
+
+#' Get the seed for random number generation in ArrayFire.
+#' @details Gets the seed for the current default random engine in ArrayFire. Note that a (64bit) double is used as output, since R does not support 64bit integers.
+#' @return a (64bit) double whose bit representation is reinterpreted from the 64bit integer seed
+#' @references \url{http://arrayfire.org/docs/group__random__func__get__seed.htm}
+arrayfire_get_seed <- function() {
+    .Call(`_RcppArrayFire_arrayfire_get_seed`)
+}
+
 #' Get string description for the active backend
 #' @details Get string description for the active backend.
 #' @return string description for the active backend
