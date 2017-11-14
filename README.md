@@ -4,10 +4,10 @@ R and ArrayFire via Rcpp
 
 ## Prerequisites
 
-- R packages
+- R
 - Rcpp
-- Arrayfire
-- gcc (>= 4.8)
+- ArrayFire
+- g++ (>= 4.8)
 
 ## Installation
 ```R
@@ -23,7 +23,13 @@ install_github(repo = 'RInstitute/RcppArrayFire')
 # do something with RcppArrayFire
 dev_mode(on = F)
 ```
-RcppArrayFire uses the unified backend of ArrayFire.
+RcppArrayFire uses the unified backend of ArrayFire. If you have
+installed ArrayFire in a non-standard directory, you can use the
+`--with-arrayfire` option:
+```R
+install_github(repo = 'RInstitute/RcppArrayFire',
+               args = c("--configure-args='--with-arrayfire=/opt/arrayfire-3'"))
+```
 
 ## Trademark notice
 
