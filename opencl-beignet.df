@@ -12,13 +12,14 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
  && curl -o arrayfire-installer.sh  http://arrayfire.s3.amazonaws.com/3.5.1/ArrayFire-v3.5.1_Linux_x86_64.sh \
  && sh arrayfire-installer.sh --skip-license --exclude-subdir --prefix=/usr/local \
- && ldconfig /usr/local/lib \
- && rm arrayfire-installer.sh /usr/local/lib/libafcuda.so*
+ && rm arrayfire-installer.sh /usr/local/lib/libafcuda.so* \
+ && ldconfig /usr/local/lib
 
 RUN install2.r codetools Rcpp \
  && rm -rf /tmp/*
 
-
 COPY . /tmp/pkg/
-RUN R CMD INSTALL /tmp/pkg \
+RUN cd /tmp \
+ && R CMD build /tmp/pkg \
+ && R CMD INSTALL /tmp/RcppArrayFire*tar.gz \
  && rm -rf /tmp/*
