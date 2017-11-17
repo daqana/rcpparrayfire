@@ -15,10 +15,27 @@
 ## You should have received a copy of the GNU General Public License
 ## along with RcppArrayFire.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @export
-RcppArrayFire.package.skeleton <- function(name="anRpackage", list=character(),
+##' Create a skeleton for a new package that intends to use RcppArrayFire
+##'
+##' \code{RcppArrayFire.package.skeleton} creates a skeleton for a new package that intends to use
+##' RcppArrayFire. It is based on the \code{\link{package.skeleton}} function that it executes first.
+##' @details In addition to \code{\link{package.skeleton}}, the \code{DESCRIPTION} and \code{NAMESPACE}
+##' files are updated. In addition, minimal \code{configure} and \code{src/Makevars.in} files for finding
+##' the necessary compiler flags are created.
+##' @param name         See \code{\link{package.skeleton}}
+##' @param list         See \code{\link{package.skeleton}}
+##' @param environment  See \code{\link{package.skeleton}}
+##' @param path         See \code{\link{package.skeleton}}
+##' @param force        See \code{\link{package.skeleton}}
+##' @param code_files   See \code{\link{package.skeleton}}
+##' @param example_code If \code{TRUE}, example C++ code using RcppArrayFire is added to the package
+##' @export
+##' @importFrom utils packageDescription
+RcppArrayFire.package.skeleton <- function(name="anRpackage",
+                                           list=character(),
                                            environment=.GlobalEnv,
-                                           path=".", force=FALSE,
+                                           path=".",
+                                           force=FALSE,
                                            code_files=character(),
                                            example_code=TRUE) {
 
