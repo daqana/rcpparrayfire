@@ -1,6 +1,6 @@
 // -*- mode: C++ -*-
 //
-// RcppArrayFire.cpp: Rcpp/ArrayFire glue
+// fastRNG.cpp: fast random number generation using ArrayFire
 //
 // Copyright (C) 2017 Ralf Stubner (R Institute GmbH)
 //
