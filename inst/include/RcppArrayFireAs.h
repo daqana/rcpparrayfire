@@ -137,7 +137,7 @@ namespace internal{
 namespace traits {
 
     template<af::dtype AF_DTYPE>
-    class Exporter<::RcppArrayFire::typed_array<AF_DTYPE>>{
+    class Exporter< ::RcppArrayFire::typed_array<AF_DTYPE> >{
     private:
         SEXP object ;
 

@@ -32,7 +32,12 @@
 //' @seealso \code{\link{runif}} and \url{http://arrayfire.org/docs/group__random__func__randu.htm}
 //' @export
 // [[Rcpp::export]]
-af::array fastRunif(const int32_t n, const double min = 0, const double max = 1, const bool useDouble = false) {
+af::array fastRunif(const int32_t n, const double min = 0, const double max = 1, bool useDouble = false) {
+    if (useDouble && !af::isDoubleAvailable(af::getDevice())) {
+        useDouble = false;
+        Rcpp::warning("Double precision is not available with current device.");
+    }
+
     if (useDouble)
         return min + max * af::randu(static_cast<dim_t>(n), f64);
     else
@@ -51,7 +56,12 @@ af::array fastRunif(const int32_t n, const double min = 0, const double max = 1,
 //' @seealso \code{\link{rnorm}} and \url{http://arrayfire.org/docs/group__random__func__randn.htm}
 //' @export
 // [[Rcpp::export]]
-af::array fastRnorm(const int32_t n, const double mean = 0, const double sd = 1, const bool useDouble = false) {
+af::array fastRnorm(const int32_t n, const double mean = 0, const double sd = 1, bool useDouble = false) {
+    if (useDouble && !af::isDoubleAvailable(af::getDevice())) {
+        useDouble = false;
+        Rcpp::warning("Double precision is not available with current device.");
+    }
+
     if (useDouble)
         return mean + sd * af::randn(static_cast<dim_t>(n), f64);
     else

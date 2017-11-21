@@ -25,7 +25,6 @@
 
 #include <RcppCommon.h>
 #include <Rconfig.h>
-//#include <RcppArrayFireConfig.h>
 
 #include <arrayfire.h>
 
