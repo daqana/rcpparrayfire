@@ -3,6 +3,7 @@
 // RcppArrayFireAs.h: Rcpp/ArrayFire glue, support for as
 //
 // Copyright (C) 2015 Kazuki Fukui
+// Copyright (C) 2017 Ralf Stubner (R Institute GmbH)
 //
 // This file is part of RcppArrayFire.
 //
@@ -25,6 +26,7 @@
 #include <algorithm>
 #include <iterator>
 #include <type_traits>
+#include <arrayfire.h>
 
 namespace RcppArrayFire{
     template<af::dtype AF_DTYPE> struct dtype2cpp{};

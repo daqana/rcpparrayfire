@@ -3,6 +3,7 @@
 // RcppArrayFireWrap.cpp: Rcpp/ArrayFire glue, support for wrap
 //
 // Copyright (C) 2015 Kazuki Fukui
+// Copyright (C) 2017 Ralf Stubner (R Institute GmbH)
 //
 // This file is part of RcppArrayFire.
 //
@@ -44,6 +45,8 @@ namespace RcppArrayFire{
         case u32:
             x = wrap_array<unsigned int>( object ) ;
             break;
+        default:
+            Rcpp::stop("Unsopprted data type");
         }
         //NOTE:there is no af::sparse() in the current open source version of arrayfire
         //if(object.issparse() == true){
@@ -77,22 +80,17 @@ namespace RcppArrayFire{
 
 namespace Rcpp{
     /* wrap */
+    template <> SEXP wrap (const af::dim4& dims) {
+        std::vector<dim_t> res(dims.ndims());
+        for(int i = 0; i < dims.ndims(); ++i)
+            res[i] = dims[i];
+        return wrap(res);
+    }
 
-    SEXP wrap ( const af::array& data ){
-        ::Rcpp::RObject x = ::RcppArrayFire::af_wrap( data ) ;
-        switch(data.numdims())
-        {
-        case 3:
-            x.attr( "dim" ) = Dimension( data.dims(0), data.dims(1), data.dims(2) );
-            break;
-        case 2:
-            x.attr( "dim" ) = Dimension( data.dims(0), data.dims(1) );
-            break;
-        case 1:
-            //x.attr( "dim" ) = Dimension( data.dims(0) );
-            break;
-        }
-
+    template <> SEXP wrap (const af::array& data ){
+        ::Rcpp::RObject x = ::RcppArrayFire::af_wrap( data );
+        if (data.numdims() > 1)
+            x.attr("dim") = wrap(data.dims());
         return x;
     }
 }

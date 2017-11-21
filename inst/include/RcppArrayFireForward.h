@@ -3,6 +3,7 @@
 // RcppArrayFireForward.h: Rcpp/ArrayFire glue
 //
 // Copyright (C) 2015 Kazuki Fukui
+// Copyright (C) 2017 Ralf Stubner (R Institute GmbH)
 //
 // This file is part of RcppArrayFire.
 //
@@ -35,7 +36,8 @@ namespace RcppArrayFire{
 
 namespace Rcpp {
     /* support for wrap */
-    SEXP wrap ( const af::array& ) ;
+    template <> SEXP wrap (const af::array&);
+    template <> SEXP wrap (const af::dim4&);
 
     /* support for as */
     template <> af::dim4 as (SEXP);
