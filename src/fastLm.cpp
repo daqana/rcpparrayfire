@@ -1,6 +1,6 @@
 // -*- mode: C++ -*-
 //
-// fastRNG.cpp: simple but fast lm() alternative using ArrayFire
+// fastLm.cpp: simple but fast lm() alternative using ArrayFire
 //
 // Copyright (C) 2017 Ralf Stubner (R Institute GmbH)
 //
@@ -22,36 +22,72 @@
 #include <RcppArrayFire.h>
 
 //' Fast and simple linear model
-//' @details Single precision floats are used since not all devices support double precision.
+//' @details Single precision floats are used by default since not all devices support double precision.
 //' @param X  a model matrix
-//' @param y a vector containing the explained variable
+//' @param y  a vector containing the explained variable
+//' @param useDouble  use float or double internally
 //' @return \code{fastLmPure} returns a list with three components:
 //' \describe{
 //'   \item{\code{coefficients}}{a vector of coefficients}
+//'   \item{\code{residuals}}{the residuals, that is response minus fitted values}
+//'   \item{\code{fitted.values}}{the fitted mean values}
 //'   \item{\code{stderr}}{a vector of the (estimated) standard errors of the coefficient estimates}
 //'   \item{\code{df.residual}}{a scalar denoting the degrees of freedom in the model}
+//'   \item{\code{intercept}}{a boolean denoting if a model with intercept was fitted}
 //' }
 //' @export
 // [[Rcpp::export]]
-Rcpp::List fastLmPure(RcppArrayFire::typed_array<f32> X, RcppArrayFire::typed_array<f32> y) {
-    dim_t n = X.dims(0);
-    dim_t k = X.dims(1);
+Rcpp::List fastLmPure(const Rcpp::NumericMatrix& X,
+                      const Rcpp::NumericVector& y,
+                      bool useDouble = false) {
+    af::array _X;
+    af::array _y;
 
-    // solve OLS via X'X beta = X' y
-    af::array tXX = af::matmulTN(X, X);
-    af::array tXy = af::matmulTN(X, y);
+    if (useDouble && !af::isDoubleAvailable(af::getDevice())) {
+        useDouble = false;
+        Rcpp::warning("Double precision is not available with current device.");
+    }
+
+    if (useDouble) {
+        _X = Rcpp::as<RcppArrayFire::typed_array<f64> >(X);
+        _y = Rcpp::as<RcppArrayFire::typed_array<f64> >(y);
+    } else {
+        _X = Rcpp::as<RcppArrayFire::typed_array<f32> >(X);
+        _y = Rcpp::as<RcppArrayFire::typed_array<f32> >(y);
+    }
+
+    if(_X.numdims() != 2 || !_y.iscolumn() || _X.dims(0) != _y.dims(0))
+        Rcpp::stop("Wrong dimensions");
+
+    dim_t n = _X.dims(0);
+    dim_t k = _X.dims(1);
+
+    // solve OLS via X' X beta = X' y
+    af::array tXX = af::matmulTN(_X, _X);
+    af::array tXy = af::matmulTN(_X, _y);
     af::array coef = af::solve(tXX, tXy);
 
-    // residuals
-    af::array res = y - af::matmul(X, coef);
+    // fitted values and residuals
+    af::array fit = af::matmul(_X, coef);
+    af::array res = _y - fit;
 
     // standard errors of residuals
-    double s2 = (af::dot(res, res)).scalar<float>() / (n-k);
+    double s2;
+    if (useDouble)
+        s2 = (af::dot(res, res)).scalar<double>() / (n-k);
+    else
+        s2 = (af::dot(res, res)).scalar<float>() / (n-k);
     af::array std_err = af::sqrt(s2 - af::diag(af::inverse(tXX)));
+
+    // intercept was included if one column is constant, i.e. max == min
+    bool intercept = af::anyTrue<bool>(af::min(_X, 0) == af::max(_X, 0));
 
     return Rcpp::List::create(
         Rcpp::Named("coefficients") = coef,
         Rcpp::Named("stderr") = std_err,
-        Rcpp::Named("df.residual") = n - k
+        Rcpp::Named("df.residual") = n - k,
+        Rcpp::Named("residuals") = res,
+        Rcpp::Named("fitted.values") = fit,
+        Rcpp::Named("intercept") = intercept
     );
 }

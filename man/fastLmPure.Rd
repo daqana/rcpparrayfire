@@ -4,24 +4,29 @@
 \alias{fastLmPure}
 \title{Fast and simple linear model}
 \usage{
-fastLmPure(X, y)
+fastLmPure(X, y, useDouble = FALSE)
 }
 \arguments{
 \item{X}{a model matrix}
 
 \item{y}{a vector containing the explained variable}
+
+\item{useDouble}{use float or double internally}
 }
 \value{
 \code{fastLmPure} returns a list with three components:
 \describe{
   \item{\code{coefficients}}{a vector of coefficients}
+  \item{\code{residuals}}{the residuals, that is response minus fitted values}
+  \item{\code{fitted.values}}{the fitted mean values}
   \item{\code{stderr}}{a vector of the (estimated) standard errors of the coefficient estimates}
   \item{\code{df.residual}}{a scalar denoting the degrees of freedom in the model}
+  \item{\code{intercept}}{a boolean denoting if a model with intercept was fitted}
 }
 }
 \description{
 Fast and simple linear model
 }
 \details{
-Single precision floats are used since not all devices support double precision.
+Single precision floats are used by default since not all devices support double precision.
 }

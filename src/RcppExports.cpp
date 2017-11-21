@@ -7,19 +7,20 @@
 using namespace Rcpp;
 
 // fastLmPure
-Rcpp::List fastLmPure(RcppArrayFire::typed_array<f32> X, RcppArrayFire::typed_array<f32> y);
-RcppExport SEXP _RcppArrayFire_fastLmPure(SEXP XSEXP, SEXP ySEXP) {
+Rcpp::List fastLmPure(const Rcpp::NumericMatrix& X, const Rcpp::NumericVector& y, bool useDouble);
+RcppExport SEXP _RcppArrayFire_fastLmPure(SEXP XSEXP, SEXP ySEXP, SEXP useDoubleSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< RcppArrayFire::typed_array<f32> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< RcppArrayFire::typed_array<f32> >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(fastLmPure(X, y));
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< bool >::type useDouble(useDoubleSEXP);
+    rcpp_result_gen = Rcpp::wrap(fastLmPure(X, y, useDouble));
     return rcpp_result_gen;
 END_RCPP
 }
 // fastRunif
-af::array fastRunif(const int32_t n, const double min, const double max, const bool useDouble);
+af::array fastRunif(const int32_t n, const double min, const double max, bool useDouble);
 RcppExport SEXP _RcppArrayFire_fastRunif(SEXP nSEXP, SEXP minSEXP, SEXP maxSEXP, SEXP useDoubleSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -27,13 +28,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int32_t >::type n(nSEXP);
     Rcpp::traits::input_parameter< const double >::type min(minSEXP);
     Rcpp::traits::input_parameter< const double >::type max(maxSEXP);
-    Rcpp::traits::input_parameter< const bool >::type useDouble(useDoubleSEXP);
+    Rcpp::traits::input_parameter< bool >::type useDouble(useDoubleSEXP);
     rcpp_result_gen = Rcpp::wrap(fastRunif(n, min, max, useDouble));
     return rcpp_result_gen;
 END_RCPP
 }
 // fastRnorm
-af::array fastRnorm(const int32_t n, const double mean, const double sd, const bool useDouble);
+af::array fastRnorm(const int32_t n, const double mean, const double sd, bool useDouble);
 RcppExport SEXP _RcppArrayFire_fastRnorm(SEXP nSEXP, SEXP meanSEXP, SEXP sdSEXP, SEXP useDoubleSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -41,7 +42,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int32_t >::type n(nSEXP);
     Rcpp::traits::input_parameter< const double >::type mean(meanSEXP);
     Rcpp::traits::input_parameter< const double >::type sd(sdSEXP);
-    Rcpp::traits::input_parameter< const bool >::type useDouble(useDoubleSEXP);
+    Rcpp::traits::input_parameter< bool >::type useDouble(useDoubleSEXP);
     rcpp_result_gen = Rcpp::wrap(fastRnorm(n, mean, sd, useDouble));
     return rcpp_result_gen;
 END_RCPP
@@ -148,7 +149,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_RcppArrayFire_fastLmPure", (DL_FUNC) &_RcppArrayFire_fastLmPure, 2},
+    {"_RcppArrayFire_fastLmPure", (DL_FUNC) &_RcppArrayFire_fastLmPure, 3},
     {"_RcppArrayFire_fastRunif", (DL_FUNC) &_RcppArrayFire_fastRunif, 4},
     {"_RcppArrayFire_fastRnorm", (DL_FUNC) &_RcppArrayFire_fastRnorm, 4},
     {"_RcppArrayFire_arrayfire_device_info", (DL_FUNC) &_RcppArrayFire_arrayfire_device_info, 0},

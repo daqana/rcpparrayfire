@@ -2,18 +2,22 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' Fast and simple linear model
-#' @details Single precision floats are used since not all devices support double precision.
+#' @details Single precision floats are used by default since not all devices support double precision.
 #' @param X  a model matrix
-#' @param y a vector containing the explained variable
+#' @param y  a vector containing the explained variable
+#' @param useDouble  use float or double internally
 #' @return \code{fastLmPure} returns a list with three components:
 #' \describe{
 #'   \item{\code{coefficients}}{a vector of coefficients}
+#'   \item{\code{residuals}}{the residuals, that is response minus fitted values}
+#'   \item{\code{fitted.values}}{the fitted mean values}
 #'   \item{\code{stderr}}{a vector of the (estimated) standard errors of the coefficient estimates}
 #'   \item{\code{df.residual}}{a scalar denoting the degrees of freedom in the model}
+#'   \item{\code{intercept}}{a boolean denoting if a model with intercept was fitted}
 #' }
 #' @export
-fastLmPure <- function(X, y) {
-    .Call(`_RcppArrayFire_fastLmPure`, X, y)
+fastLmPure <- function(X, y, useDouble = FALSE) {
+    .Call(`_RcppArrayFire_fastLmPure`, X, y, useDouble)
 }
 
 #' Fast runif alternative
