@@ -1,6 +1,6 @@
 # RcppArrayFire
 
-R and ArrayFire via Rcpp
+R and [ArrayFire library](http://www.arrayfire.com/) via Rcpp. 
 
 ## Prerequisites
 
@@ -10,6 +10,9 @@ R and ArrayFire via Rcpp
 - g++ (>= 4.8)
 
 ## Installation
+
+RcppArrayFire is not on CRAN. You can install it directly from github:
+
 ```R
 install.packages('devtools')
 library(devtools)
@@ -38,14 +41,11 @@ ArrayFire literal mark is used under a limited license granted by
 ArrayFire the trademark holder in the United States and other countries.
 
 ## Status
-
-Under development
+RcppArrayFire is based on [RcppFire](https://github.com/kafku/RcppFire) and is under development.
 
 ## Authors
 
-Kazuki Fukui
-
-Ralf Stubner
+Kazuki Fukui and Ralf Stubner
 
 ## License
 
