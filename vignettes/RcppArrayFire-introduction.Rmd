@@ -1,0 +1,36 @@
+---
+title: "Introduction to RcppArrayFire"
+author: "Ralf Stubner"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to RcppArrayFire}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+`RcppArrayFire` provides an `Rcpp` wrapper for the [ArrayFire Library](http://www.arrayfire.com/), 
+an open source library that can make use of GPUs and other accelerators via CUDA or OpenCL. 
+
+# Basic usage
+
+Trivial example:
+
+```{r, eval = FALSE}
+library(RcppArrayFire)
+src <- 'af::array doubleArray(const RcppArrayFire::typed_array<f32>& x) {
+    return 2 * x;
+}'
+
+Rcpp::cppFunction(code = src, depends = "RcppArrayFire")
+doubleArray(array(1:8, dim = c(2, 4)))
+```
+
+Alternatively `cxxfunction()` from the `inline` package can be used.
+
+# Using in a package
+
+You can use `RcppArrayFire.package.skeleton()` to create a skeleton package that uses
+`RcppArrayFire`.

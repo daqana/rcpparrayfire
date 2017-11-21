@@ -20,6 +20,6 @@ RUN install2.r codetools Rcpp \
 
 COPY . /tmp/pkg/
 RUN cd /tmp \
- && R CMD build /tmp/pkg \
+ && R CMD build --no-build-vignettes /tmp/pkg \
  && R CMD INSTALL /tmp/RcppArrayFire*tar.gz \
  && rm -rf /tmp/*
