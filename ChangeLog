@@ -1,0 +1,17 @@
+2017-11-23  Ralf Stubner  <ralf.stubner@r-institute.com>
+
+	* opencl-beignet.df: Install from drat
+
+	* DESCRIPTION: Use Authors@R style
+
+2017-11-21  Ralf Stubner  <ralf.stubner@r-institute.com>
+
+	* src/fastRNG.cpp (fastRunif, fastRnorm): Check if device
+	supports doubles
+
+	* src/RcppArrayFireWrap.cpp: Add support for 4D arrays
+
+	* src/fastLm.cpp: fast and simple OLS solver
+
+	* vignettes/RcppArrayFire-introduction.Rmd: Start introductory
+	vignette
