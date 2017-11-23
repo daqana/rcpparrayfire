@@ -1,6 +1,6 @@
 # RcppArrayFire
 
-R and [ArrayFire library](http://www.arrayfire.com/) via Rcpp. 
+R and [ArrayFire library](http://www.arrayfire.com/) via Rcpp.
 
 ## Prerequisites
 
@@ -11,27 +11,21 @@ R and [ArrayFire library](http://www.arrayfire.com/) via Rcpp.
 
 ## Installation
 
-RcppArrayFire is not on CRAN. You can install it directly from github:
+RcppArrayFire is not on CRAN, but you can install the current version
+via [drat](https://cran.r-project.org/package=drat):
 
 ```R
-install.packages('devtools')
-library(devtools)
-install_github(repo = 'RInstitute/RcppArrayFire')
+#install.packages("drat")
+drat::addRepo("RInstitute")
+install.packages("RcppArrayFire")
 ```
-If you want to try RcppArrayFire with keeping your
-local enviornment clean, then
-```R
-dev_mode(on = T)
-install_github(repo = 'RInstitute/RcppArrayFire')
-# do something with RcppArrayFire
-dev_mode(on = F)
-```
+
 RcppArrayFire uses the unified backend of ArrayFire. If you have
 installed ArrayFire in a non-standard directory, you can use the
-`--with-arrayfire` option:
+configure argument `--with-arrayfire`:
+
 ```R
-install_github(repo = 'RInstitute/RcppArrayFire',
-               args = c("--configure-args='--with-arrayfire=/opt/arrayfire-3'"))
+install.packages("RcppArrayFire", configure.args = "--with-arrayfire=/opt/arrayfire-3")
 ```
 
 ## Trademark notice
