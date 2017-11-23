@@ -4,8 +4,7 @@ MAINTAINER Ralf Stubner <ralf.stubner@r-institute.com>
 RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
     beignet-opencl-icd \
-    beignet-dev \
-    ocl-icd-opencl-dev \
+    ocl-icd-libopencl1 \
     curl \
     libglfw3 \
  && apt-get clean \
@@ -16,10 +15,5 @@ RUN apt-get update \
  && ldconfig /usr/local/lib
 
 RUN install2.r codetools Rcpp \
- && rm -rf /tmp/*
-
-COPY . /tmp/pkg/
-RUN cd /tmp \
- && R CMD build --no-build-vignettes /tmp/pkg \
- && R CMD INSTALL /tmp/RcppArrayFire*tar.gz \
+ && install2.r --repo https://rinstitute.github.io/drat/ RcppArrayFire \
  && rm -rf /tmp/*
