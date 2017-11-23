@@ -17,3 +17,12 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Ralf Stubner \email{ralf.stubner@r-institute.com}
+
+Authors:
+\itemize{
+  \item Kazuki Fukui
+}
+
+}
