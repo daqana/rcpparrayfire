@@ -1,3 +1,7 @@
+2017-11-24  Ralf Stubner  <ralf.stubner@r-institute.com>
+
+	* inst/skeleton/rcpparrayfire_hello_world.Rd: Minor corrections
+
 2017-11-23  Ralf Stubner  <ralf.stubner@r-institute.com>
 
 	* opencl-beignet.df: Install from drat
