@@ -11,15 +11,20 @@ matrix:
   allow_failures:
     - r: devel
 notifications:
-  email: false
+  email:
+    on_success: change
+    on_failure: change
 r_binary_packages:
   - knitr
   - rmarkdown
   - pkgKitten
+addons:
+  apt:
+    sources:
+    - sourceline: 'ppa:keithw/glfw3'
+    packages:
+    - libglfw3
 before_install:
-  - sudo apt-add-repository ppa:keithw/glfw3 -y
-  - sudo apt-get update -q
-  - sudo apt-get install libglfw3 -y
   - wget http://arrayfire.s3.amazonaws.com/3.5.1/ArrayFire-v3.5.1_Linux_x86_64.sh
   - sudo sh ArrayFire-v3.5.1_Linux_x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local
   - rm ArrayFire-v3.5.1_Linux_x86_64.sh
