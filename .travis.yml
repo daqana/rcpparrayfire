@@ -8,8 +8,8 @@ r:
   - release
 #  - devel
 install:
-  - sudo apt-add-repository ppa:keithw/glfw3
-  - sudo apt-get update
-  - sudo apt-get install glfw3
+  - sudo apt-add-repository ppa:keithw/glfw3 -y
+  - sudo apt-get update -q
+  - sudo apt-get install glfw3 -y
   - wget http://arrayfire.s3.amazonaws.com/3.5.1/ArrayFire-v3.5.1_Linux_x86_64.sh
   - sudo sh ArrayFire-v3.5.1_Linux_x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local
