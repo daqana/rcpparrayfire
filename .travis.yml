@@ -10,7 +10,7 @@ r:
 r_binary_packages:
   - knitr
   - rmarkdown
-install:
+before_install:
   - sudo apt-add-repository ppa:keithw/glfw3 -y
   - sudo apt-get update -q
   - sudo apt-get install libglfw3 -y
