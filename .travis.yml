@@ -7,11 +7,15 @@ r:
   - oldrel
   - release
   - devel
+matrix:
+  allow_failures:
+    - r: devel
 notifications:
   email: false
 r_binary_packages:
   - knitr
   - rmarkdown
+  - pkgKitten
 before_install:
   - sudo apt-add-repository ppa:keithw/glfw3 -y
   - sudo apt-get update -q
