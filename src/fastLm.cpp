@@ -77,7 +77,7 @@ Rcpp::List fastLmPure(const Rcpp::NumericMatrix& X,
         s2 = (af::dot(res, res)).scalar<double>() / (n-k);
     else
         s2 = (af::dot(res, res)).scalar<float>() / (n-k);
-    af::array std_err = af::sqrt(s2 - af::diag(af::inverse(tXX)));
+    af::array std_err = af::sqrt(s2 * af::diag(af::inverse(tXX)));
 
     // intercept was included if one column is constant, i.e. max == min
     bool intercept = af::anyTrue<bool>(af::min(_X, 0) == af::max(_X, 0));
