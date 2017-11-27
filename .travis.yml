@@ -7,6 +7,9 @@ r:
 #  - oldrel
   - release
 #  - devel
+r_binary_packages:
+  - knitr
+  - rmarkdown
 install:
   - sudo apt-add-repository ppa:keithw/glfw3 -y
   - sudo apt-get update -q
