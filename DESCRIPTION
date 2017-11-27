@@ -1,7 +1,7 @@
 Package: RcppArrayFire
 Type: Package
 Title: Rcpp integration for ArrayFire
-Version: 0.0.1
+Version: 0.0.2
 Date: 2017-11-10
 Authors@R: as.person(c(
     "Kazuki Fukui [aut]",
