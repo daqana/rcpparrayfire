@@ -4,9 +4,11 @@ language: r
 sudo: required
 cache: packages
 r:
-#  - oldrel
+  - oldrel
   - release
-#  - devel
+  - devel
+notifications:
+  email: false
 r_binary_packages:
   - knitr
   - rmarkdown
@@ -16,3 +18,4 @@ before_install:
   - sudo apt-get install libglfw3 -y
   - wget http://arrayfire.s3.amazonaws.com/3.5.1/ArrayFire-v3.5.1_Linux_x86_64.sh
   - sudo sh ArrayFire-v3.5.1_Linux_x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local
+  - rm ArrayFire-v3.5.1_Linux_x86_64.sh
