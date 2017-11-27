@@ -1,3 +1,5 @@
+[![Travis-CI Build Status](https://travis-ci.org/RInstitute/rcpparrayfire.svg?branch=master)](https://travis-ci.org/RInstitute/rcpparrayfire)
+
 # RcppArrayFire
 
 R and [ArrayFire library](http://www.arrayfire.com/) via Rcpp.

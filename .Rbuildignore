@@ -4,4 +4,4 @@ opencl-beignet.df
 .editorconfig
 ^docs$
 LICENSE
-.travis.yml
+^\.travis\.yml$
