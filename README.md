@@ -6,10 +6,20 @@ R and [ArrayFire library](http://www.arrayfire.com/) via Rcpp.
 
 ## Prerequisites
 
-- R
-- Rcpp
-- ArrayFire
-- g++ (>= 4.8)
+In order to use RcppArrayFire you will need R including development tools and Rcpp.
+On a Debian based or derived system, this can be achieved with:
+
+```
+sudo apt-get install r-base-dev r-cran-rcpp 
+```
+
+In principle ArrayFire has been packaged for Debian. However, the CUDA backend 
+is not included  and usage of the packaged OpenCL backend is hindered by a 
+[bug in the clBLAS package](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=881054). 
+For serious usage it is currently better to build from source or use the 
+[binary installer](http://arrayfire.com/download/) from ArrayFire. See the 
+[ArrayFire documentation](http://arrayfire.org/docs/installing.htm) for details.
+
 
 ## Installation
 

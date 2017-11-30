@@ -63,7 +63,7 @@
       <h1>Introduction to RcppArrayFire</h1>
                         <h4 class="author">Ralf Stubner</h4>
             
-            <h4 class="date">2017-11-27</h4>
+            <h4 class="date">2017-11-30</h4>
           </div>
 
     
@@ -77,20 +77,79 @@
 <div id="basic-usage" class="section level1">
 <h1 class="hasAnchor">
 <a href="#basic-usage" class="anchor"></a>Basic usage</h1>
-<p>Trivial example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RcppArrayFire)
-src &lt;-<span class="st"> 'af::array doubleArray(const RcppArrayFire::typed_array&lt;f32&gt;&amp; x) {</span>
-<span class="st">    return 2 * x;</span>
-<span class="st">}'</span>
+<div id="calculating-pi-by-simulation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#calculating-pi-by-simulation" class="anchor"></a>Calculating <span class="math inline">\(\pi\)</span> by simulation</h2>
+<p>Let’s look at the classical example of calculating <span class="math inline">\(\pi\)</span> via simulation. The basic idea is to generate a large number of random points within the unit square. An approximation for <span class="math inline">\(\pi\)</span> can then be calculated from the ratio of points within the unit circle to the total number of points. A vectorized implementation in R might look like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">piR &lt;-<span class="st"> </span><span class="cf">function</span>(N) {
+    x &lt;-<span class="st"> </span><span class="kw">runif</span>(N)
+    y &lt;-<span class="st"> </span><span class="kw">runif</span>(N)
+    <span class="dv">4</span> <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">sqrt</span>(x<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>y<span class="op">^</span><span class="dv">2</span>) <span class="op">&lt;</span><span class="st"> </span><span class="fl">1.0</span>) <span class="op">/</span><span class="st"> </span>N
+}
 
-Rcpp<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/Rcpp/topics/cppFunction">cppFunction</a></span>(<span class="dt">code =</span> src, <span class="dt">depends =</span> <span class="st">"RcppArrayFire"</span>)
-<span class="kw">doubleArray</span>(<span class="kw">array</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>)))</code></pre></div>
-<p>Alternatively <code>cxxfunction()</code> from the <code>inline</code> package can be used.</p>
+<span class="kw">set.seed</span>(<span class="dv">42</span>)
+<span class="kw">system.time</span>(<span class="kw">cat</span>(<span class="st">"pi ~= "</span>, <span class="kw">piR</span>(<span class="dv">10</span><span class="op">^</span><span class="dv">7</span>), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>))
+<span class="co">#&gt; pi ~=  3.140899</span>
+<span class="co">#&gt;        user      system     elapsed </span>
+<span class="co">#&gt;       0.836       0.060       0.897</span></code></pre></div>
+<p>A simple way to use C++ code in R is to use the inline package or <code>cppFunction()</code> from Rcpp, which are both possible with RcppArrayFire. An implementation in C++ using ArrayFire might look like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">src &lt;-<span class="st"> '</span>
+<span class="st">double piAF (const int N) {</span>
+<span class="st">    array x = randu(N, f32);</span>
+<span class="st">    array y = randu(N, f32);</span>
+<span class="st">    return 4.0 * sum&lt;float&gt;(sqrt(x*x + y*y) &lt; 1.0) / N;</span>
+<span class="st">}'</span>
+Rcpp<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/Rcpp/topics/cppFunction">cppFunction</a></span>(<span class="dt">code =</span> src, <span class="dt">depends =</span> <span class="st">"RcppArrayFire"</span>, <span class="dt">includes =</span> <span class="st">"using namespace af;"</span>)
+
+RcppArrayFire<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RcppArrayFire/topics/arrayfire_set_seed">arrayfire_set_seed</a></span>(<span class="dv">42</span>)
+<span class="kw">system.time</span>(<span class="kw">cat</span>(<span class="st">"pi ~= "</span>, <span class="kw">piAF</span>(<span class="dv">10</span><span class="op">^</span><span class="dv">7</span>), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>))
+<span class="co">#&gt; pi ~=  3.141066</span>
+<span class="co">#&gt;        user      system     elapsed </span>
+<span class="co">#&gt;       0.000       0.004       0.021</span></code></pre></div>
+<p>Several things are worth noting:</p>
+<ol style="list-style-type: decimal">
+<li><p>The syntax is almost identical. Besides the need for using types and a different function name when generating random numbers, the argument <code>f32</code> to <code>randu</code> as well as the <code>float</code> type catches the eye. These instruct ArrayFire to use single precision floats, since not all devices support double precision floating point numbers. If you want to use double precision, you have to specify <code>f64</code> and <code>double</code>.</p></li>
+<li><p>The results are not the same, since ArrayFire uses a different random number generator.</p></li>
+<li><p>The speed-up can be quite impressive. However, sometimes the first invocation of a function is not as fast as expected due to the <a href="http://arrayfire.com/performance-of-arrayfire-jit-code-generation/">just-in-time compilation</a> used by ArrayFire.</p></li>
+</ol>
 </div>
-<div id="using-in-a-package" class="section level1">
+<div id="arrays-as-parameters" class="section level2">
+<h2 class="hasAnchor">
+<a href="#arrays-as-parameters" class="anchor"></a>Arrays as parameters</h2>
+<p>Up to now we have only considered simple types like <code>double</code> or <code>int</code> as function parameters and return values. However, we can also use arrays. Consider the matrix product <span class="math inline">\(X^{\mathsf{T}} X\)</span> for a random matrix <span class="math inline">\(X\)</span> in R:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">42</span>)
+N &lt;-<span class="st"> </span><span class="dv">40</span>
+X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(N <span class="op">*</span><span class="st"> </span>N <span class="op">*</span><span class="st"> </span><span class="dv">2</span>), <span class="dt">ncol =</span> N)
+tXXR &lt;-<span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X</code></pre></div>
+<p>The matrix multiplication can be implemented with RcppArrayFire using the appropriate <a href="http://arrayfire.org/docs/group__blas__func__matmul.htm">matmul function</a>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">src &lt;-<span class="st"> '</span>
+<span class="st">af::array squareMatrix(const RcppArrayFire::typed_array&lt;f32&gt;&amp; x) {</span>
+<span class="st">    return af::matmulTN(x ,x);</span>
+<span class="st">}'</span>
+Rcpp<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/Rcpp/topics/cppFunction">cppFunction</a></span>(<span class="dt">code =</span> src, <span class="dt">depends =</span> <span class="st">"RcppArrayFire"</span>)
+tXXGPU &lt;-<span class="st"> </span><span class="kw">squareMatrix</span>(X)
+
+<span class="kw">all.equal</span>(tXXR, tXXGPU)
+<span class="co">#&gt; [1] "Mean relative difference: 1.372856e-07"</span></code></pre></div>
+<p>Since an object of type <code>af::array</code> can contain different <a href="http://arrayfire.org/docs/defines_8h.htm#a023d8ac325fb14f1712a52fb0940b1d5">data types</a>, the templated wrapper class <code>RcppArrayFire::typed_array&lt;&gt;</code> is used to indicate the desired data type when converting from R to C++. Again single precision floats are used with ArrayFire, which explains the difference between the two results. We can be sure that double precision is supported by switching the computation backend to “CPU”, which produces identical results:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">src &lt;-<span class="st"> '</span>
+<span class="st">af::array squareMatrixF64(const RcppArrayFire::typed_array&lt;f64&gt;&amp; x) {</span>
+<span class="st">    return af::matmulTN(x ,x);</span>
+<span class="st">}'</span>
+Rcpp<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/Rcpp/topics/cppFunction">cppFunction</a></span>(<span class="dt">code =</span> src, <span class="dt">depends =</span> <span class="st">"RcppArrayFire"</span>)
+
+RcppArrayFire<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RcppArrayFire/topics/arrayfire_set_backend">arrayfire_set_backend</a></span>(<span class="st">"CPU"</span>)
+tXXCPU &lt;-<span class="st"> </span><span class="kw">squareMatrixF64</span>(X)
+RcppArrayFire<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RcppArrayFire/topics/arrayfire_set_backend">arrayfire_set_backend</a></span>(<span class="st">"DEFAULT"</span>)
+
+<span class="kw">all.equal</span>(tXXR, tXXCPU)
+<span class="co">#&gt; [1] TRUE</span></code></pre></div>
+</div>
+</div>
+<div id="usage-in-a-package" class="section level1">
 <h1 class="hasAnchor">
-<a href="#using-in-a-package" class="anchor"></a>Using in a package</h1>
-<p>You can use <code><a href="../reference/RcppArrayFire.package.skeleton.html">RcppArrayFire.package.skeleton()</a></code> to create a skeleton package that uses <code>RcppArrayFire</code>.</p>
+<a href="#usage-in-a-package" class="anchor"></a>Usage in a package</h1>
+<p>More serious functions should be defined in a permanent fashion. To facilitate this, RcppArrayFire contains the function <code>RcppArraFire.package.skeleton()</code>. This functions initialises a package with suitable <code>configure</code> script for linking with ArrayFire and RcppArrayFire. In order to implement new functionality you can then write C++ functions and save them in the <code>src</code> folder. Functions that should be callable from R should be marked with the <code>[[Rcpp::export]]</code> attribute. See the Rcpp vignettes on <a href="http://dirk.eddelbuettel.com/code/rcpp/Rcpp-attributes.pdf">attributes</a> and <a href="http://dirk.eddelbuettel.com/code/rcpp/Rcpp-package.pdf">package writing</a> for further details.</p>
 </div>
 </div>
   </div>
@@ -101,8 +160,13 @@ Rcpp<span class="op">::</span><span class="kw"><a href="http://www.rdocumentatio
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#introduction">Introduction</a></li>
-      <li><a href="#basic-usage">Basic usage</a></li>
-      <li><a href="#using-in-a-package">Using in a package</a></li>
+      <li>
+<a href="#basic-usage">Basic usage</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#calculating-pi-by-simulation">Calculating <span class="math inline">\(\pi\)</span> by simulation</a></li>
+      <li><a href="#arrays-as-parameters">Arrays as parameters</a></li>
+      </ul>
+</li>
+      <li><a href="#usage-in-a-package">Usage in a package</a></li>
       </ul>
 </div>
       </div>
