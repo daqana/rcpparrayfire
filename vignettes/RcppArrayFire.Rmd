@@ -16,21 +16,125 @@ an open source library that can make use of GPUs and other accelerators via CUDA
 
 # Basic usage
 
-Trivial example:
+## Calculating $\pi$ by simulation
+
+Let's look at the classical example of calculating $\pi$ via simulation. The 
+basic idea is to generate a large number of random points within the unit 
+square. An approximation for $\pi$ can then be calculated from the ratio of 
+points within the unit circle to the total number of points. A vectorized 
+implementation in R might look like this:
 
 ```{r, eval = FALSE}
-library(RcppArrayFire)
-src <- 'af::array doubleArray(const RcppArrayFire::typed_array<f32>& x) {
-    return 2 * x;
-}'
+piR <- function(N) {
+    x <- runif(N)
+    y <- runif(N)
+    4 * sum(sqrt(x^2 + y^2) < 1.0) / N
+}
 
-Rcpp::cppFunction(code = src, depends = "RcppArrayFire")
-doubleArray(array(1:8, dim = c(2, 4)))
+set.seed(42)
+system.time(cat("pi ~= ", piR(10^7), "\n"))
+#> pi ~=  3.140899
+#>        user      system     elapsed 
+#>       0.836       0.060       0.897
 ```
 
-Alternatively `cxxfunction()` from the `inline` package can be used.
+A simple way to use C++ code in R is to use the inline package or `cppFunction()`
+from Rcpp, which are both possible with RcppArrayFire. An implementation in C++
+using ArrayFire might look like this:
 
-# Using in a package
+```{r, eval = FALSE}
+src <- '
+double piAF (const int N) {
+    array x = randu(N, f32);
+    array y = randu(N, f32);
+    return 4.0 * sum<float>(sqrt(x*x + y*y) < 1.0) / N;
+}'
+Rcpp::cppFunction(code = src, depends = "RcppArrayFire", includes = "using namespace af;")
 
-You can use `RcppArrayFire.package.skeleton()` to create a skeleton package that uses
-`RcppArrayFire`.
+RcppArrayFire::arrayfire_set_seed(42)
+system.time(cat("pi ~= ", piAF(10^7), "\n"))
+#> pi ~=  3.141066
+#>        user      system     elapsed 
+#>       0.000       0.004       0.021
+```
+
+Several things are worth noting:
+
+(1) The syntax is almost identical. Besides the need for using types and a
+different function name when generating random numbers, the argument `f32` to
+`randu` as well as the `float` type catches the eye. These instruct ArrayFire to
+use single precision floats, since not all devices support double precision
+floating point numbers. If you want to use double precision, you have to specify
+`f64` and `double`.
+
+(2) The results are not the same, since ArrayFire uses a different random number
+generator.
+
+(3) The speed-up can be quite impressive. However, sometimes the first invocation of
+a function is not as fast as expected due to the  [just-in-time compilation](http://arrayfire.com/performance-of-arrayfire-jit-code-generation/)
+used by ArrayFire.
+
+
+## Arrays as parameters 
+
+Up to now we have only considered simple types like `double` or `int` as function
+parameters and return values.  However, we can also use arrays. Consider the
+matrix product $X^{\mathsf{T}} X$ for a random matrix $X$ in R:
+
+```{r, eval = FALSE}
+set.seed(42)
+N <- 40
+X <- matrix(rnorm(N * N * 2), ncol = N)
+tXXR <- t(X) %*% X
+```
+
+The matrix multiplication can be implemented with RcppArrayFire using the
+appropriate [matmul function](http://arrayfire.org/docs/group__blas__func__matmul.htm):
+
+```{r, eval = FALSE}
+src <- '
+af::array squareMatrix(const RcppArrayFire::typed_array<f32>& x) {
+    return af::matmulTN(x ,x);
+}'
+Rcpp::cppFunction(code = src, depends = "RcppArrayFire")
+tXXGPU <- squareMatrix(X)
+
+all.equal(tXXR, tXXGPU)
+#> [1] "Mean relative difference: 1.372856e-07"
+```
+
+Since an object of type `af::array` can contain different [data types](http://arrayfire.org/docs/defines_8h.htm#a023d8ac325fb14f1712a52fb0940b1d5),
+the templated wrapper class `RcppArrayFire::typed_array<>` is used to indicate
+the desired data type when converting from R to C++. Again single precision
+floats are used with ArrayFire, which explains the difference between the two
+results. We can be sure that double precision is supported by switching the
+computation backend to "CPU", which produces identical results:
+
+```{r, eval = FALSE}
+src <- '
+af::array squareMatrixF64(const RcppArrayFire::typed_array<f64>& x) {
+    return af::matmulTN(x ,x);
+}'
+Rcpp::cppFunction(code = src, depends = "RcppArrayFire")
+
+RcppArrayFire::arrayfire_set_backend("CPU")
+tXXCPU <- squareMatrixF64(X)
+RcppArrayFire::arrayfire_set_backend("DEFAULT")
+
+all.equal(tXXR, tXXCPU)
+#> [1] TRUE
+```
+
+
+# Usage in a package
+
+More serious functions should be defined in a permanent fashion. To facilitate
+this, RcppArrayFire contains the function `RcppArraFire.package.skeleton()`.
+This functions initialises a package with suitable `configure` script for
+linking with ArrayFire and RcppArrayFire. In order to implement new
+functionality you can then write C++ functions and save them in the `src`
+folder. Functions that should be callable from R should be marked with the
+`[[Rcpp::export]]` attribute. See the Rcpp vignettes on
+[attributes](http://dirk.eddelbuettel.com/code/rcpp/Rcpp-attributes.pdf) and
+[package writing](http://dirk.eddelbuettel.com/code/rcpp/Rcpp-package.pdf) for
+further details.
