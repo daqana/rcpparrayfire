@@ -68,12 +68,9 @@
 <div id="prerequisites" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
-<ul>
-<li>R</li>
-<li>Rcpp</li>
-<li>ArrayFire</li>
-<li>g++ (&gt;= 4.8)</li>
-</ul>
+<p>In order to use RcppArrayFire you will need R including development tools and Rcpp. On a Debian based or derived system, this can be achieved with:</p>
+<pre><code>sudo apt-get install r-base-dev r-cran-rcpp </code></pre>
+<p>In principle ArrayFire has been packaged for Debian. However, the CUDA backend is not included and usage of the packaged OpenCL backend is hindered by a <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=881054">bug in the clBLAS package</a>. For serious usage it is currently better to build from source or use the <a href="http://arrayfire.com/download/">binary installer</a> from ArrayFire. See the <a href="http://arrayfire.org/docs/installing.htm">ArrayFire documentation</a> for details.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
