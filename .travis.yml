@@ -14,7 +14,7 @@ notifications:
   email:
     on_success: change
     on_failure: change
-r_binary_packages:
+r_packages:
   - knitr
   - rmarkdown
   - pkgKitten
