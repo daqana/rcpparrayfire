@@ -41,14 +41,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/RInstitute/rcpparrayfire">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -76,7 +69,7 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>RcppArrayFire is not on CRAN, but you can install the current version via <a href="https://cran.r-project.org/package=drat">drat</a>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages("drat")</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">"drat"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) <span class="kw">install.packages</span>(<span class="st">"drat"</span>)
 drat<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/drat/topics/addRepo">addRepo</a></span>(<span class="st">"RInstitute"</span>)
 <span class="kw">install.packages</span>(<span class="st">"RcppArrayFire"</span>)</code></pre></div>
 <p>RcppArrayFire uses the unified backend of ArrayFire. If you have installed ArrayFire in a non-standard directory, you can use the configure argument <code>--with-arrayfire</code>:</p>
@@ -109,8 +102,6 @@ drat<span class="op">::</span><span class="kw"><a href="http://www.rdocumentatio
   <div class="col-md-3" id="sidebar">
     <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/RInstitute/rcpparrayfire">https://​github.com/​RInstitute/​rcpparrayfire</a>
-</li>
 <li>Report a bug at <br><a href="https://github.com/RInstitute/rcpparrayfire/issues">https://​github.com/​RInstitute/​rcpparrayfire/​issues</a>
 </li>
 </ul>
@@ -124,6 +115,7 @@ drat<span class="op">::</span><span class="kw"><a href="http://www.rdocumentatio
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/RInstitute/rcpparrayfire"><img src="https://travis-ci.org/RInstitute/rcpparrayfire.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://codecov.io/github/RInstitute/rcpparrayfire?branch=master"><img src="https://img.shields.io/codecov/c/github/RInstitute/rcpparrayfire/master.svg" alt="Coverage Status"></a></li>
 </ul>
 </div>
 </div>

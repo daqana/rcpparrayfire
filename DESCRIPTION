@@ -23,5 +23,6 @@ BugReports: https://github.com/RInstitute/rcpparrayfire/issues
 RoxygenNote: 6.0.1
 Suggests: pkgKitten,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 VignetteBuilder: knitr
