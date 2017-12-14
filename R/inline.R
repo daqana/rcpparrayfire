@@ -23,6 +23,7 @@ inlineCxxPlugin <- function(...){
     )
     settings <- plugin()
     settings$env$PKG_CXXFLAGS  <- RcppArrayFireCxxFlags()
+    settings$env$USE_CXX11 <- "yes"
     settings$env$USE_CXX1X <- "yes"
     settings
 }
