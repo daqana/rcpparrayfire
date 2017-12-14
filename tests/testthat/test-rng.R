@@ -1,0 +1,24 @@
+context("rng")
+
+seed <- 12345678901234567890
+
+test_that("setting and getting the random seed works", {
+    arrayfire_set_seed(seed)
+    expect_equal(seed, arrayfire_get_seed())
+})
+
+test_that("setting seed produces identical uniformly distributed numbers", {
+    arrayfire_set_seed(seed)
+    u1 <- fastRunif(10)
+    arrayfire_set_seed(seed)
+    u2 <- fastRunif(10)
+    expect_equal(u1, u2)
+})
+
+test_that("setting seed produces identical normaly distributed numbers", {
+    arrayfire_set_seed(seed)
+    n1 <- fastRnorm(10)
+    arrayfire_set_seed(seed)
+    n2 <- fastRnorm(10)
+    expect_equal(n1, n2)
+})
