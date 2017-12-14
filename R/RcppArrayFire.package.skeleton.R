@@ -37,7 +37,7 @@ RcppArrayFire.package.skeleton <- function(name="anRpackage",
                                            path=".",
                                            force=FALSE,
                                            code_files=character(),
-                                           example_code=TRUE) {
+                                           example_code=TRUE) { # nocov start
 
     env <- parent.frame(1)
 
@@ -137,4 +137,4 @@ RcppArrayFire.package.skeleton <- function(name="anRpackage",
     }
 
     invisible(NULL)
-}
+} # nocov end
