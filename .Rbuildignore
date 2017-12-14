@@ -6,3 +6,4 @@ opencl-beignet.df
 LICENSE
 ^\.travis\.yml$
 ^codecov\.yml$
+^inst/libs$
