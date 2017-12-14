@@ -18,6 +18,7 @@
 inlineCxxPlugin <- function(...){
     plugin <- Rcpp::Rcpp.plugin.maker(
         include.before = "#include <RcppArrayFire.h>",
+        include.after = "// [[Rcpp::plugins(cpp11)]]",
         libs = sprintf("%s $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)", RcppArrayFireLdFlags()),
         package = "RcppArrayFire"
     )
