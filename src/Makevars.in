@@ -1,5 +1,8 @@
 ## enviorment variables for building R package
 CXX_STD = CXX11
 PKG_CXXFLAGS = -I../inst/include @AF_INCLUDE@
-AF_LIBS = @AF_LIBS@ 
-PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) $(AF_LIBS)
+AF_LIBS = @AF_LIBS@
+PKG_LIBS = $(AF_LIBS)
+
+all: $(SHLIB)
+	@if command -v install_name_tool; then echo "fixxing"; install_name_tool -id '@rpath/RcppArrayFire.so' RcppArrayFire.so; fi

@@ -46,10 +46,15 @@ AC_ARG_WITH([arrayfire],
 AC_SUBST([AF_INCLUDE], "")
 AC_SUBST([AF_LIBS], "-laf")
 
+AS_IF([test $(uname) == "Darwin"],
+            [
+             AF_LIBS="-lafopencl -Wl,-rpath,/usr/local/lib"
+            ])
+
 AS_IF([test -e "${with_arrayfire}"],
             [
              AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
-             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS}"
+             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS} -Wl,-rpath,${with_arrayfire}/lib"
             ])
 
 CXX_FLAGS="${CXX_FLAGS} ${AF_INCLUDE}"

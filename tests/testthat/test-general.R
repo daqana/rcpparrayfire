@@ -31,6 +31,7 @@ test_that("getting and setting the backend works", {
 })
 
 test_that("set_backend w/o argument uses DEFAULT", {
+    skip_on_os("mac")
     arrayfire_set_backend("DEFAULT")
     default_backend <- arrayfire_get_active_backend()
     arrayfire_set_backend("")

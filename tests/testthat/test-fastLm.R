@@ -26,6 +26,7 @@ test_that("including intercept works", {
 })
 
 test_that("models from R and AF on CPU are very similar", {
+    skip_on_os("mac")
     arrayfire_set_backend("CPU")
     # fit model with R and AF
     modelR <- lm.fit(X, y)
