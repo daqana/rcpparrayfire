@@ -3,11 +3,13 @@ context("rng")
 seed <- 12345678901234567890
 
 test_that("setting and getting the random seed works", {
+    skip_if(identical(Sys.getenv("TRAVIS_OS_NAME"), "osx"), message = "On Travis Mac")
     arrayfire_set_seed(seed)
     expect_equal(seed, arrayfire_get_seed())
 })
 
 test_that("setting seed produces identical uniformly distributed numbers", {
+    skip_if(identical(Sys.getenv("TRAVIS_OS_NAME"), "osx"), message = "On Travis Mac")
     arrayfire_set_seed(seed)
     u1 <- fastRunif(10)
     arrayfire_set_seed(seed)
@@ -16,6 +18,7 @@ test_that("setting seed produces identical uniformly distributed numbers", {
 })
 
 test_that("setting seed produces identical normaly distributed numbers", {
+    skip_if(identical(Sys.getenv("TRAVIS_OS_NAME"), "osx"), message = "On Travis Mac")
     arrayfire_set_seed(seed)
     n1 <- fastRnorm(10)
     arrayfire_set_seed(seed)
