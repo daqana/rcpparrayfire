@@ -33,7 +33,7 @@ addons:
     packages:
     - libglfw3
 before_install:
-  - test "$TRAVIS_OS_NAME" == "linux" && sh .travis/before_install_linux.sh
-  - test "$TRAVIS_OS_NAME" == "osx" && sh .travis/before_install_osx.sh
+  - test "$TRAVIS_OS_NAME" == "linux" && sh .travis/before_install_linux.sh || true
+  - test "$TRAVIS_OS_NAME" == "osx" && sh .travis/before_install_osx.sh || true
 after_success:
   - Rscript -e 'covr::codecov()'
