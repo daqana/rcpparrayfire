@@ -26,6 +26,8 @@ r_packages:
   - knitr
   - rmarkdown
   - pkgKitten
+brew_packages:
+  - glfw
 addons:
   apt:
     sources:
