@@ -49,16 +49,19 @@ AC_SUBST([AF_LIBS], "-laf")
 
 AS_IF([test $(uname) == "Darwin"],
             [
-             AF_LIBS="-lafopencl -Wl,-rpath,/usr/local/lib"
+             AF_LIBS="-lafopencl"
+             AF_RPATH="-Wl,-rpath,/usr/local/lib"
             ])
 
 AS_IF([test -e "${with_arrayfire}"],
             [
              AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
-             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS} -Wl,-rpath,${with_arrayfire}/lib"
+             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS}"
+             AF_RPATH="-Wl,-rpath,${with_arrayfire}/lib"
             ])
 
 CPPFLAGS="${CPPFLAGS} ${AF_INCLUDE}"
+AF_LIBS="${AF_LIBS} ${AF_RPATH}"
 LDFLAGS="${LDFLAGS} ${AF_LIBS}"
 
 # check for arrayfire header

@@ -2918,18 +2918,21 @@ AF_LIBS="-laf"
 
 if test $(uname) == "Darwin"; then :
 
-             AF_LIBS="-lafopencl -Wl,-rpath,/usr/local/lib"
+             AF_LIBS="-lafopencl"
+             AF_RPATH="-Wl,-rpath,/usr/local/lib"
 
 fi
 
 if test -e "${with_arrayfire}"; then :
 
              AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
-             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS} -Wl,-rpath,${with_arrayfire}/lib"
+             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS}"
+             AF_RPATH="-Wl,-rpath,${with_arrayfire}/lib"
 
 fi
 
 CPPFLAGS="${CPPFLAGS} ${AF_INCLUDE}"
+AF_LIBS="${AF_LIBS} ${AF_RPATH}"
 LDFLAGS="${LDFLAGS} ${AF_LIBS}"
 
 # check for arrayfire header
