@@ -37,6 +37,12 @@ AC_LANG(C++)
 AC_REQUIRE_CPP
 AC_PROG_CXX
 
+AS_IF([test $(uname) == "Darwin"],
+            [
+             AF_BACKEND="opencl"
+             AF_RPATH="-Wl,-rpath,/usr/local/lib"
+            ])
+
 # set path to root of arrayfire
 AC_ARG_WITH([arrayfire],
             AC_HELP_STRING([--with-arrayfire=PREFIX],
@@ -44,14 +50,15 @@ AC_ARG_WITH([arrayfire],
             [],
             [])
 
-AC_SUBST([AF_INCLUDE], "")
-AC_SUBST([AF_LIBS], "-laf")
+# set backend
+AC_ARG_WITH([backend],
+            AC_HELP_STRING([--with-backend=TYPE],
+                           [set one of cpu, cuda or opencl (default=blank for unified backend)]),
+            [AF_BACKEND="${with_backend}"],
+            [])
 
-AS_IF([test $(uname) == "Darwin"],
-            [
-             AF_LIBS="-lafopencl"
-             AF_RPATH="-Wl,-rpath,/usr/local/lib"
-            ])
+AC_SUBST([AF_INCLUDE], "")
+AC_SUBST([AF_LIBS], "-laf${AF_BACKEND}")
 
 AS_IF([test -e "${with_arrayfire}"],
             [
@@ -69,7 +76,7 @@ AC_CHECK_HEADER([arrayfire.h],
     [],
     [AC_MSG_ERROR([unable to find arrayfire.h])])
 
-AC_MSG_CHECKING([for libaf.so])
+AC_MSG_CHECKING([for libaf${AF_BACKEND}.so])
         AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <arrayfire.h>
 #include <string>
@@ -77,9 +84,13 @@ const std::string info = af::infoString();]])],
                 [AC_MSG_RESULT(yes)],
                 [
                  AC_MSG_RESULT(no)
-                 AC_MSG_ERROR([unable to find libaf.so])
+                 AC_MSG_ERROR([unable to find libaf${AF_BACKEND}.so])
                 ])
 
 
 AC_CONFIG_FILES([src/Makevars R/flags.R])
 AC_OUTPUT
+
+echo
+echo "Final src/Makevars"
+cat src/Makevars
