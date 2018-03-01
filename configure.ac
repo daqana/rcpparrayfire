@@ -32,6 +32,7 @@ CXX11=`"${R_HOME}/bin/R" CMD config CXX1X`
 CXX11STD=`"${R_HOME}/bin/R" CMD config CXX1XSTD`
 CXX="${CXX11} ${CXX11STD}"
 CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX1XFLAGS`
+CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 AC_LANG(C++)
 AC_REQUIRE_CPP
 AC_PROG_CXX
@@ -49,10 +50,10 @@ AC_SUBST([AF_LIBS], "-laf")
 AS_IF([test -e "${with_arrayfire}"],
             [
              AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
-             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS}"
+             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS} -Wl,-rpath,${with_arrayfire}/lib"
             ])
 
-CXX_FLAGS="${CXX_FLAGS} ${AF_INCLUDE}"
+CPPFLAGS="${CPPFLAGS} ${AF_INCLUDE}"
 LDFLAGS="${LDFLAGS} ${AF_LIBS}"
 
 # check for arrayfire header
