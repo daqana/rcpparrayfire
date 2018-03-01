@@ -1,6 +1,6 @@
 #                                               -*- Autoconf -*-
 # Copyright (C) 2015 Kazuki Fukui
-# Copyright (C) 2017 Ralf Stubner (R Institute GmbH)
+# Copyright (C) 2017, 2018 Ralf Stubner (R Institute GmbH)
 #
 # This file is part of RcppArrayFire.
 #
@@ -43,29 +43,26 @@ AS_IF([test $(uname) == "Darwin"],
              AF_RPATH="-Wl,-rpath,/usr/local/lib"
             ])
 
-# set path to root of arrayfire
-AC_ARG_WITH([arrayfire],
-            AC_HELP_STRING([--with-arrayfire=PREFIX],
-                           [path to where arrayfire is installed]),
-            [],
-            [])
-
 # set backend
 AC_ARG_WITH([backend],
             AC_HELP_STRING([--with-backend=TYPE],
                            [set one of cpu, cuda or opencl (default=blank for unified backend)]),
             [AF_BACKEND="${with_backend}"],
-            [])
+            [AF_BACKEND=""])
 
 AC_SUBST([AF_INCLUDE], "")
 AC_SUBST([AF_LIBS], "-laf${AF_BACKEND}")
 
-AS_IF([test -e "${with_arrayfire}"],
+# set path to root of arrayfire
+AC_ARG_WITH([arrayfire],
+            AC_HELP_STRING([--with-arrayfire=PREFIX],
+                           [path to where arrayfire is installed]),
             [
              AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
              AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS}"
              AF_RPATH="-Wl,-rpath,${with_arrayfire}/lib"
-            ])
+            ],
+            [])
 
 CPPFLAGS="${CPPFLAGS} ${AF_INCLUDE}"
 AF_LIBS="${AF_LIBS} ${AF_RPATH}"

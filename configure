@@ -674,8 +674,8 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
-with_arrayfire
 with_backend
+with_arrayfire
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1306,9 +1306,9 @@ if test -n "$ac_init_help"; then
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-arrayfire=PREFIX path to where arrayfire is installed
   --with-backend=TYPE     set one of cpu, cuda or opencl (default=blank for
                           unified backend)
+  --with-arrayfire=PREFIX path to where arrayfire is installed
 
 Some influential environment variables:
   CXX         C++ compiler command
@@ -2913,19 +2913,13 @@ if test $(uname) == "Darwin"; then :
 
 fi
 
-# set path to root of arrayfire
-
-# Check whether --with-arrayfire was given.
-if test "${with_arrayfire+set}" = set; then :
-  withval=$with_arrayfire;
-fi
-
-
 # set backend
 
 # Check whether --with-backend was given.
 if test "${with_backend+set}" = set; then :
   withval=$with_backend; AF_BACKEND="${with_backend}"
+else
+  AF_BACKEND=""
 fi
 
 
@@ -2934,13 +2928,17 @@ AF_INCLUDE=""
 AF_LIBS="-laf${AF_BACKEND}"
 
 
-if test -e "${with_arrayfire}"; then :
+# set path to root of arrayfire
 
+# Check whether --with-arrayfire was given.
+if test "${with_arrayfire+set}" = set; then :
+  withval=$with_arrayfire;
              AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
              AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS}"
              AF_RPATH="-Wl,-rpath,${with_arrayfire}/lib"
 
 fi
+
 
 CPPFLAGS="${CPPFLAGS} ${AF_INCLUDE}"
 AF_LIBS="${AF_LIBS} ${AF_RPATH}"
