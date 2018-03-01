@@ -11,7 +11,7 @@ The RcppArrayFire package provides Rcpp integration for ArrayFire.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/RInstitute/rcpparrayfire}
+  \item \url{https://www.daqana.org/rcpparrayfire/}
   \item \url{http://www.arrayfire.com}
   \item Report bugs at \url{https://github.com/RInstitute/rcpparrayfire/issues}
 }

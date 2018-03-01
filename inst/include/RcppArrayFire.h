@@ -22,7 +22,7 @@
 #ifndef RcppArrayFire__RcppArrayFire__h
 #define RcppArrayFire__RcppArrayFire__h
 
-#if defined(Rcpp_hpp) && !defined(COMPILING_RCPPFIRE)
+#if defined(Rcpp_hpp) && !defined(COMPILING_RCPPARRAYFIRE)
     #error "The file 'Rcpp.h' should not be included. Please correct to include only 'RcppArrayFire.h'."
 #endif
 

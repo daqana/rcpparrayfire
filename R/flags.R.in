@@ -26,9 +26,9 @@ RcppArrayFireLdFlags <- function(){
 }
 
 CxxFlags <- function(){
-	cat( RcppArrayFireCxxFlags() )
+	cat( RcppArrayFireCxxFlags() ) # nocov
 }
 
 LdFlags <- function(){
-	cat( RcppArrayFireLdFlags() )
+	cat( RcppArrayFireLdFlags() ) # nocov
 }

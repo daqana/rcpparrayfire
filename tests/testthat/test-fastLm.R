@@ -4,7 +4,7 @@ context("fastLm")
 set.seed(42)
 n <- 100000
 p <- 40
-X <- matrix(rnorm(n*p), ncol=p)
+X <- matrix(rnorm(n*p), ncol = p)
 y <- X %*% c(rep(0.5, p)) + rnorm(n)
 
 test_that("models from R and AF are similar", {
