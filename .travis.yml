@@ -32,6 +32,8 @@ addons:
     - sourceline: 'ppa:keithw/glfw3'
     packages:
     - libglfw3
+brew:
+  - fontconfig
 before_install:
   - test "$TRAVIS_OS_NAME" == "linux" && sh .travis/before_install_linux.sh || true
   - test "$TRAVIS_OS_NAME" == "osx" && sh .travis/before_install_osx.sh || true
