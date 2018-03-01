@@ -2911,6 +2911,11 @@ if test $(uname) == "Darwin"; then :
              AF_BACKEND="opencl"
              AF_RPATH="-Wl,-rpath,/usr/local/lib"
 
+else
+
+             AF_BACKEND=""
+             AF_RPATH=""
+
 fi
 
 # set backend
@@ -2918,8 +2923,6 @@ fi
 # Check whether --with-backend was given.
 if test "${with_backend+set}" = set; then :
   withval=$with_backend; AF_BACKEND="${with_backend}"
-else
-  AF_BACKEND=""
 fi
 
 

@@ -41,6 +41,10 @@ AS_IF([test $(uname) == "Darwin"],
             [
              AF_BACKEND="opencl"
              AF_RPATH="-Wl,-rpath,/usr/local/lib"
+            ],
+            [
+             AF_BACKEND=""
+             AF_RPATH=""
             ])
 
 # set backend
@@ -48,7 +52,7 @@ AC_ARG_WITH([backend],
             AC_HELP_STRING([--with-backend=TYPE],
                            [set one of cpu, cuda or opencl (default=blank for unified backend)]),
             [AF_BACKEND="${with_backend}"],
-            [AF_BACKEND=""])
+            [])
 
 AC_SUBST([AF_INCLUDE], "")
 AC_SUBST([AF_LIBS], "-laf${AF_BACKEND}")
