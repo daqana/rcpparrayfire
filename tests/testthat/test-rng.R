@@ -22,3 +22,9 @@ test_that("setting seed produces identical normaly distributed numbers", {
     n2 <- fastRnorm(10)
     expect_equal(n1, n2)
 })
+
+test_that("numbers are generated in the correct range", {
+    arrayfire_set_seed(seed)
+    u <- fastRunif(1e4, min = 10, max = 12)
+    expect_true(all(u >= 10) && all(u < 12))
+})

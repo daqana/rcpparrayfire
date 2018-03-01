@@ -39,9 +39,9 @@ af::array fastRunif(const int32_t n, const double min = 0, const double max = 1,
     }
 
     if (useDouble)
-        return min + max * af::randu(static_cast<dim_t>(n), f64);
+        return min + (max - min) * af::randu(static_cast<dim_t>(n), f64);
     else
-        return min + max * af::randu(static_cast<dim_t>(n));
+        return min + (max - min) * af::randu(static_cast<dim_t>(n));
 }
 
 
