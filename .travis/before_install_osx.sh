@@ -12,3 +12,6 @@ EOF
 
 clang++ minimal.cpp -laf -o minimal
 ./minimal
+otool -L minimal
+echo "Removing temp files"
+rm -f minimal minimal.cpp
