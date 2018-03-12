@@ -10,8 +10,11 @@ int main() {
 }
 EOF
 
-clang++ minimal.cpp -laf -o minimal
+clang++ minimal.cpp -lafopencl -o minimal
 ./minimal
 otool -L minimal
 echo "Removing temp files"
 rm -f minimal minimal.cpp
+otool -L /usr/local/lib/libaf.3.dylib
+otool -L /usr/local/lib/libafopencl.3.dylib
+otool -L /usr/local/lib/libafcpu.3.dylib
