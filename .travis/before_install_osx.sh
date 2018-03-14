@@ -8,9 +8,24 @@ cat <<EOF > minimal.cpp
 int main() {
     af_info();
 }
+#include <arrayfire.h>
+#include <stdio.h>
+
+int main() {
+  unsigned int count;
+  af_get_backend_count(&count);
+  printf("backends: %d\n", count);
+  af_info();
+  return 0;
+}
 EOF
 
+echo "With afopencl"
 clang++ minimal.cpp -lafopencl -o minimal
+./minimal
+otool -L minimal
+echo "With af"
+clang++ minimal.cpp -laf -o minimal
 ./minimal
 otool -L minimal
 echo "Removing temp files"
