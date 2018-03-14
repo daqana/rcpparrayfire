@@ -5,10 +5,6 @@ rm ArrayFire-v3.5.1_OSX.pkg
 
 cat <<EOF > minimal.cpp
 #include <arrayfire.h>
-int main() {
-    af_info();
-}
-#include <arrayfire.h>
 #include <stdio.h>
 
 int main() {
