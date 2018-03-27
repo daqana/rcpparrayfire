@@ -4,7 +4,7 @@ Title: Rcpp integration for ArrayFire
 Version: 0.0.3
 Authors@R: as.person(c(
     "Kazuki Fukui [aut]",
-    "Ralf Stubner <ralf.stubner@r-institute.com> [aut, cre]"
+    "Ralf Stubner <ralf.stubner@daqana.com> [aut, cre]"
   ))
 Description: RcppArrayFire provides an Rcpp wrapper for the ArrayFire Library,
  an open source library that can make use of GPUs and other accelerators via
