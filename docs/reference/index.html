@@ -18,13 +18,19 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Function reference" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +53,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">RcppArrayFire</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">RcppArrayFire</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.3</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -58,19 +68,20 @@
   </a>
 </li>
 <li>
-  <a href="../articles/RcppArrayFire.html">Get Started</a>
+  <a href="../articles/RcppArrayFire.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -78,124 +89,119 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.0.3</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arrayfire_count_device.html">arrayfire_count_device</a></code> </p>
-          </td>
-          <td><p>Return the number of available devices</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arrayfire_device_info.html">arrayfire_device_info</a></code> </p>
-          </td>
-          <td><p>Report the information about current device and platform</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arrayfire_get_active_backend.html">arrayfire_get_active_backend</a></code> </p>
-          </td>
-          <td><p>Get string description for the active backend</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arrayfire_get_available_backends.html">arrayfire_get_available_backends</a></code> </p>
-          </td>
-          <td><p>Get a vector of string descriptions for the available backends</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arrayfire_get_device.html">arrayfire_get_device</a></code> </p>
-          </td>
-          <td><p>Return the index of current device</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arrayfire_get_seed.html">arrayfire_get_seed</a></code> </p>
-          </td>
-          <td><p>Get the seed for random number generation in ArrayFire.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arrayfire_info.html">arrayfire_info</a></code> </p>
-          </td>
-          <td><p>Display ArrayFire and device info</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arrayfire_set_backend.html">arrayfire_set_backend</a></code> </p>
-          </td>
-          <td><p>Set the current backend</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arrayfire_set_device.html">arrayfire_set_device</a></code> </p>
-          </td>
-          <td><p>Switch to specified device</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="arrayfire_set_seed.html">arrayfire_set_seed</a></code> </p>
-          </td>
-          <td><p>Set the seed for random number generation in ArrayFire.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="fastLmPure.html">fastLmPure</a></code> </p>
-          </td>
-          <td><p>Fast and simple linear model</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="fastRnorm.html">fastRnorm</a></code> </p>
-          </td>
-          <td><p>Fast rnorm alternative</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="fastRunif.html">fastRunif</a></code> </p>
-          </td>
-          <td><p>Fast runif alternative</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="RcppArrayFire-package.html">RcppArrayFire-package</a></code> </p>
-          </td>
-          <td><p>Rcpp integration for ArrayFire</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="RcppArrayFire.package.skeleton.html">RcppArrayFire.package.skeleton</a></code> </p>
-          </td>
-          <td><p>Create a skeleton for a new package that intends to use RcppArrayFire</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="RcppArrayFire-package.html">RcppArrayFire-package</a></code> </p>
+        </td>
+        <td><p>Rcpp integration for ArrayFire</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="RcppArrayFire.package.skeleton.html">RcppArrayFire.package.skeleton()</a></code> </p>
+        </td>
+        <td><p>Create a skeleton for a new package that intends to use RcppArrayFire</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="arrayfire_count_device.html">arrayfire_count_device()</a></code> </p>
+        </td>
+        <td><p>Return the number of available devices</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="arrayfire_device_info.html">arrayfire_device_info()</a></code> </p>
+        </td>
+        <td><p>Report the information about current device and platform</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="arrayfire_get_active_backend.html">arrayfire_get_active_backend()</a></code> </p>
+        </td>
+        <td><p>Get string description for the active backend</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="arrayfire_get_available_backends.html">arrayfire_get_available_backends()</a></code> </p>
+        </td>
+        <td><p>Get a vector of string descriptions for the available backends</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="arrayfire_get_device.html">arrayfire_get_device()</a></code> </p>
+        </td>
+        <td><p>Return the index of current device</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="arrayfire_get_seed.html">arrayfire_get_seed()</a></code> </p>
+        </td>
+        <td><p>Get the seed for random number generation in ArrayFire.</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="arrayfire_info.html">arrayfire_info()</a></code> </p>
+        </td>
+        <td><p>Display ArrayFire and device info</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="arrayfire_set_backend.html">arrayfire_set_backend()</a></code> </p>
+        </td>
+        <td><p>Set the current backend</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="arrayfire_set_device.html">arrayfire_set_device()</a></code> </p>
+        </td>
+        <td><p>Switch to specified device</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="arrayfire_set_seed.html">arrayfire_set_seed()</a></code> </p>
+        </td>
+        <td><p>Set the seed for random number generation in ArrayFire.</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="fastLmPure.html">fastLmPure()</a></code> </p>
+        </td>
+        <td><p>Fast and simple linear model</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="fastRnorm.html">fastRnorm()</a></code> </p>
+        </td>
+        <td><p>Fast rnorm alternative</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="fastRunif.html">fastRunif()</a></code> </p>
+        </td>
+        <td><p>Fast runif alternative</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -212,11 +218,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
