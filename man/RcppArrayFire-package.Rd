@@ -12,13 +12,12 @@ The RcppArrayFire package provides Rcpp integration for ArrayFire.
 Useful links:
 \itemize{
   \item \url{https://www.daqana.org/rcpparrayfire/}
-  \item \url{http://www.arrayfire.com}
-  \item Report bugs at \url{https://github.com/RInstitute/rcpparrayfire/issues}
+  \item Report bugs at \url{https://github.com/daqana/rcpparrayfire/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Ralf Stubner \email{ralf.stubner@r-institute.com}
+\strong{Maintainer}: Ralf Stubner \email{ralf.stubner@daqana.com}
 
 Authors:
 \itemize{
