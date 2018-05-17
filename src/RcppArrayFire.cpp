@@ -109,7 +109,7 @@ void arrayfire_info(const bool verbose = false) {
 // [[Rcpp::export]]
 void arrayfire_set_seed( const double seed ) {
     uint64_t _seed;
-    static_assert(sizeof seed == sizeof _seed);
+    static_assert(sizeof seed == sizeof _seed, "Size does not match!");
     std::memcpy(&_seed, &seed, sizeof seed);
 	af::setSeed( _seed ) ;
 }
@@ -123,7 +123,7 @@ void arrayfire_set_seed( const double seed ) {
 double arrayfire_get_seed() {
     uint64_t seed = af::getSeed();
     double result;
-    static_assert(sizeof seed == sizeof result);
+    static_assert(sizeof seed == sizeof result, "Size does not match!");
     std::memcpy(&result, &seed, sizeof seed);
     return result;
 }
