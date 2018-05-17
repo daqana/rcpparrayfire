@@ -1,4 +1,5 @@
 ## Copyright (C) 2015 Kazuki Fukui
+## Copyright (C) 2018 Ralf Stubner (daqana GmbH)
 ##
 ## This file is part of RcppArrayFire.
 ##
@@ -18,7 +19,7 @@
 inlineCxxPlugin <- function(...){
     plugin <- Rcpp::Rcpp.plugin.maker(
         include.before = "#include <RcppArrayFire.h>",
-        libs = sprintf("%s $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)", RcppArrayFireLdFlags()),
+        libs = RcppArrayFireLdFlags(),
         package = "RcppArrayFire"
     )
     settings <- plugin()
