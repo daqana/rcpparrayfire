@@ -109,7 +109,8 @@ void arrayfire_info(const bool verbose = false) {
 // [[Rcpp::export]]
 void arrayfire_set_seed( const double seed ) {
     uint64_t _seed;
-    std::memcpy(&_seed, &seed, sizeof(double));
+    static_assert(sizeof seed == sizeof _seed);
+    std::memcpy(&_seed, &seed, sizeof seed);
 	af::setSeed( _seed ) ;
 }
 
@@ -122,7 +123,8 @@ void arrayfire_set_seed( const double seed ) {
 double arrayfire_get_seed() {
     uint64_t seed = af::getSeed();
     double result;
-    std::memcpy(&result, &seed, sizeof(double));
+    static_assert(sizeof seed == sizeof result);
+    std::memcpy(&result, &seed, sizeof seed);
     return result;
 }
 
