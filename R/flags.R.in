@@ -1,4 +1,5 @@
 ## Copyright (C) 2015 Kazuki Fukui
+## Copyright (C) 2018 Ralf Stubner (daqana GmbH)
 ##
 ## This file is part of RcppArrayFire.
 ##
@@ -16,7 +17,7 @@
 ## along with RcppArrayFire.  If not, see <http://www.gnu.org/licenses/>.
 
 RcppArrayFireCxxFlags <- function(){
-	paste( '-I"', system.file( "include", package = "RcppArrayFire" ), '" ', '@AF_INCLUDE@', sep = "" )
+	'@AF_INCLUDE@'
 }
 
 RcppArrayFireLdFlags <- function(){
