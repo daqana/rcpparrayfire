@@ -47,6 +47,16 @@ namespace RcppArrayFire{
         typed_array(const af::array &src_data) : af::array(src_data) {};
     };
 
+    template<
+        af::dtype AF_DTYPE,
+        af::storage AF_STORAGETYPE = AF_STORAGE_CSR>
+    class typed_sparray : public af::array{
+    public:
+        typed_sparray() : af::array() {}
+        ~typed_sparray(){}
+        typed_sparray(const af::array &src_data) : af::array(src_data) {};
+    };
+
     template<typename value_type>
     class SEXP2CxxPtr : private ::Rcpp::Shield<SEXP> {
     private:
