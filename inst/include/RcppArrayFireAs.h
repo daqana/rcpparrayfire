@@ -179,6 +179,66 @@ namespace traits {
         }
     };
 
+
+    // Exporter for CSR matrix (dgRMatrix)
+    template<af::dtype AF_DTYPE>
+    class Exporter< ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSR> >{
+    private:
+        S4 d_x;
+        IntegerVector d_dims, d_j, d_p;
+
+    public:
+        Exporter(SEXP x) : d_x(x), d_dims(d_x.slot("Dim")), d_j(d_x.slot("j")), d_p(d_x.slot("p")) {
+            if (!d_x.is("dgRMatrix"))
+                throw std::invalid_argument("Need S4 class dgRMatrix for a teyped_sparray<af::type, AF_STORAGE_CSR>");
+        }
+        ~Exporter(){}
+
+        ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSR> get() {
+            typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
+            ::RcppArrayFire::SEXP2CxxPtr<cpp_type> buff(
+                static_cast<SEXP>(d_x.slot("x")) ) ;
+
+            af::array result;
+            result = af::sparse(
+                    d_dims[0], d_dims[1], buff.size(),
+                    buff.data(), d_p.begin(), d_j.begin(),
+                    AF_DTYPE, AF_STORAGE_CSR);
+
+            return ::RcppArrayFire::typed_sparray<AF_DTYPE>( result );
+        }
+    };
+
+    // Exporter for CSC matrix (dgCMatrix)
+    // NOTE: af::sparseConvertTo does not support CSC
+    template<af::dtype AF_DTYPE>
+    class Exporter< ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSC> >{
+    private:
+        typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
+        S4 d_x;
+        IntegerVector d_dims, d_i, d_p;
+
+    public:
+        Exporter(SEXP x) : d_x(x), d_dims(d_x.slot("Dim")), d_i(d_x.slot("i")), d_p(d_x.slot("p")) {
+            if (!d_x.is("dgCMatrix"))
+                throw std::invalid_argument("Need S4 class dgCMatrix for a teyped_sparray<af::type, AF_STORAGE_CSC>");
+        }
+        ~Exporter(){}
+
+        ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSC> get() {
+            typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
+            ::RcppArrayFire::SEXP2CxxPtr<cpp_type> buff(
+                static_cast<SEXP>(d_x.slot("x")) ) ;
+
+            af::array result;
+            result = af::sparse(
+                    d_dims[0], d_dims[1], buff.size(),
+                    buff.data(), d_i.begin(), d_p.begin(),
+                    AF_DTYPE, AF_STORAGE_CSC);
+
+            return ::RcppArrayFire::typed_sparray<AF_DTYPE>( result );
+        }
+    };
 }
 }
 
