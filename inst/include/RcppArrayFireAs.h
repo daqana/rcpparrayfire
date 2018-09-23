@@ -189,8 +189,8 @@ namespace traits {
 
     public:
         Exporter(SEXP x) : d_x(x), d_dims(d_x.slot("Dim")), d_j(d_x.slot("j")), d_p(d_x.slot("p")) {
-            if (!d_x.is("dgRMatrix"))
-                throw std::invalid_argument("Need S4 class dgRMatrix for a teyped_sparray<af::type, AF_STORAGE_CSR>");
+            if (!d_x.is("dgRMatrix") && !d_x.is("lgRMatrix"))
+                throw std::invalid_argument("Need S4 class dgRMatrix/lgRMatrix for a teyped_sparray<af::dtype, AF_STORAGE_CSR>");
         }
         ~Exporter(){}
 
@@ -220,8 +220,8 @@ namespace traits {
 
     public:
         Exporter(SEXP x) : d_x(x), d_dims(d_x.slot("Dim")), d_i(d_x.slot("i")), d_p(d_x.slot("p")) {
-            if (!d_x.is("dgCMatrix"))
-                throw std::invalid_argument("Need S4 class dgCMatrix for a teyped_sparray<af::type, AF_STORAGE_CSC>");
+            if (!d_x.is("dgCMatrix") && !d_x.is("lgCMatrix"))
+                throw std::invalid_argument("Need S4 class dgCMatrix/lgCMatrix for a teyped_sparray<af::dtype, AF_STORAGE_CSC>");
         }
         ~Exporter(){}
 
