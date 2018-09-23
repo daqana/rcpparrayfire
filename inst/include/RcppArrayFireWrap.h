@@ -83,8 +83,14 @@ namespace RcppArrayFire{
     template<typename T> SEXP wrap_sparse_array( const af::array& object, const af::storage storage_type ){
         const int RTYPE = Rcpp::traits::r_sexptype_traits<T>::rtype;
 
-        const std::string major = (storage_type == AF_STORAGE_CSR)? "R" : "C";
-        std::string klass ;
+        std::string major;
+        switch ( storage_type ) {
+            case AF_STORAGE_CSR: major = "R"; break;
+            case AF_STORAGE_CSC: major = "C"; break;
+            case AF_STORAGE_COO: major = "T"; break;
+        }
+
+        std::string klass;
         switch( RTYPE ){
             case REALSXP:
                 klass = std::string("dg") + major + "Matrix";
@@ -109,6 +115,11 @@ namespace RcppArrayFire{
             case AF_STORAGE_CSC:
                 s.slot("i") = wrap_dense_array<int>( af::sparseGetRowIdx( object ) );
                 s.slot("p") = wrap_dense_array<int>( af::sparseGetColIdx( object ) );
+                break;
+
+            case AF_STORAGE_COO:
+                s.slot("i") = wrap_dense_array<int>( af::sparseGetRowIdx( object ) );
+                s.slot("j") = wrap_dense_array<int>( af::sparseGetColIdx( object ) );
                 break;
         }
         s.slot("x") = wrap_dense_array<T>( af::sparseGetValues( object ) );
