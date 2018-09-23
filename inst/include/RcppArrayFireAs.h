@@ -205,7 +205,7 @@ namespace traits {
                     buff.data(), d_p.begin(), d_j.begin(),
                     AF_DTYPE, AF_STORAGE_CSR);
 
-            return ::RcppArrayFire::typed_sparray<AF_DTYPE>( result );
+            return ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSR>( result );
         }
     };
 
@@ -236,7 +236,7 @@ namespace traits {
                     buff.data(), d_i.begin(), d_p.begin(),
                     AF_DTYPE, AF_STORAGE_CSC);
 
-            return ::RcppArrayFire::typed_sparray<AF_DTYPE>( result );
+            return ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSC>( result );
         }
     };
 }
