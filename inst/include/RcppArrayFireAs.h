@@ -239,6 +239,36 @@ namespace traits {
             return ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSC>( result );
         }
     };
+
+    // Exporter for COO matrix (dgTMatrix)
+    template<af::dtype AF_DTYPE>
+    class Exporter< ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_COO> >{
+    private:
+        typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
+        S4 d_x;
+        IntegerVector d_dims, d_i, d_j;
+
+    public:
+        Exporter(SEXP x) : d_x(x), d_dims(d_x.slot("Dim")), d_i(d_x.slot("i")), d_j(d_x.slot("j")) {
+            if (!d_x.is("dgTMatrix") && !d_x.is("lgTMatrix"))
+                throw std::invalid_argument("Need S4 class dgTMatrix/lgTMatrix for a teyped_sparray<af::dtype, AF_STORAGE_COO>");
+        }
+        ~Exporter(){}
+
+        ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_COO> get() {
+            typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
+            ::RcppArrayFire::SEXP2CxxPtr<cpp_type> buff(
+                static_cast<SEXP>(d_x.slot("x")) ) ;
+
+            af::array result;
+            result = af::sparse(
+                    d_dims[0], d_dims[1], buff.size(),
+                    buff.data(), d_i.begin(), d_j.begin(),
+                    AF_DTYPE, AF_STORAGE_COO);
+
+            return ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_COO>( result );
+        }
+    };
 }
 }
 
