@@ -1,7 +1,7 @@
 Package: RcppArrayFire
 Type: Package
 Title: Rcpp integration for ArrayFire
-Version: 0.0.3
+Version: 0.0.3.1
 Authors@R: as.person(c(
     "Kazuki Fukui [aut]",
     "Ralf Stubner <ralf.stubner@daqana.com> [aut, cre]"
@@ -19,7 +19,7 @@ LinkingTo: Rcpp
 SystemRequirements: C++11, ArrayFire libraries and header files (https://arrayfire.com/)
 URL: https://www.daqana.org/rcpparrayfire/
 BugReports: https://github.com/daqana/rcpparrayfire/issues
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Suggests: pkgKitten,
     knitr,
     rmarkdown,
