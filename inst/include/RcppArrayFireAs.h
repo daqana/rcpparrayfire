@@ -38,6 +38,31 @@ namespace RcppArrayFire{
     template<> struct dtype2cpp<s32>{ typedef int type ; };
     template<> struct dtype2cpp<u32>{ typedef unsigned int type ; };
 
+    template<af::storage AF_STORAGETYPE> struct af_storage_traits{};
+    template<> struct af_storage_traits<AF_STORAGE_CSR>{
+        static constexpr auto row_idx = "p";
+        static constexpr auto col_idx = "j";
+        static void check_s4_class(const ::Rcpp::S4 &x){
+            if(!x.is("dgRMatrix") && !x.is("lgRMatrix"))
+                throw std::invalid_argument("Need S4 class dgRMatrix/lgRMatrix for a teyped_array<af::dtype, AF_STORAGE_CSR>");
+        }
+    };
+    template<> struct af_storage_traits<AF_STORAGE_CSC>{
+        static constexpr auto row_idx = "i";
+        static constexpr auto col_idx = "p";
+        static void check_s4_class(const ::Rcpp::S4 &x){
+            if(!x.is("dgCMatrix") && !x.is("lgCMatrix"))
+                throw std::invalid_argument("Need S4 class dgCMatrix/lgCMatrix for a teyped_array<af::dtype, AF_STORAGE_CSC>");
+        }
+    };
+    template<> struct af_storage_traits<AF_STORAGE_COO>{
+        static constexpr auto row_idx = "i";
+        static constexpr auto col_idx = "j";
+        static void check_s4_class(const ::Rcpp::S4 &x){
+            if(!x.is("dgTMatrix") && !x.is("lgTMatrix"))
+                throw std::invalid_argument("Need S4 class dgTMatrix/lgTMatrix for a teyped_array<af::dtype, AF_STORAGE_COO>");
+        }
+    };
 
     template<
       af::dtype AF_DTYPE,
