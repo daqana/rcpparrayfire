@@ -19,6 +19,7 @@ r_packages:
   - knitr
   - rmarkdown
   - pkgKitten
+  - Matrix
 addons:
   apt:
     sources:
