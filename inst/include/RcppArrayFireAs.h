@@ -43,24 +43,24 @@ namespace RcppArrayFire{
         static constexpr auto row_idx = "p";
         static constexpr auto col_idx = "j";
         static void check_s4_class(const SEXP &x){
-            if(!Rf_inherits(x, "dgRMatrix") && !Rf_inherits(x, "lgRMatrix"))
-                throw std::invalid_argument("Need S4 class dgRMatrix/lgRMatrix for a typed_array<af::dtype, AF_STORAGE_CSR>");
+            if(!Rf_inherits(x, "dgRMatrix"))
+                throw std::invalid_argument("Need S4 class dgRMatrix for a typed_array<af::dtype, AF_STORAGE_CSR>");
         }
     };
     template<> struct af_storage_traits<AF_STORAGE_CSC>{
         static constexpr auto row_idx = "i";
         static constexpr auto col_idx = "p";
         static void check_s4_class(const SEXP &x){
-            if(!Rf_inherits(x, "dgCMatrix") && !Rf_inherits(x, "lgCMatrix"))
-                throw std::invalid_argument("Need S4 class dgCMatrix/lgCMatrix for a typed_array<af::dtype, AF_STORAGE_CSC>");
+            if(!Rf_inherits(x, "dgCMatrix"))
+                throw std::invalid_argument("Need S4 class dgCMatrix for a typed_array<af::dtype, AF_STORAGE_CSC>");
         }
     };
     template<> struct af_storage_traits<AF_STORAGE_COO>{
         static constexpr auto row_idx = "i";
         static constexpr auto col_idx = "j";
         static void check_s4_class(const SEXP &x){
-            if(!Rf_inherits(x, "dgTMatrix") && !Rf_inherits(x, "lgTMatrix"))
-                throw std::invalid_argument("Need S4 class dgTMatrix/lgTMatrix for a typed_array<af::dtype, AF_STORAGE_COO>");
+            if(!Rf_inherits(x, "dgTMatrix"))
+                throw std::invalid_argument("Need S4 class dgTMatrix for a typed_array<af::dtype, AF_STORAGE_COO>");
         }
     };
 
