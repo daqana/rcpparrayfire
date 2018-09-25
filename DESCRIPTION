@@ -25,5 +25,6 @@ Suggests: pkgKitten,
     rmarkdown,
     covr,
     testthat,
-    inline
+    inline,
+    Matrix
 VignetteBuilder: knitr
