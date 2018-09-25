@@ -144,6 +144,8 @@ std::string arrayfire_get_active_backend() {
         return "DEFAULT";
     case AF_BACKEND_OPENCL:
         return "OpenCL";
+    default:
+        Rcpp::stop("Unknown active backend!");
     }
 }
 
