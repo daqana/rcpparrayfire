@@ -42,25 +42,25 @@ namespace RcppArrayFire{
     template<> struct af_storage_traits<AF_STORAGE_CSR>{
         static constexpr auto row_idx = "p";
         static constexpr auto col_idx = "j";
-        static void check_s4_class(const ::Rcpp::S4 &x){
-            if(!x.is("dgRMatrix") && !x.is("lgRMatrix"))
-                throw std::invalid_argument("Need S4 class dgRMatrix/lgRMatrix for a teyped_array<af::dtype, AF_STORAGE_CSR>");
+        static void check_s4_class(const SEXP &x){
+            if(!Rf_inherits(x, "dgRMatrix") && !Rf_inherits(x, "lgRMatrix"))
+                throw std::invalid_argument("Need S4 class dgRMatrix/lgRMatrix for a typed_array<af::dtype, AF_STORAGE_CSR>");
         }
     };
     template<> struct af_storage_traits<AF_STORAGE_CSC>{
         static constexpr auto row_idx = "i";
         static constexpr auto col_idx = "p";
-        static void check_s4_class(const ::Rcpp::S4 &x){
-            if(!x.is("dgCMatrix") && !x.is("lgCMatrix"))
-                throw std::invalid_argument("Need S4 class dgCMatrix/lgCMatrix for a teyped_array<af::dtype, AF_STORAGE_CSC>");
+        static void check_s4_class(const SEXP &x){
+            if(!Rf_inherits(x, "dgCMatrix") && !Rf_inherits(x, "lgCMatrix"))
+                throw std::invalid_argument("Need S4 class dgCMatrix/lgCMatrix for a typed_array<af::dtype, AF_STORAGE_CSC>");
         }
     };
     template<> struct af_storage_traits<AF_STORAGE_COO>{
         static constexpr auto row_idx = "i";
         static constexpr auto col_idx = "j";
-        static void check_s4_class(const ::Rcpp::S4 &x){
-            if(!x.is("dgTMatrix") && !x.is("lgTMatrix"))
-                throw std::invalid_argument("Need S4 class dgTMatrix/lgTMatrix for a teyped_array<af::dtype, AF_STORAGE_COO>");
+        static void check_s4_class(const SEXP &x){
+            if(!Rf_inherits(x, "dgTMatrix") && !Rf_inherits(x, "lgTMatrix"))
+                throw std::invalid_argument("Need S4 class dgTMatrix/lgTMatrix for a typed_array<af::dtype, AF_STORAGE_COO>");
         }
     };
 
@@ -205,8 +205,9 @@ namespace traits {
         IntegerVector d_dims, d_row, d_col;
 
     public:
-        Exporter(SEXP x) : d_x(x) {
-            ::RcppArrayFire::af_storage_traits<AF_STORAGETYPE>::check_s4_class(d_x);
+        Exporter(SEXP x){
+            ::RcppArrayFire::af_storage_traits<AF_STORAGETYPE>::check_s4_class(x);
+            d_x = x;
             d_dims = d_x.slot("Dim");
             d_row = d_x.slot(::RcppArrayFire::af_storage_traits<AF_STORAGETYPE>::row_idx);
             d_col = d_x.slot(::RcppArrayFire::af_storage_traits<AF_STORAGETYPE>::col_idx);
