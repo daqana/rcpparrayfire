@@ -39,22 +39,14 @@ namespace RcppArrayFire{
     template<> struct dtype2cpp<u32>{ typedef unsigned int type ; };
 
 
-    template<af::dtype AF_DTYPE>
+    template<
+      af::dtype AF_DTYPE,
+      af::storage AF_STORAGETYPE = AF_STORAGE_DENSE>
     class typed_array : public af::array{
     public:
         typed_array() : af::array() {}
         ~typed_array(){}
         typed_array(const af::array &src_data) : af::array(src_data) {};
-    };
-
-    template<
-        af::dtype AF_DTYPE,
-        af::storage AF_STORAGETYPE = AF_STORAGE_CSR>
-    class typed_sparray : public af::array{
-    public:
-        typed_sparray() : af::array() {}
-        ~typed_sparray(){}
-        typed_sparray(const af::array &src_data) : af::array(src_data) {};
     };
 
     template<typename value_type>
@@ -147,7 +139,7 @@ namespace internal{
 namespace traits {
 
     template<af::dtype AF_DTYPE>
-    class Exporter< ::RcppArrayFire::typed_array<AF_DTYPE> >{
+    class Exporter< ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_DENSE> >{
     private:
         SEXP object ;
 
@@ -155,7 +147,7 @@ namespace traits {
         Exporter( SEXP x ) : object(x){}
         ~Exporter(){}
 
-        ::RcppArrayFire::typed_array<AF_DTYPE> get() {
+        ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_DENSE> get() {
             typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
             //std::vector<cpp_type> buff( Rf_length( object ) );
 
@@ -175,14 +167,14 @@ namespace traits {
                 result = af::array(::Rcpp::as<af::dim4>(dims), buff.data());
             }
 
-            return ::RcppArrayFire::typed_array<AF_DTYPE>( result );
+            return ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_DENSE>( result );
         }
     };
 
 
     // Exporter for CSR matrix (dgRMatrix)
     template<af::dtype AF_DTYPE>
-    class Exporter< ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSR> >{
+    class Exporter< ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_CSR> >{
     private:
         S4 d_x;
         IntegerVector d_dims, d_j, d_p;
@@ -190,11 +182,11 @@ namespace traits {
     public:
         Exporter(SEXP x) : d_x(x), d_dims(d_x.slot("Dim")), d_j(d_x.slot("j")), d_p(d_x.slot("p")) {
             if (!d_x.is("dgRMatrix") && !d_x.is("lgRMatrix"))
-                throw std::invalid_argument("Need S4 class dgRMatrix/lgRMatrix for a teyped_sparray<af::dtype, AF_STORAGE_CSR>");
+                throw std::invalid_argument("Need S4 class dgRMatrix/lgRMatrix for a teyped_array<af::dtype, AF_STORAGE_CSR>");
         }
         ~Exporter(){}
 
-        ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSR> get() {
+        ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_CSR> get() {
             typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
             ::RcppArrayFire::SEXP2CxxPtr<cpp_type> buff(
                 static_cast<SEXP>(d_x.slot("x")) ) ;
@@ -205,14 +197,14 @@ namespace traits {
                     buff.data(), d_p.begin(), d_j.begin(),
                     AF_DTYPE, AF_STORAGE_CSR);
 
-            return ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSR>( result );
+            return ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_CSR>( result );
         }
     };
 
     // Exporter for CSC matrix (dgCMatrix)
     // NOTE: af::sparseConvertTo does not support CSC
     template<af::dtype AF_DTYPE>
-    class Exporter< ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSC> >{
+    class Exporter< ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_CSC> >{
     private:
         typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
         S4 d_x;
@@ -221,11 +213,11 @@ namespace traits {
     public:
         Exporter(SEXP x) : d_x(x), d_dims(d_x.slot("Dim")), d_i(d_x.slot("i")), d_p(d_x.slot("p")) {
             if (!d_x.is("dgCMatrix") && !d_x.is("lgCMatrix"))
-                throw std::invalid_argument("Need S4 class dgCMatrix/lgCMatrix for a teyped_sparray<af::dtype, AF_STORAGE_CSC>");
+                throw std::invalid_argument("Need S4 class dgCMatrix/lgCMatrix for a teyped_array<af::dtype, AF_STORAGE_CSC>");
         }
         ~Exporter(){}
 
-        ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSC> get() {
+        ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_CSC> get() {
             typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
             ::RcppArrayFire::SEXP2CxxPtr<cpp_type> buff(
                 static_cast<SEXP>(d_x.slot("x")) ) ;
@@ -236,13 +228,13 @@ namespace traits {
                     buff.data(), d_i.begin(), d_p.begin(),
                     AF_DTYPE, AF_STORAGE_CSC);
 
-            return ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_CSC>( result );
+            return ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_CSC>( result );
         }
     };
 
     // Exporter for COO matrix (dgTMatrix)
     template<af::dtype AF_DTYPE>
-    class Exporter< ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_COO> >{
+    class Exporter< ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_COO> >{
     private:
         typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
         S4 d_x;
@@ -251,11 +243,11 @@ namespace traits {
     public:
         Exporter(SEXP x) : d_x(x), d_dims(d_x.slot("Dim")), d_i(d_x.slot("i")), d_j(d_x.slot("j")) {
             if (!d_x.is("dgTMatrix") && !d_x.is("lgTMatrix"))
-                throw std::invalid_argument("Need S4 class dgTMatrix/lgTMatrix for a teyped_sparray<af::dtype, AF_STORAGE_COO>");
+                throw std::invalid_argument("Need S4 class dgTMatrix/lgTMatrix for a teyped_array<af::dtype, AF_STORAGE_COO>");
         }
         ~Exporter(){}
 
-        ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_COO> get() {
+        ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_COO> get() {
             typedef typename ::RcppArrayFire::dtype2cpp<AF_DTYPE>::type cpp_type ;
             ::RcppArrayFire::SEXP2CxxPtr<cpp_type> buff(
                 static_cast<SEXP>(d_x.slot("x")) ) ;
@@ -266,7 +258,7 @@ namespace traits {
                     buff.data(), d_i.begin(), d_j.begin(),
                     AF_DTYPE, AF_STORAGE_COO);
 
-            return ::RcppArrayFire::typed_sparray<AF_DTYPE, AF_STORAGE_COO>( result );
+            return ::RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGE_COO>( result );
         }
     };
 }
