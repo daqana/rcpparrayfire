@@ -18,6 +18,7 @@ r_binary_packages:
   - pkgKitten
   - Matrix
   - covr
+r_packages:
   - pkgdown
 addons:
   apt:
