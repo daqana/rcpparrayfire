@@ -2916,6 +2916,14 @@ AF_INCLUDE=""
 AF_LIBS="-laf"
 
 
+if test -e "${AF_PATH}"; then :
+
+             AF_INCLUDE="-I${AF_PATH}/include ${AF_INCLUDE}"
+             AF_LIBS="-L${AF_PATH}/lib ${AF_LIBS} -Wl,-rpath,${AF_PATH}/lib"
+
+fi
+
+
 if test -e "${with_arrayfire}"; then :
 
              AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"

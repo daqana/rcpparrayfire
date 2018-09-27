@@ -47,6 +47,13 @@ AC_ARG_WITH([arrayfire],
 AC_SUBST([AF_INCLUDE], "")
 AC_SUBST([AF_LIBS], "-laf")
 
+AS_IF([test -e "${AF_PATH}"],
+            [
+             AF_INCLUDE="-I${AF_PATH}/include ${AF_INCLUDE}"
+             AF_LIBS="-L${AF_PATH}/lib ${AF_LIBS} -Wl,-rpath,${AF_PATH}/lib"
+            ])
+
+
 AS_IF([test -e "${with_arrayfire}"],
             [
              AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
