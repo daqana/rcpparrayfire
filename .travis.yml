@@ -11,14 +11,13 @@ notifications:
   email:
     on_success: change
     on_failure: change
-r_binary_packages:
+r_packages:
   - devtools
   - knitr
   - rmarkdown
   - pkgKitten
   - Matrix
   - covr
-r_packages:
   - pkgdown
 addons:
   apt:
