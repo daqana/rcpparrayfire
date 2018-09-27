@@ -27,17 +27,14 @@ addons:
     - sourceline: 'ppa:keithw/glfw3'
     packages:
     - libglfw3
-env:
-  - AF_PATH=/opt/arrayfire
 before_install:
   - wget http://arrayfire.s3.amazonaws.com/3.6.1/ArrayFire-v3.6.1_Linux_x86_64.sh
-  - sudo sh ArrayFire-v3.6.1_Linux_x86_64.sh --skip-license --include-subdir --prefix=/opt
+  - sudo sh ArrayFire-v3.6.1_Linux_x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local
   - rm ArrayFire-v3.6.1_Linux_x86_64.sh
-  - echo /opt/arrayfire/lib > sudo tee /etc/ld.so.conf.d/arrayfire.conf
-  - sudo ldconfig
+  - sudo ldconfig /usr/local/lib
 script:
-  - export LD_PRELOAD="/opt/arrayfire/lib/libmkl_core.so:/opt/arrayfire/lib/libtbb.so.2:/opt/arrayfire/lib/libmkl_tbb_thread.so"
+  - export LD_PRELOAD="/usr/local/lib/libmkl_core.so:/usr/local/lib/libtbb.so.2:/usr/local/lib/libmkl_tbb_thread.so"
   - R CMD build .
-  - R CMD check RcppArrayFire_*.tar.gz
+  - R CMD check --no-manual RcppArrayFire_*.tar.gz
 after_success:
   - test "$TRAVIS_R_VERSION_STRING" = "release" && Rscript -e 'covr::codecov()' || true
