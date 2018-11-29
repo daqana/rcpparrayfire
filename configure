@@ -1990,11 +1990,23 @@ if test -z "${R_HOME}" ; then
     exit 1
 fi
 
-# use deprecated CXX1X* to support R versions 3.1.0 to 3.3.3
-CXX11=`"${R_HOME}/bin/R" CMD config CXX1X`
-CXX11STD=`"${R_HOME}/bin/R" CMD config CXX1XSTD`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for R < 3.4.0 for CXX1X flag use" >&5
+$as_echo_n "checking for R < 3.4.0 for CXX1X flag use... " >&6; }
+R_GE_34=`"${R_HOME}/bin/R" --vanilla --slave -e 'cat(if (getRversion() >= numeric_version("3.4.0")) "yes" else "no")'`
+if test "x$R_GE_34" == "xyes"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+   CXX11=`"${R_HOME}/bin/R" CMD config CXX11`
+   CXX11STD=`"${R_HOME}/bin/R" CMD config CXX11STD`
+   CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX11FLAGS`
+else
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+   CXX11=`"${R_HOME}/bin/R" CMD config CXX1X`
+   CXX11STD=`"${R_HOME}/bin/R" CMD config CXX1XSTD`
+   CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX1XFLAGS`
+fi
 CXX="${CXX11} ${CXX11STD}"
-CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX1XFLAGS`
 CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
