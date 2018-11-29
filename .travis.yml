@@ -36,9 +36,16 @@ script:
   - export LD_PRELOAD="/usr/local/lib/libmkl_core.so:/usr/local/lib/libtbb.so.2:/usr/local/lib/libmkl_tbb_thread.so"
   - R CMD build .
   - R CMD check --no-manual RcppArrayFire_*.tar.gz
+  - echo $PKG_TARBALL
+  - ls -l $PKG_TARBALL
 after_success:
   - test "$TRAVIS_R_VERSION_STRING" = "release" && Rscript -e 'covr::codecov()' || true
 deploy:
-  provider: script
-  script: test "$TRAVIS_R_VERSION_STRING" = "release" && Rscript -e 'pkgdown::deploy_site_github()' || true
   skip_cleanup: true
+  provider: script
+  script:
+    - echo $PKG_TARBALL
+    - ls -l $PKG_TARBALL
+    - Rscript -e 'pkgdown::deploy_site_github()'
+  on:
+    condition: $TRAVIS_R_VERSION_STRING = release
