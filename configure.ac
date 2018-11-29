@@ -27,11 +27,20 @@ if test -z "${R_HOME}" ; then
     exit 1
 fi
 
-# use deprecated CXX1X* to support R versions 3.1.0 to 3.3.3
-CXX11=`"${R_HOME}/bin/R" CMD config CXX1X`
-CXX11STD=`"${R_HOME}/bin/R" CMD config CXX1XSTD`
+AC_MSG_CHECKING(for R < 3.4.0 for CXX1X flag use)
+R_GE_34=`"${R_HOME}/bin/R" --vanilla --slave -e 'cat(if (getRversion() >= numeric_version("3.4.0")) "yes" else "no")'`
+if test "x$R_GE_34" == "xyes"; then
+   AC_MSG_RESULT([no])
+   CXX11=`"${R_HOME}/bin/R" CMD config CXX11`
+   CXX11STD=`"${R_HOME}/bin/R" CMD config CXX11STD`
+   CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX11FLAGS`
+else
+   AC_MSG_RESULT([yes])
+   CXX11=`"${R_HOME}/bin/R" CMD config CXX1X`
+   CXX11STD=`"${R_HOME}/bin/R" CMD config CXX1XSTD`
+   CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX1XFLAGS`
+fi
 CXX="${CXX11} ${CXX11STD}"
-CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX1XFLAGS`
 CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 AC_LANG(C++)
 AC_REQUIRE_CPP
