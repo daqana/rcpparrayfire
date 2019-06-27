@@ -1,6 +1,6 @@
 #                                               -*- Autoconf -*-
 # Copyright (C) 2015 Kazuki Fukui
-# Copyright (C) 2017, 2018 Ralf Stubner (R Institute GmbH)
+# Copyright (C) 2017 Ralf Stubner (R Institute GmbH)
 #
 # This file is part of RcppArrayFire.
 #
@@ -27,49 +27,49 @@ if test -z "${R_HOME}" ; then
     exit 1
 fi
 
-# use deprecated CXX1X* to support R versions 3.1.0 to 3.3.3
-CXX11=`"${R_HOME}/bin/R" CMD config CXX1X`
-CXX11STD=`"${R_HOME}/bin/R" CMD config CXX1XSTD`
+AC_MSG_CHECKING(for R < 3.4.0 for CXX1X flag use)
+R_GE_34=`"${R_HOME}/bin/R" --vanilla --slave -e 'cat(if (getRversion() >= numeric_version("3.4.0")) "yes" else "no")'`
+if test "x$R_GE_34" == "xyes"; then
+   AC_MSG_RESULT([no])
+   CXX11=`"${R_HOME}/bin/R" CMD config CXX11`
+   CXX11STD=`"${R_HOME}/bin/R" CMD config CXX11STD`
+   CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX11FLAGS`
+else
+   AC_MSG_RESULT([yes])
+   CXX11=`"${R_HOME}/bin/R" CMD config CXX1X`
+   CXX11STD=`"${R_HOME}/bin/R" CMD config CXX1XSTD`
+   CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX1XFLAGS`
+fi
 CXX="${CXX11} ${CXX11STD}"
-CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXX1XFLAGS`
 CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 AC_LANG(C++)
 AC_REQUIRE_CPP
 AC_PROG_CXX
 
-AS_IF([test $(uname) == "Darwin"],
-            [
-             AF_BACKEND="opencl"
-             AF_RPATH="-Wl,-rpath,/usr/local/lib"
-            ],
-            [
-             AF_BACKEND=""
-             AF_RPATH=""
-            ])
-
-# set backend
-AC_ARG_WITH([backend],
-            AC_HELP_STRING([--with-backend=TYPE],
-                           [set one of cpu, cuda or opencl (default=blank for unified backend)]),
-            [AF_BACKEND="${with_backend}"],
-            [])
-
-AC_SUBST([AF_INCLUDE], "")
-AC_SUBST([AF_LIBS], "-laf${AF_BACKEND}")
-
 # set path to root of arrayfire
 AC_ARG_WITH([arrayfire],
             AC_HELP_STRING([--with-arrayfire=PREFIX],
                            [path to where arrayfire is installed]),
-            [
-             AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
-             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS}"
-             AF_RPATH="-Wl,-rpath,${with_arrayfire}/lib"
-            ],
+            [],
             [])
 
+AC_SUBST([AF_INCLUDE], "")
+AC_SUBST([AF_LIBS], "-laf")
+
+AS_IF([test -e "${AF_PATH}"],
+            [
+             AF_INCLUDE="-I${AF_PATH}/include ${AF_INCLUDE}"
+             AF_LIBS="-L${AF_PATH}/lib ${AF_LIBS} -Wl,-rpath,${AF_PATH}/lib"
+            ])
+
+
+AS_IF([test -e "${with_arrayfire}"],
+            [
+             AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
+             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS} -Wl,-rpath,${with_arrayfire}/lib"
+            ])
+
 CPPFLAGS="${CPPFLAGS} ${AF_INCLUDE}"
-AF_LIBS="${AF_LIBS} ${AF_RPATH}"
 LDFLAGS="${LDFLAGS} ${AF_LIBS}"
 
 # check for arrayfire header
@@ -77,7 +77,7 @@ AC_CHECK_HEADER([arrayfire.h],
     [],
     [AC_MSG_ERROR([unable to find arrayfire.h])])
 
-AC_MSG_CHECKING([for libaf${AF_BACKEND}.so])
+AC_MSG_CHECKING([for libaf.so])
         AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <arrayfire.h>
 #include <string>
@@ -85,13 +85,9 @@ const std::string info = af::infoString();]])],
                 [AC_MSG_RESULT(yes)],
                 [
                  AC_MSG_RESULT(no)
-                 AC_MSG_ERROR([unable to find libaf${AF_BACKEND}.so])
+                 AC_MSG_ERROR([unable to find libaf.so])
                 ])
 
 
 AC_CONFIG_FILES([src/Makevars R/flags.R])
 AC_OUTPUT
-
-echo
-echo "Final src/Makevars"
-cat src/Makevars
