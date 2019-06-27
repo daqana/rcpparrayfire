@@ -2926,7 +2926,7 @@ $as_echo "$as_me: checking for ArrayFire installation" >&6;}
 	do
       { $as_echo "$as_me:${as_lineno-$LINENO}: Checking prefix ${dir}." >&5
 $as_echo "$as_me: Checking prefix ${dir}." >&6;}
-	   if test -f ${dir}/include/arrayfire.h && test -r ${dir}/lib/libaf.so -o -r ${dir}/lib/libaf.dylib
+	   if test -f ${dir}/include/arrayfire.h && test -r ${dir}/lib/libaf.so -o -r ${dir}/lib64/libaf.so -o -r ${dir}/lib/libaf.dylib
 	   then
 	   	AF_PATH=${dir}
 		break

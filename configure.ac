@@ -67,7 +67,7 @@ then
 	/opt/arrayfire
 	do
       AC_MSG_NOTICE([Checking prefix ${dir}.])
-	   if test -f ${dir}/include/arrayfire.h && test -r ${dir}/lib/libaf.so -o -r ${dir}/lib/libaf.dylib
+	   if test -f ${dir}/include/arrayfire.h && test -r ${dir}/lib/libaf.so -o -r ${dir}/lib64/libaf.so -o -r ${dir}/lib/libaf.dylib
 	   then
 	   	AF_PATH=${dir}
 		break
