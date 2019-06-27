@@ -1,6 +1,7 @@
 #                                               -*- Autoconf -*-
 # Copyright (C) 2015 Kazuki Fukui
 # Copyright (C) 2017 Ralf Stubner (R Institute GmbH)
+# Copyright (C) 2019 Ralf Stubner
 #
 # This file is part of RcppArrayFire.
 #
@@ -46,28 +47,38 @@ AC_LANG(C++)
 AC_REQUIRE_CPP
 AC_PROG_CXX
 
+AC_SUBST([AF_INCLUDE])
+AC_SUBST([AF_LIBS])
+
 # set path to root of arrayfire
 AC_ARG_WITH([arrayfire],
             AC_HELP_STRING([--with-arrayfire=PREFIX],
                            [path to where arrayfire is installed]),
-            [],
+            [AF_PATH = ${with_arrayfire}],
             [])
 
-AC_SUBST([AF_INCLUDE], "")
-AC_SUBST([AF_LIBS], "-laf")
+if test -z "${AF_PATH}"
+then
+    # let's look around -- code inspiered by RPostgreSQL
+    AC_MSG_NOTICE([checking for ArrayFire installation])
+	for dir in \
+	/usr \
+	/usr/local \
+	/opt/arrayfire
+	do
+      AC_MSG_NOTICE([Checking prefix ${dir}.])
+	   if test -f ${dir}/include/arrayfire.h && test -r ${dir}/lib/libaf.so -o -r ${dir}/lib/libaf.dylib
+	   then
+	   	AF_PATH=${dir}
+		break
+	   fi
+	done
+fi
 
-AS_IF([test -e "${AF_PATH}"],
-            [
-             AF_INCLUDE="-I${AF_PATH}/include ${AF_INCLUDE}"
-             AF_LIBS="-L${AF_PATH}/lib ${AF_LIBS} -Wl,-rpath,${AF_PATH}/lib"
-            ])
+AS_IF([test -z "${AF_PATH}"], [AC_MSG_ERROR([Cannot find ArrayFire installation.])])
 
-
-AS_IF([test -e "${with_arrayfire}"],
-            [
-             AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
-             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS} -Wl,-rpath,${with_arrayfire}/lib"
-            ])
+AF_INCLUDE="-I${AF_PATH}/include"
+AF_LIBS="-L${AF_PATH}/lib -laf -Wl,-rpath,${AF_PATH}/lib"
 
 CPPFLAGS="${CPPFLAGS} ${AF_INCLUDE}"
 LDFLAGS="${LDFLAGS} ${AF_LIBS}"
