@@ -88,7 +88,7 @@ else
       AC_MSG_NOTICE([Checking directory ${dir}.])
 	   if test -r ${dir}/libaf.so -o -r ${dir}/libaf.dylib
 	   then
-         AF_LIBS="-L${dir}/lib -laf -Wl,-rpath,${dir}/lib"
+         AF_LIBS="-L${dir} -laf -Wl,-rpath,${dir}"
 		break
 	   fi
 	done
