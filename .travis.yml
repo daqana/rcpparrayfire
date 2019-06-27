@@ -3,30 +3,33 @@
 language: r
 sudo: required
 cache: packages
-os:
-  - linux
-  - osx
-r:
-  - oldrel
-  - release
-  - devel
+latex: false
+fortran: false
+
 matrix:
-  allow_failures:
-    - r: devel
-  exclude:
+  include:
   - r: oldrel
-    os: osx
+  - r: release
+    r_packages:
+    - covr
+    - devtools
+    - pkgdown
+    r_github_packages:
+    - metrumresearchgroup/covrpage
+    after_success:
+    - Rscript -e "covr::codecov()"
+    deploy:
+      provider: script
+      script: Rscript -e 'devtools::install(); covrpage::covrpage_ci(); pkgdown::deploy_site_github()'
+      skip_cleanup: true
   - r: devel
+  - r: release
     os: osx
+
 notifications:
   email:
     on_success: change
     on_failure: change
-r_packages:
-  - devtools
-  - knitr
-  - rmarkdown
-  - pkgKitten
 addons:
   apt:
     sources:
@@ -39,5 +42,8 @@ brew_packages:
 before_install:
   - test "$TRAVIS_OS_NAME" == "linux" && sh .travis/before_install_linux.sh || true
   - test "$TRAVIS_OS_NAME" == "osx" && sh .travis/before_install_osx.sh || true
-after_success:
-  - test "$TRAVIS_R_VERSION_STRING" = "release" -a "$TRAVIS_OS_NAME" == "linux" && Rscript -e 'covr::codecov()' || true
+script:
+  - test "$TRAVIS_OS_NAME" == "linux" && export LD_PRELOAD="/opt/arrayfire/lib/libmkl_core.so:/opt/arrayfire/lib/libtbb.so.2:/opt/arrayfire/lib/libmkl_tbb_thread.so"
+  - export PKG_TARBALL=RcppArrayFire_$(grep '^Version:' DESCRIPTION | grep -o '[0-9\.]*').tar.gz
+  - R CMD build --no-manual .
+  - R CMD check --no-manual $PKG_TARBALL
