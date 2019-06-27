@@ -1,7 +1,7 @@
 brew install fontconfig glfw
-curl -O http://arrayfire.s3.amazonaws.com/3.5.1/ArrayFire-v3.5.1_OSX.pkg
-sudo installer -pkg ArrayFire-v3.5.1_OSX.pkg -target /
-rm ArrayFire-v3.5.1_OSX.pkg
+curl -O https://arrayfire.s3.amazonaws.com/3.6.4/ArrayFire-v3.6.4_OSX_x86_64.pkg
+sudo installer -pkg ArrayFire-v3.6.4_OSX.pkg -target /
+rm ArrayFire-v3.6.4_OSX.pkg
 
 cat <<EOF > minimal.cpp
 #include <arrayfire.h>
@@ -26,6 +26,6 @@ clang++ minimal.cpp -laf -o minimal
 otool -L minimal
 echo "Removing temp files"
 rm -f minimal minimal.cpp
-otool -L /usr/local/lib/libaf.3.dylib
-otool -L /usr/local/lib/libafopencl.3.dylib
-otool -L /usr/local/lib/libafcpu.3.dylib
+otool -L /opt/arrayfire/lib/libaf.3.dylib
+otool -L /opt/arrayfire/lib/libafopencl.3.dylib
+otool -L /opt/arrayfire/lib/libafcpu.3.dylib
