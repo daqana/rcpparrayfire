@@ -651,7 +651,6 @@ infodir
 docdir
 oldincludedir
 includedir
-runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -724,7 +723,6 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
-runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE_TARNAME}'
@@ -977,15 +975,6 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
-  -runstatedir | --runstatedir | --runstatedi | --runstated \
-  | --runstate | --runstat | --runsta | --runst | --runs \
-  | --run | --ru | --r)
-    ac_prev=runstatedir ;;
-  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
-  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
-  | --run=* | --ru=* | --r=*)
-    runstatedir=$ac_optarg ;;
-
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -1123,7 +1112,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir runstatedir
+		libdir localedir mandir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -1276,7 +1265,6 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
-  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -2915,32 +2903,60 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
+
+
+
 # set path to root of arrayfire
 
 # Check whether --with-arrayfire was given.
 if test "${with_arrayfire+set}" = set; then :
-  withval=$with_arrayfire;
+  withval=$with_arrayfire; AF_PATH = ${with_arrayfire}
 fi
 
 
-AF_INCLUDE=""
-
-AF_LIBS="-laf"
-
-
-if test -e "${AF_PATH}"; then :
-
-             AF_INCLUDE="-I${AF_PATH}/include ${AF_INCLUDE}"
-             AF_LIBS="-L${AF_PATH}/lib ${AF_LIBS} -Wl,-rpath,${AF_PATH}/lib"
-
+if test -n "${AF_PATH}"
+then
+    AF_INCLUDE="-I${AF_PATH}/include"
+    AF_LIBS="-L${AF_PATH}/lib -laf -Wl,-rpath,${AF_PATH}/lib"
+else
+    # let's look around -- code inspiered by RPostgreSQL
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ArrayFire header" >&5
+$as_echo "$as_me: checking for ArrayFire header" >&6;}
+	for dir in \
+	/usr/include \
+	/usr/local/include \
+	/opt/arrayfire/include
+	do
+      { $as_echo "$as_me:${as_lineno-$LINENO}: Checking directory ${dir}." >&5
+$as_echo "$as_me: Checking directory ${dir}." >&6;}
+	   if test -f ${dir}/arrayfire.h
+	   then
+	   	AF_INCLUDE="-I${dir}"
+		break
+	   fi
+	done
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ArrayFire library" >&5
+$as_echo "$as_me: checking for ArrayFire library" >&6;}
+	for dir in \
+	/usr/lib \
+	/usr/lib64 \
+	/usr/local/lib \
+	/usr/local/lib64 \
+	/opt/arrayfire/lib \
+	/opt/arrayfire/lib64
+	do
+      { $as_echo "$as_me:${as_lineno-$LINENO}: Checking directory ${dir}." >&5
+$as_echo "$as_me: Checking directory ${dir}." >&6;}
+	   if test -r ${dir}/libaf.so -o -r ${dir}/libaf.dylib
+	   then
+         AF_LIBS="-L${dir} -laf -Wl,-rpath,${dir}"
+		break
+	   fi
+	done
 fi
 
-
-if test -e "${with_arrayfire}"; then :
-
-             AF_INCLUDE="-I${with_arrayfire}/include ${AF_INCLUDE}"
-             AF_LIBS="-L${with_arrayfire}/lib ${AF_LIBS} -Wl,-rpath,${with_arrayfire}/lib"
-
+if test -z "${AF_INCLUDE}" -o -z "${AF_LIBS}"; then :
+  as_fn_error $? "Cannot find ArrayFire installation." "$LINENO" 5
 fi
 
 CPPFLAGS="${CPPFLAGS} ${AF_INCLUDE}"

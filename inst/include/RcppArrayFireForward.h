@@ -23,10 +23,9 @@
 #ifndef RcppArrayFire__RcppArrayFireForward__h
 #define RcppArrayFire__RcppArrayFireForward__h
 
+#include <arrayfire.h>
 #include <RcppCommon.h>
 #include <Rconfig.h>
-
-#include <arrayfire.h>
 
 /* forward declarations */
 namespace RcppArrayFire{
