@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">RcppArrayFire</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -52,6 +52,18 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/tests_and_coverage.html">Tests and Coverage</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="news/index.html">Changelog</a>
@@ -80,23 +92,16 @@
 <div id="rcpparrayfire" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#rcpparrayfire" class="anchor"></a>RcppArrayFire</h1></div>
-<p>R and <a href="http://www.arrayfire.com/">ArrayFire library</a> via Rcpp.</p>
-<div id="prerequisites" class="section level2">
-<h2 class="hasAnchor">
-<a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
-<p>In order to use RcppArrayFire you will need R including development tools and Rcpp. On a Debian based or derived system, this can be achieved with:</p>
-<pre><code>sudo apt-get install r-base-dev r-cran-rcpp </code></pre>
-<p>In principle ArrayFire has been packaged for Debian. However, the CUDA backend is not included and usage of the packaged OpenCL backend is hindered by a <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=881054">bug in the clBLAS package</a>. For serious usage it is currently better to build from source or use the <a href="http://arrayfire.com/download/">binary installer</a> from ArrayFire. See the <a href="http://arrayfire.org/docs/installing.htm">ArrayFire documentation</a> for details.</p>
-</div>
+<p>R and <a href="http://www.arrayfire.com/">ArrayFire library</a> via Rcpp. You can build the ArrayFire library from source or use the <a href="http://arrayfire.com/download/">binary installer</a>. See the <a href="http://arrayfire.org/docs/installing.htm">ArrayFire documentation</a> for details. RcppArrayFire is developed on Linux and has been tested on Linux and MacOS.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>RcppArrayFire is not on CRAN, but you can install the current version via <a href="https://cran.r-project.org/package=drat">drat</a>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"drat"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"drat"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">drat<span class="op">::</span><span class="kw">addRepo</span>(<span class="st">"daqana"</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"RcppArrayFire"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"drat"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"drat"</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">drat<span class="op">::</span><span class="kw">addRepo</span>(<span class="st">"daqana"</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"RcppArrayFire"</span>)</a></code></pre></div>
 <p>RcppArrayFire uses the unified backend of ArrayFire. If you have installed ArrayFire in a non-standard directory, you can use the configure argument <code>--with-arrayfire</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"RcppArrayFire"</span>, <span class="dt">configure.args =</span> <span class="st">"--with-arrayfire=/opt/arrayfire-3"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"RcppArrayFire"</span>, <span class="dt">configure.args =</span> <span class="st">"--with-arrayfire=/opt/arrayfire"</span>)</a></code></pre></div>
 </div>
 <div id="trademark-notice" class="section level2">
 <h2 class="hasAnchor">
