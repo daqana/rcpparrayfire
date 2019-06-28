@@ -1,6 +1,7 @@
-# RcppArrayFire 0.0.3.1
+# RcppArrayFire 0.1.0
 
-* Support for sparse matrices (Kazuki Fukui in #9)
+* Support for sparse matrices (Kazuki Fukui in [#9](https://github.com/daqana/rcpparrayfire/pull/9))
+* Support MacOS (Ralf in [#5](https://github.com/daqana/rcpparrayfire/pull/5))
 
 # RcppArrayFire 0.0.3
 
