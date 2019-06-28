@@ -2959,7 +2959,6 @@ if test -z "${AF_INCLUDE}" -o -z "${AF_LIBS}"; then :
   as_fn_error $? "Cannot find ArrayFire installation." "$LINENO" 5
 fi
 
-
 CPPFLAGS="${CPPFLAGS} ${AF_INCLUDE}"
 LDFLAGS="${LDFLAGS} ${AF_LIBS}"
 

@@ -1,6 +1,6 @@
 ## enviorment variables for building R package
 CXX_STD = CXX11
-PKG_CPPFLAGS = -I../inst/include @AF_INCLUDE@
+PKG_CPPFLAGS = -I../inst/include @AF_INCLUDE@ -DSTRICT_R_HEADERS
 PKG_LIBS = @AF_LIBS@
 
 all: $(SHLIB)

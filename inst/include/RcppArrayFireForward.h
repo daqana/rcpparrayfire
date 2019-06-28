@@ -29,7 +29,9 @@
 
 /* forward declarations */
 namespace RcppArrayFire{
-    template<af::dtype AF_DTYPE> class typed_array;
+    template<
+        af::dtype AF_DTYPE,
+        af::storage AF_STORAGETYPE> class typed_array;
 }
 
 namespace Rcpp {
@@ -42,7 +44,9 @@ namespace Rcpp {
 
     namespace traits {
     /* support for as */
-    template<af::dtype AF_DTYPE> class Exporter<RcppArrayFire::typed_array<AF_DTYPE>>;
+    template<
+        af::dtype AF_DTYPE,
+        af::storage AF_STORAGETYPE> class Exporter<RcppArrayFire::typed_array<AF_DTYPE, AF_STORAGETYPE>>;
     }
 }
 

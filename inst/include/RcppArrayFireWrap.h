@@ -75,11 +75,69 @@ namespace RcppArrayFire{
         return ::Rcpp::wrap_extra_steps<T>(x) ;
     }
 
-    template<typename T> SEXP wrap_array( const af::array& object ){
+
+    template<typename T> SEXP wrap_dense_array( const af::array& object ){
         return wrap_array_dispatch<T>(object, typename ::Rcpp::traits::r_sexptype_needscast<T>());
     }
 
-    SEXP af_wrap( const af::array& object ) ;
+    template<typename T> SEXP wrap_sparse_array( const af::array& object, const af::storage storage_type ){
+        const int RTYPE = Rcpp::traits::r_sexptype_traits<T>::rtype;
+
+        std::string major;
+        switch ( storage_type ) {
+            case AF_STORAGE_CSR: major = "R"; break;
+            case AF_STORAGE_CSC: major = "C"; break;
+            case AF_STORAGE_COO: major = "T"; break;
+        }
+
+        std::string klass;
+        switch( RTYPE ){
+            case REALSXP:
+                klass = std::string("dg") + major + "Matrix";
+                break;
+
+            case LGLSXP:
+                klass = std::string("lg") + major + "Matrix";
+                break;
+
+            default:
+                throw std::invalid_argument( "RTYPE not matched in conversion to sparse matrix" );
+                break;
+        }
+
+        ::Rcpp::S4 s(klass);
+        switch ( storage_type ) {
+            case AF_STORAGE_CSR:
+                s.slot("p") = wrap_dense_array<int>( af::sparseGetRowIdx( object ) );
+                s.slot("j") = wrap_dense_array<int>( af::sparseGetColIdx( object ) );
+                break;
+
+            case AF_STORAGE_CSC:
+                s.slot("i") = wrap_dense_array<int>( af::sparseGetRowIdx( object ) );
+                s.slot("p") = wrap_dense_array<int>( af::sparseGetColIdx( object ) );
+                break;
+
+            case AF_STORAGE_COO:
+                s.slot("i") = wrap_dense_array<int>( af::sparseGetRowIdx( object ) );
+                s.slot("j") = wrap_dense_array<int>( af::sparseGetColIdx( object ) );
+                break;
+        }
+        s.slot("x") = wrap_dense_array<T>( af::sparseGetValues( object ) );
+        s.slot("Dim") = ::Rcpp::IntegerVector::create( object.dims(0), object.dims(1) );
+
+        return s;
+    }
+
+    template<typename T> SEXP wrap_array( const af::array& object ){
+        if ( object.issparse() ) {
+            return wrap_sparse_array<T>( object, af::sparseGetStorage( object ) );
+        }
+        else { // if dense array
+            return wrap_dense_array<T>( object );
+        }
+    }
+
+    SEXP wrap_af_impl( const af::array& object ) ;
 } /* namespace RcppArrayFire */
 
 #endif

@@ -96,7 +96,6 @@ fi
 
 AS_IF([test -z "${AF_INCLUDE}" -o -z "${AF_LIBS}"], [AC_MSG_ERROR([Cannot find ArrayFire installation.])])
 
-
 CPPFLAGS="${CPPFLAGS} ${AF_INCLUDE}"
 LDFLAGS="${LDFLAGS} ${AF_LIBS}"
 

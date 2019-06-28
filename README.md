@@ -1,5 +1,5 @@
-[![Travis-CI Build Status](https://travis-ci.org/RInstitute/rcpparrayfire.svg?branch=master)](https://travis-ci.org/RInstitute/rcpparrayfire)
-[![Coverage Status](https://img.shields.io/codecov/c/github/RInstitute/rcpparrayfire/master.svg)](https://codecov.io/github/RInstitute/rcpparrayfire?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/daqana/rcpparrayfire.svg?branch=master)](https://travis-ci.org/daqana/rcpparrayfire)
+[![Coverage Status](https://img.shields.io/codecov/c/github/daqana/rcpparrayfire/master.svg)](https://codecov.io/github/daqana/rcpparrayfire?branch=master)
 
 # RcppArrayFire
 
@@ -29,7 +29,7 @@ via [drat](https://cran.r-project.org/package=drat):
 
 ```R
 if (!requireNamespace("drat", quietly = TRUE)) install.packages("drat")
-drat::addRepo("RInstitute")
+drat::addRepo("daqana")
 install.packages("RcppArrayFire")
 ```
 

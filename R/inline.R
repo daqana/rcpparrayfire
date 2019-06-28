@@ -1,4 +1,5 @@
 ## Copyright (C) 2015 Kazuki Fukui
+## Copyright (C) 2018 Ralf Stubner (daqana GmbH)
 ##
 ## This file is part of RcppArrayFire.
 ##

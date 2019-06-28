@@ -1,3 +1,7 @@
+# RcppArrayFire 0.0.3.1
+
+* Support for sparse matrices (Kazuki Fukui in #9)
+
 # RcppArrayFire 0.0.3
 
 * Expanded the vignette
