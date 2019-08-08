@@ -85,7 +85,7 @@
     <div class="page-header toc-ignore">
       <h1>Tests and Coverage</h1>
             
-            <h4 class="date">01 August, 2019 11:01:59</h4>
+            <h4 class="date">08 August, 2019 11:01:48</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/daqana/rcpparrayfire/blob/master/vignettes/tests_and_coverage.Rmd"><code>vignettes/tests_and_coverage.Rmd</code></a></small>
       <div class="hidden name"><code>tests_and_coverage.Rmd</code></div>
@@ -101,6 +101,10 @@
 <a href="#coverage" class="anchor"></a>Coverage</h2>
 <p>Coverage summary is created using the <a href="https://github.com/r-lib/covr">covr</a> package.</p>
 <table class="table">
+<colgroup>
+<col width="72%">
+<col width="27%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">Object</th>
 <th align="center">Coverage (%)</th>
@@ -108,15 +112,43 @@
 <tbody>
 <tr class="odd">
 <td align="left">RcppArrayFire</td>
-<td align="center">100</td>
+<td align="center">83.19</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/R/flags.R">R/flags.R</a></td>
-<td align="center">100</td>
+<td align="left">src/fastRNG.cpp</td>
+<td align="center">60.00</td>
 </tr>
 <tr class="odd">
+<td align="left">shttps://github.com/daqana/rcpparrayfire/tree/HEAD/RcppArrayFireWrap.cpp</td>
+<td align="center">67.86</td>
+</tr>
+<tr class="even">
+<td align="left">shttps://github.com/daqana/rcpparrayfire/tree/HEAD/RcppArrayFireAs.cpp</td>
+<td align="center">77.78</td>
+</tr>
+<tr class="odd">
+<td align="left">inst/incluhttps://github.com/daqana/rcpparrayfire/tree/HEAD/RcppArrayFireAs.h</td>
+<td align="center">78.95</td>
+</tr>
+<tr class="even">
+<td align="left">shttps://github.com/daqana/rcpparrayfire/tree/HEAD/RcppArrayFire.cpp</td>
+<td align="center">84.91</td>
+</tr>
+<tr class="odd">
+<td align="left">src/fastLm.cpp</td>
+<td align="center">90.91</td>
+</tr>
+<tr class="even">
+<td align="left">inst/incluhttps://github.com/daqana/rcpparrayfire/tree/HEAD/RcppArrayFireWrap.h</td>
+<td align="center">91.67</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/R/flags.R">R/flags.R</a></td>
+<td align="center">100.00</td>
+</tr>
+<tr class="even">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/R/inline.R">R/inline.R</a></td>
-<td align="center">100</td>
+<td align="center">100.00</td>
 </tr>
 </tbody>
 </table>
@@ -149,7 +181,7 @@
 <tr class="even">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/tests/testthat/test-fastLm.R">test-fastLm.R</a></td>
 <td align="right">6</td>
-<td align="right">1.028</td>
+<td align="right">1.019</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -158,7 +190,7 @@
 <tr class="odd">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/tests/testthat/test-general.R">test-general.R</a></td>
 <td align="right">9</td>
-<td align="right">0.007</td>
+<td align="right">0.009</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -167,7 +199,7 @@
 <tr class="even">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/tests/testthat/test-inline-dims.R">test-inline-dims.R</a></td>
 <td align="right">4</td>
-<td align="right">0.009</td>
+<td align="right">0.008</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -233,7 +265,7 @@
 <td align="left">models from R and AF are similar</td>
 <td align="left">PASS</td>
 <td align="right">2</td>
-<td align="right">0.556</td>
+<td align="right">0.555</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/tests/testthat/test-fastLm.R#L24">test-fastLm.R</a></td>
@@ -249,7 +281,7 @@
 <td align="left">models from R and AF on CPU are very similar</td>
 <td align="left">PASS</td>
 <td align="right">2</td>
-<td align="right">0.381</td>
+<td align="right">0.373</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/tests/testthat/test-general.R#L4">test-general.R</a></td>
@@ -281,7 +313,7 @@
 <td align="left">getting and setting the backend works</td>
 <td align="left">PASS</td>
 <td align="right">1</td>
-<td align="right">0.000</td>
+<td align="right">0.001</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/tests/testthat/test-general.R#L37">test-general.R</a></td>
@@ -289,7 +321,7 @@
 <td align="left">set_backend w/o argument uses DEFAULT</td>
 <td align="left">PASS</td>
 <td align="right">1</td>
-<td align="right">0.000</td>
+<td align="right">0.001</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/tests/testthat/test-inline-dims.R#L11">test-inline-dims.R</a></td>
@@ -321,7 +353,7 @@
 <td align="left">4d array multiplication works</td>
 <td align="left">PASS</td>
 <td align="right">1</td>
-<td align="right">0.002</td>
+<td align="right">0.001</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/tests/testthat/test-rng.R#L7">test-rng.R</a></td>
@@ -329,7 +361,7 @@
 <td align="left">setting and getting the random seed works</td>
 <td align="left">PASS</td>
 <td align="right">1</td>
-<td align="right">0.002</td>
+<td align="right">0.001</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/tests/testthat/test-rng.R#L15">test-rng.R</a></td>
@@ -337,7 +369,7 @@
 <td align="left">setting seed produces identical uniformly distributed numbers</td>
 <td align="left">PASS</td>
 <td align="right">1</td>
-<td align="right">0.001</td>
+<td align="right">0.002</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="https://github.com/daqana/rcpparrayfire/tree/HEAD/tests/testthat/test-rng.R#L23">test-rng.R</a></td>
@@ -372,7 +404,7 @@
 <tr class="even">
 <td align="left">Platform</td>
 <td align="left">x86_64-pc-linux-gnu (64-bit)</td>
-<td><a href="https://travis-ci.org/daqana/rcpparrayfire/jobs/566412945" target="_blank"><span title="Built on Travis"><img src="https://github.com/metrumresearchgroup/covrpage/blob/master/inst/logo/travis.png?raw=true"></span></a></td>
+<td><a href="https://travis-ci.org/daqana/rcpparrayfire/jobs/569289180" target="_blank"><span title="Built on Travis"><img src="https://github.com/metrumresearchgroup/covrpage/blob/master/inst/logo/travis.png?raw=true"></span></a></td>
 </tr>
 <tr class="odd">
 <td align="left">Running</td>
@@ -403,7 +435,7 @@
 </tr>
 <tr class="even">
 <td align="left">covr</td>
-<td align="left">3.2.1</td>
+<td align="left">3.3.0</td>
 </tr>
 <tr class="odd">
 <td align="left">covrpage</td>
