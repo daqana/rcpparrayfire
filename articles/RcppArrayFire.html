@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introduction to RcppArrayFire • RcppArrayFire</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to RcppArrayFire">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -67,7 +68,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/daqana/rcpparrayfire">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -80,13 +81,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Introduction to RcppArrayFire</h1>
                         <h4 class="author">Ralf Stubner</h4>
             
-            <h4 class="date">2019-08-29</h4>
+            <h4 class="date">2019-09-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/daqana/rcpparrayfire/blob/master/vignettes/RcppArrayFire.Rmd"><code>vignettes/RcppArrayFire.Rmd</code></a></small>
       <div class="hidden name"><code>RcppArrayFire.Rmd</code></div>
@@ -108,13 +110,13 @@
 <a href="#calculating-pi-by-simulation" class="anchor"></a>Calculating <span class="math inline">\(\pi\)</span> by simulation</h2>
 <p>Let’s look at the classical example of calculating <span class="math inline">\(\pi\)</span> via simulation. The basic idea is to generate a large number of random points within the unit square. An approximation for <span class="math inline">\(\pi\)</span> can then be calculated from the ratio of points within the unit circle to the total number of points. A vectorized implementation in R might look like this:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">piR &lt;-<span class="st"> </span><span class="cf">function</span>(N) {</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">    x &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(N)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">    y &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(N)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">    <span class="dv">4</span> <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(x<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>y<span class="op">^</span><span class="dv">2</span>) <span class="op">&lt;</span><span class="st"> </span><span class="fl">1.0</span>) <span class="op">/</span><span class="st"> </span>N</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">    x &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(N)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">    y &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(N)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">    <span class="dv">4</span> <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(x<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>y<span class="op">^</span><span class="dv">2</span>) <span class="op">&lt;</span><span class="st"> </span><span class="fl">1.0</span>) <span class="op">/</span><span class="st"> </span>N</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">}</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>)</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"pi ~= "</span>, <span class="kw">piR</span>(<span class="dv">10</span><span class="op">^</span><span class="dv">7</span>), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>))</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"pi ~= "</span>, <span class="kw">piR</span>(<span class="dv">10</span><span class="op">^</span><span class="dv">7</span>), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>))</a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; pi ~=  3.140899</span></a>
 <a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;        user      system     elapsed </span></a>
 <a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;       0.836       0.060       0.897</span></a></code></pre></div>
@@ -125,10 +127,10 @@
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">    array y = randu(N, f32);</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">    return 4.0 * sum&lt;float&gt;(sqrt(x*x + y*y) &lt; 1.0) / N;</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">}'</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">Rcpp<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/Rcpp/topics/cppFunction">cppFunction</a></span>(<span class="dt">code =</span> src, <span class="dt">depends =</span> <span class="st">"RcppArrayFire"</span>, <span class="dt">includes =</span> <span class="st">"using namespace af;"</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">Rcpp<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(<span class="dt">code =</span> src, <span class="dt">depends =</span> <span class="st">"RcppArrayFire"</span>, <span class="dt">includes =</span> <span class="st">"using namespace af;"</span>)</a>
 <a class="sourceLine" id="cb2-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">RcppArrayFire<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RcppArrayFire/topics/arrayfire_set_seed">arrayfire_set_seed</a></span>(<span class="dv">42</span>)</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"pi ~= "</span>, <span class="kw">piAF</span>(<span class="dv">10</span><span class="op">^</span><span class="dv">7</span>), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>))</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">RcppArrayFire<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RcppArrayFire/man/arrayfire_set_seed.html">arrayfire_set_seed</a></span>(<span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"pi ~= "</span>, <span class="kw">piAF</span>(<span class="dv">10</span><span class="op">^</span><span class="dv">7</span>), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>))</a>
 <a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; pi ~=  3.141066</span></a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;        user      system     elapsed </span></a>
 <a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;       0.000       0.004       0.021</span></a></code></pre></div>
@@ -143,32 +145,32 @@
 <h2 class="hasAnchor">
 <a href="#arrays-as-parameters" class="anchor"></a>Arrays as parameters</h2>
 <p>Up to now we have only considered simple types like <code>double</code> or <code>int</code> as function parameters and return values. However, we can also use arrays. Consider the matrix product <span class="math inline">\(X^{\mathsf{T}} X\)</span> for a random matrix <span class="math inline">\(X\)</span> in R:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">42</span>)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">42</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">N &lt;-<span class="st"> </span><span class="dv">40</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">X &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(N <span class="op">*</span><span class="st"> </span>N <span class="op">*</span><span class="st"> </span><span class="dv">2</span>), <span class="dt">ncol =</span> N)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">tXXR &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(X) <span class="op">%*%</span><span class="st"> </span>X</a></code></pre></div>
+<a class="sourceLine" id="cb3-3" data-line-number="3">X &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(N <span class="op">*</span><span class="st"> </span>N <span class="op">*</span><span class="st"> </span><span class="dv">2</span>), <span class="dt">ncol =</span> N)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">tXXR &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/t.html">t</a></span>(X) <span class="op">%*%</span><span class="st"> </span>X</a></code></pre></div>
 <p>The matrix multiplication can be implemented with RcppArrayFire using the appropriate <a href="http://arrayfire.org/docs/group__blas__func__matmul.htm">matmul function</a>:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">src &lt;-<span class="st"> '</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">af::array squareMatrix(const RcppArrayFire::typed_array&lt;f32&gt;&amp; x) {</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">    return af::matmulTN(x ,x);</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">}'</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">Rcpp<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/Rcpp/topics/cppFunction">cppFunction</a></span>(<span class="dt">code =</span> src, <span class="dt">depends =</span> <span class="st">"RcppArrayFire"</span>)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">Rcpp<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(<span class="dt">code =</span> src, <span class="dt">depends =</span> <span class="st">"RcppArrayFire"</span>)</a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">tXXGPU &lt;-<span class="st"> </span><span class="kw">squareMatrix</span>(X)</a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all.equal">all.equal</a></span>(tXXR, tXXGPU)</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(tXXR, tXXGPU)</a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; [1] "Mean relative difference: 1.372856e-07"</span></a></code></pre></div>
 <p>Since an object of type <code>af::array</code> can contain different <a href="http://arrayfire.org/docs/defines_8h.htm#a023d8ac325fb14f1712a52fb0940b1d5">data types</a>, the templated wrapper class <code>RcppArrayFire::typed_array&lt;&gt;</code> is used to indicate the desired data type when converting from R to C++. Again single precision floats are used with ArrayFire, which explains the difference between the two results. We can be sure that double precision is supported by switching the computation backend to “CPU”, which produces identical results:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">src &lt;-<span class="st"> '</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">af::array squareMatrixF64(const RcppArrayFire::typed_array&lt;f64&gt;&amp; x) {</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">    return af::matmulTN(x ,x);</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">}'</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">Rcpp<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/Rcpp/topics/cppFunction">cppFunction</a></span>(<span class="dt">code =</span> src, <span class="dt">depends =</span> <span class="st">"RcppArrayFire"</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">Rcpp<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(<span class="dt">code =</span> src, <span class="dt">depends =</span> <span class="st">"RcppArrayFire"</span>)</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">RcppArrayFire<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RcppArrayFire/topics/arrayfire_set_backend">arrayfire_set_backend</a></span>(<span class="st">"CPU"</span>)</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">RcppArrayFire<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RcppArrayFire/man/arrayfire_set_backend.html">arrayfire_set_backend</a></span>(<span class="st">"CPU"</span>)</a>
 <a class="sourceLine" id="cb5-8" data-line-number="8">tXXCPU &lt;-<span class="st"> </span><span class="kw">squareMatrixF64</span>(X)</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">RcppArrayFire<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RcppArrayFire/topics/arrayfire_set_backend">arrayfire_set_backend</a></span>(<span class="st">"DEFAULT"</span>)</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">RcppArrayFire<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RcppArrayFire/man/arrayfire_set_backend.html">arrayfire_set_backend</a></span>(<span class="st">"DEFAULT"</span>)</a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all.equal">all.equal</a></span>(tXXR, tXXCPU)</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(tXXR, tXXCPU)</a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
 </div>
 </div>
@@ -199,17 +201,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Kazuki Fukui, Ralf Stubner.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
