@@ -36,6 +36,7 @@ addons:
     - sourceline: 'ppa:keithw/glfw3'
     packages:
     - libglfw3
+    - devscripts
 brew_packages:
   - fontconfig
   - glfw
