@@ -13,8 +13,9 @@ matrix:
     r_packages:
     - covr
     - devtools
-    - pkgdown
+#    - pkgdown
     r_github_packages:
+    - r-lib/pkgdown
     - metrumresearchgroup/covrpage
     after_success:
     - Rscript -e "covr::codecov()"
