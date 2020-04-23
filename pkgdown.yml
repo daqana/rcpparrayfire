@@ -1,8 +1,8 @@
 pandoc: '2.2'
 pkgdown: 1.5.1.9000
-pkgdown_sha: fcc120d996055519db89f37f0097af7ce25d6641
+pkgdown_sha: 26fcbff65ead8eea5097374115d063680c584cd6
 articles:
   RcppArrayFire: RcppArrayFire.html
   tests_and_coverage: tests_and_coverage.html
-last_built: 2020-04-16T11:19Z
+last_built: 2020-04-23T11:20Z
 
