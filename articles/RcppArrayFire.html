@@ -88,7 +88,7 @@
       <h1 data-toc-skip>Introduction to RcppArrayFire</h1>
                         <h4 class="author">Ralf Stubner</h4>
             
-            <h4 class="date">2020-08-20</h4>
+            <h4 class="date">2020-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/daqana/rcpparrayfire/blob/master/vignettes/RcppArrayFire.Rmd"><code>vignettes/RcppArrayFire.Rmd</code></a></small>
       <div class="hidden name"><code>RcppArrayFire.Rmd</code></div>
@@ -129,8 +129,7 @@ double piAF (const int N) {
     array x = randu(N, f32);
     array y = randu(N, f32);
     return 4.0 * sum&lt;float&gt;(sqrt(x*x + y*y) &lt; 1.0) / N;
-}'</span>c (sqrt(x*x + y*y) &lt; 1.0) / N;
-}'
+}'</span>
 <span class="kw">Rcpp</span>::<span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(code = <span class="kw">src</span>, depends = <span class="st">"RcppArrayFire"</span>, includes = <span class="st">"using namespace af;"</span>)
 
 <span class="kw">RcppArrayFire</span>::<span class="fu"><a href="../reference/arrayfire_set_seed.html">arrayfire_set_seed</a></span>(<span class="fl">42</span>)
@@ -161,9 +160,7 @@ double piAF (const int N) {
 <span class="kw">src</span> <span class="op">&lt;-</span> <span class="st">'
 af::array squareMatrix(const RcppArrayFire::typed_array&lt;f32&gt;&amp; x) {
     return af::matmulTN(x ,x);
-}'</span>c &amp; x) {
-    return af::matmulTN(x ,x);
-}'
+}'</span>
 <span class="kw">Rcpp</span>::<span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(code = <span class="kw">src</span>, depends = <span class="st">"RcppArrayFire"</span>)
 <span class="kw">tXXGPU</span> <span class="op">&lt;-</span> <span class="fu">squareMatrix</span>(<span class="kw">X</span>)
 
@@ -175,9 +172,7 @@ af::array squareMatrix(const RcppArrayFire::typed_array&lt;f32&gt;&amp; x) {
 <span class="kw">src</span> <span class="op">&lt;-</span> <span class="st">'
 af::array squareMatrixF64(const RcppArrayFire::typed_array&lt;f64&gt;&amp; x) {
     return af::matmulTN(x ,x);
-}'</span>c &amp; x) {
-    return af::matmulTN(x ,x);
-}'
+}'</span>
 <span class="kw">Rcpp</span>::<span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(code = <span class="kw">src</span>, depends = <span class="st">"RcppArrayFire"</span>)
 
 <span class="kw">RcppArrayFire</span>::<span class="fu"><a href="../reference/arrayfire_set_backend.html">arrayfire_set_backend</a></span>(<span class="st">"CPU"</span>)
