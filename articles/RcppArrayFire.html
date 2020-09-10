@@ -88,7 +88,7 @@
       <h1 data-toc-skip>Introduction to RcppArrayFire</h1>
                         <h4 class="author">Ralf Stubner</h4>
             
-            <h4 class="date">2020-09-03</h4>
+            <h4 class="date">2020-09-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/daqana/rcpparrayfire/blob/master/vignettes/RcppArrayFire.Rmd"><code>vignettes/RcppArrayFire.Rmd</code></a></small>
       <div class="hidden name"><code>RcppArrayFire.Rmd</code></div>
@@ -120,8 +120,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"pi ~= "</span>, <span class="fu">piR</span>(<span class="fl">10</span><span class="op">^</span><span class="fl">7</span>), <span class="st">"\n"</span>))
 <span class="co">#&gt; pi ~=  3.140899</span>
 <span class="co">#&gt;        user      system     elapsed </span>
-<span class="co">#&gt;       0.836       0.060       0.897</span>
-</pre></div>
+<span class="co">#&gt;       0.836       0.060       0.897</span></pre></div>
 <p>A simple way to use C++ code in R is to use the inline package or <code>cppFunction()</code> from Rcpp, which are both possible with RcppArrayFire. An implementation in C++ using ArrayFire might look like this:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">src</span> <span class="op">&lt;-</span> <span class="st">'
@@ -136,8 +135,7 @@ double piAF (const int N) {
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"pi ~= "</span>, <span class="fu">piAF</span>(<span class="fl">10</span><span class="op">^</span><span class="fl">7</span>), <span class="st">"\n"</span>))
 <span class="co">#&gt; pi ~=  3.141066</span>
 <span class="co">#&gt;        user      system     elapsed </span>
-<span class="co">#&gt;       0.000       0.004       0.021</span>
-</pre></div>
+<span class="co">#&gt;       0.000       0.004       0.021</span></pre></div>
 <p>Several things are worth noting:</p>
 <ol style="list-style-type: decimal">
 <li><p>The syntax is almost identical. Besides the need for using types and a different function name when generating random numbers, the argument <code>f32</code> to <code>randu</code> as well as the <code>float</code> type catches the eye. These instruct ArrayFire to use single precision floats, since not all devices support double precision floating point numbers. If you want to use double precision, you have to specify <code>f64</code> and <code>double</code>.</p></li>
@@ -153,8 +151,7 @@ double piAF (const int N) {
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">42</span>)
 <span class="kw">N</span> <span class="op">&lt;-</span> <span class="fl">40</span>
 <span class="kw">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="kw">N</span> <span class="op">*</span> <span class="kw">N</span> <span class="op">*</span> <span class="fl">2</span>), ncol = <span class="kw">N</span>)
-<span class="kw">tXXR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="kw">X</span>) <span class="op">%*%</span> <span class="kw">X</span>
-</pre></div>
+<span class="kw">tXXR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="kw">X</span>) <span class="op">%*%</span> <span class="kw">X</span></pre></div>
 <p>The matrix multiplication can be implemented with RcppArrayFire using the appropriate <a href="http://arrayfire.org/docs/group__blas__func__matmul.htm">matmul function</a>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="kw">src</span> <span class="op">&lt;-</span> <span class="st">'
@@ -165,8 +162,7 @@ af::array squareMatrix(const RcppArrayFire::typed_array&lt;f32&gt;&amp; x) {
 <span class="kw">tXXGPU</span> <span class="op">&lt;-</span> <span class="fu">squareMatrix</span>(<span class="kw">X</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="kw">tXXR</span>, <span class="kw">tXXGPU</span>)
-<span class="co">#&gt; [1] "Mean relative difference: 1.372856e-07"</span>
-</pre></div>
+<span class="co">#&gt; [1] "Mean relative difference: 1.372856e-07"</span></pre></div>
 <p>Since an object of type <code>af::array</code> can contain different <a href="http://arrayfire.org/docs/defines_8h.htm#a023d8ac325fb14f1712a52fb0940b1d5">data types</a>, the templated wrapper class <code>RcppArrayFire::typed_array&lt;&gt;</code> is used to indicate the desired data type when converting from R to C++. Again single precision floats are used with ArrayFire, which explains the difference between the two results. We can be sure that double precision is supported by switching the computation backend to “CPU”, which produces identical results:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw">src</span> <span class="op">&lt;-</span> <span class="st">'
@@ -180,8 +176,7 @@ af::array squareMatrixF64(const RcppArrayFire::typed_array&lt;f64&gt;&amp; x) {
 <span class="kw">RcppArrayFire</span>::<span class="fu"><a href="../reference/arrayfire_set_backend.html">arrayfire_set_backend</a></span>(<span class="st">"DEFAULT"</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="kw">tXXR</span>, <span class="kw">tXXCPU</span>)
-<span class="co">#&gt; [1] TRUE</span>
-</pre></div>
+<span class="co">#&gt; [1] TRUE</span></pre></div>
 </div>
 </div>
 <div id="usage-in-a-package" class="section level1">
@@ -206,7 +201,7 @@ af::array squareMatrixF64(const RcppArrayFire::typed_array&lt;f64&gt;&amp; x) {
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
 </div>
 
       </footer>
