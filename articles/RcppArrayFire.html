@@ -38,12 +38,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/RcppArrayFire.html">Get started</a>
 </li>
 <li>
@@ -88,7 +82,7 @@
       <h1 data-toc-skip>Introduction to RcppArrayFire</h1>
                         <h4 class="author">Ralf Stubner</h4>
             
-            <h4 class="date">2020-09-17</h4>
+            <h4 class="date">2020-09-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/daqana/rcpparrayfire/blob/master/vignettes/RcppArrayFire.Rmd"><code>vignettes/RcppArrayFire.Rmd</code></a></small>
       <div class="hidden name"><code>RcppArrayFire.Rmd</code></div>
@@ -110,29 +104,29 @@
 <a href="#calculating-pi-by-simulation" class="anchor"></a>Calculating <span class="math inline">\(\pi\)</span> by simulation</h2>
 <p>Let’s look at the classical example of calculating <span class="math inline">\(\pi\)</span> via simulation. The basic idea is to generate a large number of random points within the unit square. An approximation for <span class="math inline">\(\pi\)</span> can then be calculated from the ratio of points within the unit circle to the total number of points. A vectorized implementation in R might look like this:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">piR</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">N</span>) {
-    <span class="kw">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="kw">N</span>)
-    <span class="kw">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="kw">N</span>)
-    <span class="fl">4</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="kw">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="kw">y</span><span class="op">^</span><span class="fl">2</span>) <span class="op">&lt;</span> <span class="fl">1.0</span>) <span class="op">/</span> <span class="kw">N</span>
-}
+<span class="va">piR</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">N</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span>
+    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span>
+    <span class="fl">4</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">/</span> <span class="va">N</span>
+<span class="op">}</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">42</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"pi ~= "</span>, <span class="fu">piR</span>(<span class="fl">10</span><span class="op">^</span><span class="fl">7</span>), <span class="st">"\n"</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"pi ~= "</span>, <span class="fu">piR</span><span class="op">(</span><span class="fl">10</span><span class="op">^</span><span class="fl">7</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; pi ~=  3.140899</span>
 <span class="co">#&gt;        user      system     elapsed </span>
 <span class="co">#&gt;       0.836       0.060       0.897</span></pre></div>
 <p>A simple way to use C++ code in R is to use the inline package or <code>cppFunction()</code> from Rcpp, which are both possible with RcppArrayFire. An implementation in C++ using ArrayFire might look like this:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">src</span> <span class="op">&lt;-</span> <span class="st">'
+<span class="va">src</span> <span class="op">&lt;-</span> <span class="st">'
 double piAF (const int N) {
     array x = randu(N, f32);
     array y = randu(N, f32);
     return 4.0 * sum&lt;float&gt;(sqrt(x*x + y*y) &lt; 1.0) / N;
 }'</span>
-<span class="kw">Rcpp</span>::<span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(code = <span class="kw">src</span>, depends = <span class="st">"RcppArrayFire"</span>, includes = <span class="st">"using namespace af;"</span>)
+<span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span><span class="op">(</span>code <span class="op">=</span> <span class="va">src</span>, depends <span class="op">=</span> <span class="st">"RcppArrayFire"</span>, includes <span class="op">=</span> <span class="st">"using namespace af;"</span><span class="op">)</span>
 
-<span class="kw">RcppArrayFire</span>::<span class="fu"><a href="../reference/arrayfire_set_seed.html">arrayfire_set_seed</a></span>(<span class="fl">42</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"pi ~= "</span>, <span class="fu">piAF</span>(<span class="fl">10</span><span class="op">^</span><span class="fl">7</span>), <span class="st">"\n"</span>))
+<span class="fu">RcppArrayFire</span><span class="fu">::</span><span class="fu"><a href="../reference/arrayfire_set_seed.html">arrayfire_set_seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"pi ~= "</span>, <span class="fu">piAF</span><span class="op">(</span><span class="fl">10</span><span class="op">^</span><span class="fl">7</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; pi ~=  3.141066</span>
 <span class="co">#&gt;        user      system     elapsed </span>
 <span class="co">#&gt;       0.000       0.004       0.021</span></pre></div>
@@ -148,34 +142,34 @@ double piAF (const int N) {
 <a href="#arrays-as-parameters" class="anchor"></a>Arrays as parameters</h2>
 <p>Up to now we have only considered simple types like <code>double</code> or <code>int</code> as function parameters and return values. However, we can also use arrays. Consider the matrix product <span class="math inline">\(X^{\mathsf{T}} X\)</span> for a random matrix <span class="math inline">\(X\)</span> in R:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">42</span>)
-<span class="kw">N</span> <span class="op">&lt;-</span> <span class="fl">40</span>
-<span class="kw">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="kw">N</span> <span class="op">*</span> <span class="kw">N</span> <span class="op">*</span> <span class="fl">2</span>), ncol = <span class="kw">N</span>)
-<span class="kw">tXXR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="kw">X</span>) <span class="op">%*%</span> <span class="kw">X</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
+<span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">40</span>
+<span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">N</span> <span class="op">*</span> <span class="va">N</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="va">N</span><span class="op">)</span>
+<span class="va">tXXR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span> <span class="op">%*%</span> <span class="va">X</span></pre></div>
 <p>The matrix multiplication can be implemented with RcppArrayFire using the appropriate <a href="http://arrayfire.org/docs/group__blas__func__matmul.htm">matmul function</a>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">src</span> <span class="op">&lt;-</span> <span class="st">'
+<span class="va">src</span> <span class="op">&lt;-</span> <span class="st">'
 af::array squareMatrix(const RcppArrayFire::typed_array&lt;f32&gt;&amp; x) {
     return af::matmulTN(x ,x);
 }'</span>
-<span class="kw">Rcpp</span>::<span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(code = <span class="kw">src</span>, depends = <span class="st">"RcppArrayFire"</span>)
-<span class="kw">tXXGPU</span> <span class="op">&lt;-</span> <span class="fu">squareMatrix</span>(<span class="kw">X</span>)
+<span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span><span class="op">(</span>code <span class="op">=</span> <span class="va">src</span>, depends <span class="op">=</span> <span class="st">"RcppArrayFire"</span><span class="op">)</span>
+<span class="va">tXXGPU</span> <span class="op">&lt;-</span> <span class="fu">squareMatrix</span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="kw">tXXR</span>, <span class="kw">tXXGPU</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">tXXR</span>, <span class="va">tXXGPU</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Mean relative difference: 1.372856e-07"</span></pre></div>
 <p>Since an object of type <code>af::array</code> can contain different <a href="http://arrayfire.org/docs/defines_8h.htm#a023d8ac325fb14f1712a52fb0940b1d5">data types</a>, the templated wrapper class <code>RcppArrayFire::typed_array&lt;&gt;</code> is used to indicate the desired data type when converting from R to C++. Again single precision floats are used with ArrayFire, which explains the difference between the two results. We can be sure that double precision is supported by switching the computation backend to “CPU”, which produces identical results:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">src</span> <span class="op">&lt;-</span> <span class="st">'
+<span class="va">src</span> <span class="op">&lt;-</span> <span class="st">'
 af::array squareMatrixF64(const RcppArrayFire::typed_array&lt;f64&gt;&amp; x) {
     return af::matmulTN(x ,x);
 }'</span>
-<span class="kw">Rcpp</span>::<span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span>(code = <span class="kw">src</span>, depends = <span class="st">"RcppArrayFire"</span>)
+<span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html">cppFunction</a></span><span class="op">(</span>code <span class="op">=</span> <span class="va">src</span>, depends <span class="op">=</span> <span class="st">"RcppArrayFire"</span><span class="op">)</span>
 
-<span class="kw">RcppArrayFire</span>::<span class="fu"><a href="../reference/arrayfire_set_backend.html">arrayfire_set_backend</a></span>(<span class="st">"CPU"</span>)
-<span class="kw">tXXCPU</span> <span class="op">&lt;-</span> <span class="fu">squareMatrixF64</span>(<span class="kw">X</span>)
-<span class="kw">RcppArrayFire</span>::<span class="fu"><a href="../reference/arrayfire_set_backend.html">arrayfire_set_backend</a></span>(<span class="st">"DEFAULT"</span>)
+<span class="fu">RcppArrayFire</span><span class="fu">::</span><span class="fu"><a href="../reference/arrayfire_set_backend.html">arrayfire_set_backend</a></span><span class="op">(</span><span class="st">"CPU"</span><span class="op">)</span>
+<span class="va">tXXCPU</span> <span class="op">&lt;-</span> <span class="fu">squareMatrixF64</span><span class="op">(</span><span class="va">X</span><span class="op">)</span>
+<span class="fu">RcppArrayFire</span><span class="fu">::</span><span class="fu"><a href="../reference/arrayfire_set_backend.html">arrayfire_set_backend</a></span><span class="op">(</span><span class="st">"DEFAULT"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span>(<span class="kw">tXXR</span>, <span class="kw">tXXCPU</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">tXXR</span>, <span class="va">tXXCPU</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></pre></div>
 </div>
 </div>
