@@ -4,9 +4,15 @@
 \alias{RcppArrayFire.package.skeleton}
 \title{Create a skeleton for a new package that intends to use RcppArrayFire}
 \usage{
-RcppArrayFire.package.skeleton(name = "anRpackage", list = character(),
-  environment = .GlobalEnv, path = ".", force = FALSE,
-  code_files = character(), example_code = TRUE)
+RcppArrayFire.package.skeleton(
+  name = "anRpackage",
+  list = character(),
+  environment = .GlobalEnv,
+  path = ".",
+  force = FALSE,
+  code_files = character(),
+  example_code = TRUE
+)
 }
 \arguments{
 \item{name}{See \code{\link{package.skeleton}}}

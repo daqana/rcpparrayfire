@@ -8,3 +8,5 @@ LICENSE
 ^\.travis$
 ^codecov\.yml$
 ^inst/libs$
+^docker$
+^include$
