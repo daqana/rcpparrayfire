@@ -88,6 +88,7 @@ namespace RcppArrayFire{
             case AF_STORAGE_CSR: major = "R"; break;
             case AF_STORAGE_CSC: major = "C"; break;
             case AF_STORAGE_COO: major = "T"; break;
+            case AF_STORAGE_DENSE: major = "D"; break;
         }
 
         std::string klass;
@@ -120,6 +121,10 @@ namespace RcppArrayFire{
             case AF_STORAGE_COO:
                 s.slot("i") = wrap_dense_array<int>( af::sparseGetRowIdx( object ) );
                 s.slot("j") = wrap_dense_array<int>( af::sparseGetColIdx( object ) );
+                break;
+
+            case AF_STORAGE_DENSE:
+                throw std::invalid_argument( "Not a sparse matrix" );
                 break;
         }
         s.slot("x") = wrap_dense_array<T>( af::sparseGetValues( object ) );
